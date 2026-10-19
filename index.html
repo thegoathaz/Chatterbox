@@ -74,6 +74,7 @@ const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>
 if(typeof supabase==='undefined'){document.getElementById('app').innerHTML='<p class="empty">Couldn’t load the sign-in library from cdn.jsdelivr.net. Check your connection or content blocker, then reload.</p>';throw new Error('supabase library missing')}
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const authMsg=e=>{const m=(e&&e.message)||'',st=e&&e.status;
+ if(/permission denied/i.test(m))return 'The database doesn’t allow this change. The app owner needs to update the database permissions.';
  if(/already (been )?registered|already exists/i.test(m))return 'An account with that email already exists. Log in instead, or reset your password.';
  if(st===429||/rate limit|too many/i.test(m))return 'Too many emails were sent recently. Wait a few minutes and try again.';
  if(/Database error saving new user/i.test(m))return 'Couldn’t create your profile. That username may already be taken, so try a different one. If it keeps happening, the database setup needs checking.';
@@ -291,7 +292,7 @@ function upload(path,blob,mime,onp){return new Promise(async(res,rej)=>{const{da
  x.onload=()=>{if(x.status>=200&&x.status<300)return res(`${SUPABASE_URL}/storage/v1/object/public/profile-media/${path}`);let m='';try{m=JSON.parse(x.responseText).message||''}catch(e){}
   rej(upErr(/bucket not found/i.test(m)?'Picture storage isn’t set up yet. The app owner needs to run the profile SQL migration.':x.status===413?'That file is too large for the server.':/row-level|policy|unauthorized|403/i.test(m+x.status)?'You’re not allowed to upload right now. Log in again and retry.':'Upload failed'+(m?': '+m:'. Check your connection and retry.')))};
  x.onerror=()=>rej(upErr('Network error during upload. Check your connection and retry.'));x.ontimeout=()=>rej(upErr('The upload timed out. Retry.'));x.send(fd)})}
-const perr=e=>{const m=(e&&e.message)||'',c=e&&e.code;if(e&&e.up)return m;if(c==='23505')return 'That username is taken.';if(c==='PGRST204'||c==='42703'||/schema cache|column/i.test(m))return 'Profile customization isn’t set up in the database yet. The app owner needs to run the profile SQL migration.';if(c==='23514')return 'The database rejected one of the values. Check your links and details.';return authMsg(e)};
+const perr=e=>{const m=(e&&e.message)||'',c=e&&e.code;if(e&&e.up)return m;if(c==='42501'||/permission denied/i.test(m))return 'The database doesn’t allow this change yet. The app owner needs to run the “permissions” part of the profile SQL (profile_customization.sql).';if(c==='23505')return 'That username is taken.';if(c==='PGRST204'||c==='42703'||/schema cache|column/i.test(m))return 'Profile customization isn’t set up in the database yet. The app owner needs to run the profile SQL migration.';if(c==='23514')return 'The database rejected one of the values. Check your links and details.';return authMsg(e)};
 async function edSave(){if(!E||E.busy)return;const d=E.d,bad=(t,sec)=>{E.err={t};if(sec)E.sec=sec;edPaint()};
  const dn=d.display_name.trim(),un=d.username.trim().toLowerCase(),pr=d.pronouns.trim();
  if(!dn||dn.length>32)return bad('Display name must be 1–32 characters.','info');
@@ -302,7 +303,7 @@ async function edSave(){if(!E||E.busy)return;const d=E.d,bad=(t,sec)=>{E.err={t}
  if(!S.pm&&chg)return bad('Pictures, banners, pronouns, links and theme need the one-time database setup first.');
  E.busy=1;E.err=null;E.prog={};edPaint();
  try{for(const kk of ['av','bn']){const m=E[kk];if(m.file&&!m.up){E.prog[kk]=0;edMsg();m.up=await upload(`${S.me.id}/${kk==='av'?'avatar':'banner'}-${Date.now()}.${m.gif?'gif':m.mime==='image/webp'?'webp':m.mime==='image/png'?'png':'jpg'}`,m.file,m.mime,f=>{E.prog[kk]=f;edProg()});E.prog[kk]=1}}
-  const upd={display_name:dn,username:un,bio:d.bio.trim(),custom_status:d.custom_status.trim()};
+  const upd={display_name:dn,bio:d.bio.trim(),custom_status:d.custom_status.trim()};if(un!==S.me.username)upd.username=un;
   if(S.pm){const r2=c=>({z:+cl(c.z,1,4,1).toFixed(2),x:+cl(c.x,0,100,50).toFixed(1),y:+cl(c.y,0,100,50).toFixed(1)});Object.assign(upd,{pronouns:pr||null,links,accent:d.accent.toLowerCase()});
    for(const[kk,f2] of [['av','avatar'],['bn','banner']]){const m=E[kk],u=m.removed?null:(m.up||asrc(S.me[f2+'_url'])||null);upd[f2+'_url']=u;upd[f2+'_crop']=u?r2(m.crop):null}}
   const{error}=await sb.from('profiles').update(upd).eq('id',S.me.id);if(error)throw error;
