@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chatterbox</title><meta name="theme-color" content="#0f1020">
+<style>
+:root{--bg:#0f1020;--card:#1a1b30;--line:#2a2c47;--tx:#eef0ff;--mute:#9aa0c8;--ac:#7c5cff;--bad:#fb7185;--ok:#34d399;color-scheme:dark}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:env(safe-area-inset-top) 0 0}
+button,input,textarea,select{font:inherit;color:inherit}
+input,textarea,select{width:100%;background:#12132a;border:1px solid var(--line);border-radius:12px;padding:12px;margin:4px 0 10px}
+button{background:var(--ac);border:0;border-radius:12px;padding:10px 14px;cursor:pointer;min-height:44px}
+button.g{background:var(--card);border:1px solid var(--line)}button.d{background:transparent;color:var(--bad);border:1px solid var(--line)}
+button:disabled{opacity:.5}h1,h2,h3{margin:0 0 8px}small,.m{color:var(--mute)}
+.shell{display:flex;flex-direction:column;height:100%}#main{flex:1;min-height:0;overflow:auto}
+.nav{display:flex;border-top:1px solid var(--line);background:var(--card);padding-bottom:env(safe-area-inset-bottom)}
+.nav button{flex:1;background:none;border-radius:0;color:var(--mute)}.nav button.on{color:var(--tx);box-shadow:inset 0 2px var(--ac)}
+.pg{padding:16px;max-width:640px;margin:0 auto}.auth{max-width:380px;margin:8vh auto;padding:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 12px}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0}.row>.g1{flex:1;min-width:0}.row .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row button{min-height:36px;padding:6px 10px}.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;flex:none}
+.split{display:flex;height:100%}.cl{width:100%;overflow:auto;padding:12px}.th{display:none;flex-direction:column;width:100%;min-width:0}
+.split.open .cl{display:none}.split.open .th{display:flex}
+@media(min-width:768px){.cl{width:320px;border-right:1px solid var(--line)}.th{display:flex}.split.open .cl{display:block}.bk{display:none}}
+.ci{display:flex;gap:10px;padding:10px;border-radius:12px;cursor:pointer;align-items:center}.ci:hover,.ci.on{background:var(--card)}
+.hd{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+#ml{flex:1;overflow:auto;padding:12px 14px}.msg{display:flex;flex-direction:column;margin:6px 0;align-items:flex-start}.msg.me{align-items:flex-end}
+.bub{background:var(--card);border-radius:14px;padding:8px 12px;max-width:85%;white-space:pre-wrap;word-break:break-word}.me .bub{background:var(--ac)}
+.cmp{display:flex;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom)*0);border-top:1px solid var(--line)}.cmp input{margin:0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ac)}.act{cursor:pointer;text-decoration:underline}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#000c;padding:10px 14px;border-radius:12px;z-index:9;max-width:90%}
+.empty{text-align:center;color:var(--mute);padding:30px 10px}
+html[data-theme=light]{--bg:#f6f7ff;--card:#fff;--line:#d9dcf2;--tx:#14162b;--mute:#5b6190;color-scheme:light}
+html[data-theme=light] input,html[data-theme=light] textarea,html[data-theme=light] select{background:#fff}
+body{font-size:calc(16px*var(--fs,1))}.me .bub{color:#fff}
+.sp-compact .msg{margin:2px 0}.sp-roomy .msg{margin:14px 0}.sp-roomy .bub{padding:12px 16px}
+.bg-mid #ml{background:color-mix(in srgb,var(--tx) 6%,var(--bg))}.bg-tint #ml{background:color-mix(in srgb,var(--ac) 12%,var(--bg))}
+.rm *,.rm *:before,.rm *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+html.hc{--line:#fff;--mute:#e6e8ff}html.hc[data-theme=light]{--line:#000;--mute:#222}.hc .bub{outline:1px solid currentColor}
+.srow{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.srow:last-child{border:0}.srow .g1{flex:1;min-width:0}
+.sw{position:relative;width:46px;height:28px;flex:none}.sw input{position:absolute;inset:0;opacity:0;margin:0;padding:0;border:0;width:100%;height:100%;cursor:pointer;z-index:1}
+.sw i{position:absolute;inset:0;background:var(--line);border-radius:99px;transition:.2s}.sw i:after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+i{background:var(--ac)}.sw input:checked+i:after{transform:translateX(18px)}.sw input:focus-visible+i{outline:2px solid var(--tx);outline-offset:2px}
+.sws{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.swt{width:30px;height:30px;min-height:30px;padding:0;border-radius:50%;border:2px solid transparent}.swt.on{border-color:var(--tx)}
+.cmp textarea{margin:0;resize:none}.sf label{display:block;margin-top:6px}
+</style></head><body>
+<div id="app"><p class="empty">Loading…</p></div><div id="toast" hidden></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL='https://fenohwqkuudnotifkqpv.supabase.co',SUPABASE_KEY='sb_publishable_DasJhJsptFy0KzT2jqBlIw_yk-PhX53';
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+if(typeof supabase==='undefined'){document.getElementById('app').innerHTML='<p class="empty">Couldn’t load the sign-in library from cdn.jsdelivr.net. Check your connection or content blocker, then reload.</p>';throw new Error('supabase library missing')}
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const authMsg=e=>{const m=(e&&e.message)||'',st=e&&e.status;
+ if(/already (been )?registered|already exists/i.test(m))return 'An account with that email already exists. Log in instead, or reset your password.';
+ if(st===429||/rate limit|too many/i.test(m))return 'Too many emails were sent recently. Wait a few minutes and try again.';
+ if(/Database error saving new user/i.test(m))return 'Couldn’t create your profile. That username may already be taken, so try a different one. If it keeps happening, the database setup needs checking.';
+ if(/Failed to fetch|NetworkError|Load failed/i.test(m))return 'Can’t reach the server. Check your connection. If this page is hosted somewhere that blocks outside requests, sign-up can’t work there.';
+ if(/signups? (are )?(not allowed|disabled)/i.test(m))return 'Sign-ups are turned off for this app.';
+ return m||'Something went wrong. Try again.'};
+const S={me:null,mode:'login',tab:'chats',cv:null,msgs:[],convs:[],pf:{},fr:[],bl:[],res:[],q:'',live:false};
+const DEF={theme:'system',accent:'#7c5cff',fs:100,lt:false,spacing:'cozy',bg:'default',rm:false,hc:false,sr:false,enter:true,ts:true,edited:true,lp:true,clock:'auto',date:'auto',n:{on:false,dm:true,sound:true,preview:true,badge:true}};
+const mg=(d,o)=>{const r={...d};for(const k in d)if(o&&k in o)r[k]=d[k]&&typeof d[k]==='object'?mg(d[k],o[k]||{}):(typeof o[k]===typeof d[k]?o[k]:d[k]);return r};
+let ST;try{ST=mg(DEF,JSON.parse(localStorage.getItem('cb-settings')||'{}'))}catch(e){ST=mg(DEF,{})}
+let syncT;
+function apply(){const h=document.documentElement,th=ST.theme==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):ST.theme;h.dataset.theme=th;h.style.setProperty('--ac',ST.accent);h.style.setProperty('--fs',(ST.fs/100)*(ST.lt?1.15:1));h.className=['sp-'+ST.spacing,'bg-'+ST.bg,ST.rm?'rm':'',ST.hc?'hc':''].filter(Boolean).join(' ');const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=th==='light'?'#f6f7ff':'#0f1020'}
+function saveST(){try{localStorage.setItem('cb-settings',JSON.stringify(ST))}catch(e){}apply();clearTimeout(syncT);syncT=setTimeout(async()=>{if(!S.user)return;const{error}=await sb.auth.updateUser({data:{settings:ST}});if(error)console.error(error)},1000)}
+apply();matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(ST.theme==='system')apply()});
+let tt;const toast=(m)=>{const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,4000)};
+const fail=(e,m)=>{console.error(e);toast(m||(e&&e.message)||'Something went wrong. Try again.')};
+const av=u=>{const n=(u&&u.username)||'?',h=[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%360;return `<div class="av" style="background:hsl(${h} 55% 40%)">${esc((u&&(u.display_name||n)||'?')[0].toUpperCase())}</div>`};
+const P=id=>S.pf[id]||{username:'user',display_name:'User'};
+const tm=d=>{d=new Date(d);const h12=ST.clock==='12'?true:ST.clock==='24'?false:undefined,loc=ST.date==='dmy'?'en-GB':ST.date==='mdy'?'en-US':[];return d.toDateString()===new Date().toDateString()?d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit',hour12:h12}):d.toLocaleDateString(loc,{month:'short',day:'numeric'})};
+async function prof(ids){ids=[...new Set(ids)].filter(i=>i&&!S.pf[i]);if(!ids.length)return;const{data}=await sb.from('profiles').select('id,username,display_name,custom_status,status,bio').in('id',ids);(data||[]).forEach(p=>S.pf[p.id]=p)}
+
+/* ---------- auth ---------- */
+sb.auth.onAuthStateChange((ev,ses)=>{
+  if(ses)S.user=ses.user;if(ev==='PASSWORD_RECOVERY'){S.mode='newpw';return render()}
+  if(ses&&(!S.me||S.me.id!==ses.user.id))setTimeout(()=>enter(ses.user),0);
+  else if(!ses){S.me=null;S.live=false;render()}});
+function authView(){const m=S.mode,f=(id,l,t='text',x='')=>`<label for="${id}">${l}</label><input id="${id}" type="${t}" ${x}>`;
+ return `<div class="auth"><h1>💬 Chatterbox</h1><p class="m">${{login:'Log in to your account',signup:'Create your account',reset:'Reset your password',newpw:'Choose a new password'}[m]}</p>${S.note?`<p role="status" style="color:var(--ok)">${esc(S.note)}</p>`:''}
+ <form id="af">${m==='signup'?f('un','Username (3–20 letters, numbers, _)','text','autocapitalize="none" maxlength="20"')+f('dn','Display name','text','maxlength="32"'):''}
+ ${m!=='newpw'?f('em','Email','email','autocomplete="email"'):''}${m!=='reset'?f('pw',m==='newpw'?'New password':'Password','password','minlength="8" autocomplete="'+(m==='login'?'current':'new')+'-password"'):''}
+ <div id="ae" role="alert" style="color:var(--bad);font-size:14px;margin:0 0 10px;min-height:20px"></div><button id="ab" style="width:100%">${{login:'Log in',signup:'Sign up',reset:'Send reset email',newpw:'Save password'}[m]}</button></form>
+ <p style="text-align:center">${m==='login'?'<span class="act" data-a="mode" data-id="signup">Create account</span> · <span class="act" data-a="mode" data-id="reset">Forgot password?</span>':'<span class="act" data-a="mode" data-id="login">Back to log in</span>'}</p></div>`}
+document.addEventListener('submit',async e=>{e.preventDefault();const id=e.target.id,v=i=>($('#'+i)||{}).value||'';
+ if(id==='af'){const b=$('#ab');if(b.disabled)return;b.disabled=true;S.note='';{const a=$('#ae');if(a)a.textContent=''}try{const m=S.mode,em=v('em').trim(),pw=v('pw');
+  if(m==='login'){const{error}=await sb.auth.signInWithPassword({email:em,password:pw});if(error)throw error}
+  else if(m==='signup'){const un=v('un').trim().toLowerCase();if(!/^[a-z0-9_]{3,20}$/.test(un))throw Error('Username must be 3–20 letters, numbers or underscores.');
+   const{data,error}=await sb.auth.signUp({email:em,password:pw,options:{data:{username:un,display_name:v('dn').trim()||un},emailRedirectTo:location.href.split('#')[0]}});if(error)throw error;
+   if(data.user&&Array.isArray(data.user.identities)&&!data.user.identities.length)throw Error('already registered');
+   if(!data.session){S.note='Account created. Check your email to confirm it, then log in.';S.mode='login';render()}}
+  else if(m==='reset'){const{error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.href.split('#')[0]});if(error)throw error;toast('If that email exists, a reset link is on its way.');S.mode='login';render()}
+  else{const{error}=await sb.auth.updateUser({password:pw});if(error)throw error;toast('Password updated.');S.mode='login';if(S.me)render()}
+ }catch(err){console.error(err);const t=authMsg(err),a=$('#ae');if(a)a.textContent=t;else toast(t)}finally{if($('#ab'))$('#ab').disabled=false}}
+ else if(id==='sf'){S.q=v('sq').trim();if(S.q.length<2)return;const{data,error}=await sb.from('profiles').select('id,username,display_name').or(`username.ilike.${S.q.replace(/[^a-z0-9_@]/gi,'')}%,user_code.eq.${S.q.toUpperCase().replace(/[^A-Z0-9]/g,'')}`).neq('id',S.me.id).limit(10);if(error)return fail(error);S.res=data||[];(data||[]).forEach(p=>S.pf[p.id]=p);paintFr()}
+ else if(id==='pf'){const{error}=await sb.from('profiles').update({display_name:v('pd').trim()||S.me.username,bio:v('pb').trim().slice(0,190),custom_status:v('ps').trim().slice(0,60),status:v('pst')}).eq('id',S.me.id);if(error)return fail(error);Object.assign(S.me,{display_name:v('pd').trim()||S.me.username,bio:v('pb').trim(),custom_status:v('ps').trim(),status:v('pst')});S.pf[S.me.id]=S.me;toast('Profile saved.')}
+ else if(id==='mf'){const i=$('#mi'),t=i.value.trim();if(!t||!S.cv)return;i.value='';const{error}=await sb.from('dm_messages').insert({conversation_id:S.cv.id,sender_id:S.me.id,body:t.slice(0,2000)});if(error){i.value=t;fail(error)}}
+});
+
+/* ---------- data ---------- */
+async function enter(user){S.user=user;{const us=user.user_metadata&&user.user_metadata.settings;if(us&&typeof us==='object'){ST=mg(DEF,us);try{localStorage.setItem('cb-settings',JSON.stringify(ST))}catch(e){}apply()}}
+ const{data,error}=await sb.from('profiles').select('*').eq('id',user.id).single();if(error||!data)return fail(error,'Couldn’t load your profile. Did you run the SQL schema?');
+ S.me=data;S.pf[data.id]=data;render();await Promise.all([loadFr(),loadConvs()]);
+ if(!S.live){S.live=true;sb.channel('cb').on('postgres_changes',{event:'*',schema:'public',table:'friendships'},()=>loadFr()).on('postgres_changes',{event:'*',schema:'public',table:'dm_messages'},onMsg).subscribe()}}
+async function loadFr(){const[a,b]=await Promise.all([sb.from('friendships').select('*'),sb.from('blocks').select('*')]);if(a.error)return fail(a.error);
+ S.fr=a.data||[];S.bl=b.data||[];await prof([...S.fr.flatMap(r=>[r.requester,r.addressee]),...S.bl.map(x=>x.blocked)]);paintFr();paintNav();paintSet()}
+async function loadConvs(){const{data:mm,error}=await sb.from('conversation_members').select('conversation_id,user_id,last_read_at');if(error)return fail(error);
+ const ids=[...new Set((mm||[]).map(x=>x.conversation_id))];if(!ids.length){S.convs=[];return paintList()}
+ const[c,m]=await Promise.all([sb.from('conversations').select('id,kind,name,last_message_at').in('id',ids),sb.from('dm_messages').select('conversation_id,sender_id,body,created_at').in('conversation_id',ids).order('created_at',{ascending:false}).limit(300)]);
+ await prof(mm.filter(x=>x.user_id!==S.me.id).map(x=>x.user_id));
+ S.convs=(c.data||[]).map(v=>{const mine=mm.find(x=>x.conversation_id===v.id&&x.user_id===S.me.id),p=mm.find(x=>x.conversation_id===v.id&&x.user_id!==S.me.id),l=(m.data||[]).find(x=>x.conversation_id===v.id);
+  return{...v,peer:p&&p.user_id,last:l,un:!!(l&&l.sender_id!==S.me.id&&new Date(l.created_at)>new Date(mine.last_read_at)&&!(S.cv&&S.cv.id===v.id))}}).sort((a,b)=>new Date(b.last_message_at)-new Date(a.last_message_at));paintList();paintNav()}
+let lt;const onMsg=p=>{notifyMsg(p);const r=p.new&&p.new.id?p.new:p.old;
+ if(p.eventType==='DELETE')S.msgs=S.msgs.filter(x=>x.id!==r.id);
+ else if(S.cv&&r.conversation_id===S.cv.id){if(p.eventType==='INSERT'&&!S.msgs.some(x=>x.id===r.id))S.msgs.push(r);else if(p.eventType==='UPDATE')S.msgs=S.msgs.map(x=>x.id===r.id?r:x);markRead()}
+ paintMsgs();clearTimeout(lt);lt=setTimeout(loadConvs,300)};
+async function openConv(id){S.cv=S.convs.find(c=>c.id===id)||{id,peer:null};S.tab='chats';const{data,error}=await sb.from('dm_messages').select('*').eq('conversation_id',id).order('created_at',{ascending:false}).limit(100);if(error)return fail(error);
+ S.msgs=(data||[]).reverse();if(S.cv.peer)await prof([S.cv.peer]);render();markRead()}
+async function markRead(){if(!S.cv||!S.msgs.length)return;const t=S.msgs[S.msgs.length-1].created_at;await sb.from('conversation_members').update({last_read_at:t}).eq('conversation_id',S.cv.id).eq('user_id',S.me.id);const c=S.convs.find(x=>x.id===S.cv.id);if(c){c.un=false;paintList();paintNav()}}
+
+/* ---------- actions ---------- */
+document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,id=t.dataset.id;t.disabled=true;
+ try{if(a==='mode'){S.mode=id;S.note='';render()}
+ else if(a==='tab'){S.tab=id;if(id==='chats')S.cv=null;render()}
+ else if(a==='back'){S.cv=null;render()}
+ else if(a==='out'){await sb.auth.signOut()}
+ else if(a==='open')await openConv(id);
+ else if(a==='dm'){const{data,error}=await sb.rpc('start_dm',{other:id});if(error)throw error;await loadConvs();await openConv(data)}
+ else if(a==='add'){const{error}=await sb.from('friendships').insert({requester:S.me.id,addressee:id});if(error)throw error.code==='23505'?Error('A request already exists.'):error;S.res=[];toast('Friend request sent.');await loadFr()}
+ else if(a==='acc'){const{error}=await sb.from('friendships').update({status:'accepted'}).eq('id',id);if(error)throw error;await loadFr()}
+ else if(a==='del'){if(t.dataset.c&&!confirm(t.dataset.c))return;const{error}=await sb.from('friendships').delete().eq('id',id);if(error)throw error;await loadFr()}
+ else if(a==='blk'){if(!confirm('Block this person? This also removes them as a friend.'))return;const{error}=await sb.from('blocks').insert({blocker:S.me.id,blocked:id});if(error)throw error;await sb.from('friendships').delete().or(`and(requester.eq.${S.me.id},addressee.eq.${id}),and(requester.eq.${id},addressee.eq.${S.me.id})`);await loadFr()}
+ else if(a==='unb'){const{error}=await sb.from('blocks').delete().eq('blocker',S.me.id).eq('blocked',id);if(error)throw error;await loadFr()}
+ else if(a==='edit'){const m=S.msgs.find(x=>x.id===id),v=prompt('Edit message',m.body);if(v&&v.trim()&&v.trim()!==m.body){const{error}=await sb.from('dm_messages').update({body:v.trim().slice(0,2000)}).eq('id',id);if(error)throw error}}
+ else if(a==='rm'){if(!confirm('Delete this message? This can’t be undone.'))return;const{error}=await sb.from('dm_messages').delete().eq('id',id);if(error)throw error}
+ }catch(err){fail(err)}finally{t.disabled=false}});
+
+/* ---------- settings ---------- */
+const SECS=[['account','👤','Account'],['notifications','🔔','Notifications'],['appearance','🎨','Appearance'],['chat','💬','Chat & messages'],['privacy','🔒','Privacy & safety'],['devices','📱','Security & devices'],['language','🌐','Language & region'],['access','♿','Accessibility'],['storage','📦','Storage & data'],['about','ℹ️','About']];
+const gp=p=>p.split('.').reduce((o,k)=>o[k],ST),sp=(p,v)=>{const k=p.split('.'),l=k.pop();k.reduce((o,x)=>o[x],ST)[l]=v};
+const srow=(t,d,c)=>`<div class="srow"><div class="g1"><b>${t}</b>${d?`<br><small>${d}</small>`:''}</div>${c}</div>`;
+const tg=(p,t,d)=>srow(t,d,`<label class="sw"><input type="checkbox" data-st="${p}" ${gp(p)?'checked':''} aria-label="${esc(t)}"><i></i></label>`);
+const sl=(p,t,o,d)=>srow(t,d,`<select data-st="${p}" aria-label="${esc(t)}" style="width:auto;max-width:55%;margin:0">${o.map(([v,l])=>`<option value="${v}" ${String(gp(p))===String(v)?'selected':''}>${l}</option>`).join('')}</select>`);
+const cdx=(t,b,x='')=>`<div class="card" ${x}>${t?`<h3>${t}</h3>`:''}${b}</div>`;
+const inp=(id,l,v='',x='')=>`<label for="${id}">${l}</label><input id="${id}" value="${esc(v)}" ${x}>`;
+const frm=(id,b,btn)=>`<form id="${id}" class="sf">${b}<div class="m" id="r-${id}" role="status" style="min-height:18px;font-size:14px"></div><button style="width:100%">${btn}</button></form>`;
+const dev=()=>{const u=navigator.userAgent,os=/iPhone|iPad/.test(u)?'iPhone/iPad':/Android/.test(u)?'Android':/Mac/.test(u)?'Mac':/Windows/.test(u)?'Windows':/Linux/.test(u)?'Linux':'This device',br=/Edg\//.test(u)?'Edge':/Firefox/.test(u)?'Firefox':/Chrome|CriOS/.test(u)?'Chrome':/Safari/.test(u)?'Safari':'Browser';return os+' · '+br};
+const fdt=d=>d?new Date(d).toLocaleString():'Unknown';
+const setR=(id,m,ok)=>{const e=document.getElementById(id);if(e){e.textContent=m;e.style.color=ok?'var(--ok)':'var(--bad)'}};
+const delCard=()=>cdx('Delete account',`<p class="m">Permanently deletes your account and sign-in. This can’t be undone.</p><label for="a-del">Type your username <b>${esc(S.me.username)}</b> to continue</label><input id="a-del" autocomplete="off" autocapitalize="none" value="${esc(S.delTxt||'')}"><div class="m" id="r-del" role="alert" style="min-height:18px;font-size:14px"></div><button class="d" id="b-del" data-sact="del" style="width:100%" ${S.delTxt===S.me.username?'':'disabled'}>${S.delArm?'Tap again to permanently delete':'Delete my account'}</button>`,'style="border-color:var(--bad)"');
+const R={
+account:()=>{const u=S.user||{},ids=(u.identities||[]).map(i=>i.provider);return cdx('Profile',frm('s-dn',inp('a-dn','Display name',S.me.display_name,'maxlength="32"'),'Save display name')+frm('s-un',inp('a-un','Username (3–20 letters, numbers, _)',S.me.username,'maxlength="20" autocapitalize="none"'),'Change username'))
+ +cdx('Account status',srow('Email',esc(u.email||''),`<small>${u.email_confirmed_at?'✅ Confirmed':'⏳ Not confirmed'}</small>`)+srow('Member since','',`<small>${esc(fdt(u.created_at))}</small>`)+srow('Your ID','Friends can find you with this',`<b>${esc(S.me.user_code)}</b>`))
+ +cdx('Email',frm('s-em',inp('a-em','New email','','type="email" autocomplete="email"'),'Change email'))
+ +cdx('Password',frm('s-pw',inp('a-pw','New password','','type="password" minlength="8" autocomplete="new-password"')+inp('a-pw2','Confirm new password','','type="password" minlength="8" autocomplete="new-password"'),'Change password'))
+ +cdx('Connected accounts',ids.length?ids.map(i=>srow(esc(i[0].toUpperCase()+i.slice(1)),'Sign-in method','<small>Connected</small>')).join(''):'<p class="m">None.</p>')+delCard()},
+notifications:()=>cdx('',tg('n.on','Notifications','Show alerts for new messages while Chatterbox is in the background.')+tg('n.dm','Message notifications','Notify for new direct messages.')+tg('n.sound','Notification sounds','Play a short sound.')+tg('n.preview','Message previews','Show the message text. When off, alerts say “New message”.')+tg('n.badge','Unread badge','Show the unread count in the tab title and app icon.')+`<p class="m" style="font-size:13px">Alerts are silenced while your status is Do Not Disturb. ${'Notification' in window?'Browser permission: '+Notification.permission+'.':'This browser doesn’t support notifications.'}</p><button class="g" data-sact="ntest" style="width:100%">Send test notification</button>`),
+appearance:()=>cdx('',sl('theme','Theme',[['system','System'],['light','Light'],['dark','Dark']])+srow('Accent color','',`<div class="sws">${['#7c5cff','#3b82f6','#10b981','#f59e0b','#ef4444','#ec4899'].map(c=>`<button class="swt ${ST.accent===c?'on':''}" data-sc="${c}" style="background:${c}" aria-label="Accent ${c}"></button>`).join('')}</div>`)+sl('fs','Font size',[[85,'Small'],[100,'Default'],[115,'Large'],[130,'Extra large']])+sl('spacing','Message spacing',[['compact','Compact'],['cozy','Cozy'],['roomy','Roomy']])+sl('bg','Chat background',[['default','Default'],['mid','Subtle'],['tint','Accent tint']])+tg('rm','Reduce animations','Turns off motion effects.')),
+chat:()=>cdx('',tg('enter','Press Enter to send','When off, Enter adds a new line and Ctrl/⌘ + Enter sends.')+tg('ts','Show timestamps')+tg('edited','Show “edited” labels')+tg('lp','Message previews in your chat list')),
+privacy:()=>cdx('Online status',srow('Status','Shown to your friends.',`<select data-ps aria-label="Status" style="width:auto;margin:0">${[['online','Online'],['idle','Idle'],['dnd','Do Not Disturb'],['invisible','Invisible']].map(([v,l])=>`<option value="${v}" ${S.me.status===v?'selected':''}>${l}</option>`).join('')}</select>`))+cdx(`Blocked users (${S.bl.length})`,S.bl.length?S.bl.map(b=>{const p=P(b.blocked);return `<div class="row">${av(p)}<div class="g1"><b>${esc(p.display_name)}</b> <small>@${esc(p.username)}</small></div><button class="g" data-a="unb" data-id="${b.blocked}">Unblock</button></div>`}).join(''):'<p class="m">You haven’t blocked anyone.</p>')+'<p class="m" style="font-size:13px">Controls for who can message you or send friend requests aren’t available yet.</p>',
+devices:()=>cdx('This device',srow(esc(dev()),'Current session','<small>Active now</small>')+srow('Signed in','',`<small>${esc(fdt((S.user||{}).last_sign_in_at))}</small>`))+cdx('Sessions','<p class="m" style="font-size:14px">Other devices can’t be listed one by one, but you can log them all out. Use this if you lost a device or think someone else has access.</p><button class="g" data-sact="others" style="width:100%;margin-bottom:8px">Log out all other devices</button><button class="d" data-sact="global" style="width:100%">Log out everywhere</button><div class="m" id="r-dev" role="status" style="min-height:18px;font-size:14px"></div>')+cdx('Security',srow('Password','Change it under Account.','<button class="g" data-ss="account">Open</button>')+srow('Two-factor authentication','Not available yet.','<small>—</small>')),
+language:()=>cdx('',srow('App language','Only English is available right now.','<small>English</small>')+sl('clock','Clock',[['auto','Automatic'],['12','12-hour'],['24','24-hour']])+sl('date','Date format',[['auto','Automatic'],['mdy','Oct 19 (month first)'],['dmy','19 Oct (day first)']])+`<p class="m" style="font-size:13px">Preview: ${esc(tm(Date.now()))} · ${esc(tm(Date.now()-864e5*3))}</p>`),
+access:()=>cdx('',tg('lt','Larger text','Makes all text 15% bigger.')+tg('hc','High contrast','Stronger borders and brighter secondary text.')+tg('rm','Reduced motion','Turns off motion effects.')+tg('sr','Screen reader announcements','Announces new messages as they arrive.')+'<p class="m" style="font-size:13px">Chatterbox also follows your device’s reduced-motion setting.</p>'),
+storage:()=>cdx('Storage','<div id="r-est" class="m">Calculating…</div><button class="g" data-sact="cache" style="width:100%;margin:10px 0 8px">Clear cached data</button><button class="d" data-sact="reset" style="width:100%">Reset all settings</button>'),
+about:()=>cdx('Chatterbox',srow('Version','','<small>Web app · build 2026-10-19</small>')+srow('Signed in as','',`<small>@${esc(S.me.username)}</small>`))+'<p class="m" style="font-size:13px">Terms of Service, Privacy Policy, Community Guidelines and Help links haven’t been set up yet.</p>'};
+function paintSettings(){$('#main').innerHTML='<div class="split"><section class="cl" id="scl"></section><section class="th" id="sth"></section></div>';paintSet()}
+function paintSet(){if(S.tab!=='settings')return;const l=$('#scl'),t=$('#sth');if(!l||!t)return;const cur=S.set||(innerWidth>=768?'account':null),sc=SECS.find(x=>x[0]===cur),old=$('#sscroll'),y=old?old.scrollTop:0;
+ $('.split').classList.toggle('open',!!cur);
+ l.innerHTML='<h3>Settings</h3>'+SECS.map(([k,i,n])=>`<div class="ci ${cur===k?'on':''}" role="button" tabindex="0" data-ss="${k}"><span style="font-size:20px">${i}</span><b>${n}</b></div>`).join('')+'<p class="m" style="font-size:12px;padding:8px">Saved on this device and to your account.</p>';
+ t.innerHTML=sc?`<div class="hd"><button class="g bk" data-ss="" aria-label="Back to settings">←</button><b>${sc[1]} ${sc[2]}</b></div><div id="sscroll" style="flex:1;overflow:auto"><div class="pg" style="max-width:640px">${R[cur]()}</div></div>`:'';
+ const nw=$('#sscroll');if(nw)nw.scrollTop=y;if(cur==='storage')estimate()}
+async function estimate(){const e=$('#r-est');if(!e)return;try{const s=await navigator.storage.estimate(),f=n=>n>1e6?(n/1e6).toFixed(1)+' MB':Math.round(n/1e3)+' KB';e.textContent='Using '+f(s.usage||0)+' of '+f(s.quota||0)+' on this device.'}catch(x){e.textContent='Storage details aren’t available in this browser.'}}
+function beep(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=880;g.gain.value=.08;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.12)}catch(e){}}
+async function notifyMsg(p){if(p.eventType!=='INSERT'||!p.new||!S.me||p.new.sender_id===S.me.id)return;const r=p.new;
+ if(S.cv&&S.cv.id===r.conversation_id&&!document.hidden&&S.tab==='chats')return;if(!ST.n.on||!ST.n.dm||S.me.status==='dnd')return;
+ if(ST.n.sound)beep();if(!('Notification' in window)||Notification.permission!=='granted')return;await prof([r.sender_id]);
+ try{new Notification(ST.n.preview?P(r.sender_id).display_name:'Chatterbox',{body:ST.n.preview?String(r.body).slice(0,120):'New message',tag:'cb-'+r.conversation_id})}catch(e){}}
+document.addEventListener('click',async e=>{
+ const n=e.target.closest('[data-ss]');if(n){S.set=n.dataset.ss||null;S.delTxt='';S.delArm=false;paintSet();return}
+ const c=e.target.closest('[data-sc]');if(c){ST.accent=c.dataset.sc;saveST();paintSet();return}
+ const b=e.target.closest('[data-sact]');if(!b)return;const a=b.dataset.sact;
+ try{if(a==='ntest'){if(!('Notification' in window))return toast('This browser doesn’t support notifications.');if(Notification.permission!=='granted'){const r=await Notification.requestPermission();if(r!=='granted')return toast('Notifications are blocked. Allow them in your browser settings.')}new Notification('Chatterbox',{body:'Notifications are working.'});if(ST.n.sound)beep()}
+ else if(a==='others'){const{error}=await sb.auth.signOut({scope:'others'});setR('r-dev',error?authMsg(error):'Done. Every other device has been logged out.',!error)}
+ else if(a==='global'){if(!confirm('Log out everywhere, including this device?'))return;await sb.auth.signOut({scope:'global'})}
+ else if(a==='cache'){try{for(const k of await caches.keys())await caches.delete(k)}catch(x){}const me=S.pf[S.me.id];S.pf={};S.pf[S.me.id]=me;toast('Cached data cleared.');estimate()}
+ else if(a==='reset'){ST=mg(DEF,{});saveST();paintSet();toast('Settings reset.')}
+ else if(a==='del'){if(S.delTxt!==S.me.username)return;if(!S.delArm){S.delArm=true;paintSet();return}b.disabled=true;const{error}=await sb.rpc('delete_my_account');if(error){S.delArm=false;paintSet();return setR('r-del',/delete_my_account|PGRST202|schema cache/.test(error.message+(error.code||''))?'Account deletion isn’t set up yet. The app owner needs to add the delete_my_account function in Supabase.':authMsg(error),false)}await sb.auth.signOut()}
+ }catch(err){fail(err,authMsg(err))}});
+document.addEventListener('change',async e=>{const t=e.target;if(!t.dataset)return;
+ if(t.dataset.ps!==undefined){const{error}=await sb.from('profiles').update({status:t.value}).eq('id',S.me.id);if(error){fail(error);return paintSet()}S.me.status=t.value;S.pf[S.me.id]=S.me;toast('Status updated.');return}
+ const p=t.dataset.st;if(!p)return;const cur=gp(p),v=typeof cur==='boolean'?t.checked:typeof cur==='number'?Number(t.value):t.value;
+ if(p==='n.on'&&v){if(!('Notification' in window)){t.checked=false;return toast('This browser doesn’t support notifications.')}if(Notification.permission!=='granted'){const r=await Notification.requestPermission();if(r!=='granted'){t.checked=false;return toast('Notifications are blocked. Allow them in your browser settings.')}}}
+ sp(p,v);saveST();paintSet();paintNav()});
+document.addEventListener('submit',async e=>{const id=e.target.id;if(!id||!id.startsWith('s-'))return;e.preventDefault();const v=i=>($('#'+i)||{}).value||'',r=(m,ok)=>setR('r-'+id,m,ok),btn=e.target.querySelector('button');if(btn.disabled)return;btn.disabled=true;
+ try{if(id==='s-dn'){const dn=v('a-dn').trim();if(!dn)return r('Enter a display name.');const{error}=await sb.from('profiles').update({display_name:dn}).eq('id',S.me.id);if(error)throw error;S.me.display_name=dn;S.pf[S.me.id]=S.me;r('Saved.',1)}
+ else if(id==='s-un'){const un=v('a-un').trim().toLowerCase();if(!/^[a-z0-9_]{3,20}$/.test(un))return r('Username must be 3–20 letters, numbers or underscores.');if(un===S.me.username)return r('That’s already your username.');const{error}=await sb.from('profiles').update({username:un}).eq('id',S.me.id);if(error)throw error.code==='23505'?Error('That username is taken.'):error;S.me.username=un;S.pf[S.me.id]=S.me;r('Username changed.',1)}
+ else if(id==='s-em'){const em=v('a-em').trim();if(!/^\S+@\S+\.\S+$/.test(em))return r('Enter a valid email address.');const{error}=await sb.auth.updateUser({email:em});if(error)throw error;r('Confirmation sent. Open the link in the email to finish changing it.',1)}
+ else if(id==='s-pw'){const a=v('a-pw'),b=v('a-pw2');if(a.length<8)return r('Use at least 8 characters.');if(a!==b)return r('The passwords don’t match.');const{error}=await sb.auth.updateUser({password:a});if(error)throw error;e.target.reset();r('Password updated.',1)}
+ }catch(err){console.error(err);r(authMsg(err),0)}finally{btn.disabled=false}});
+document.addEventListener('input',e=>{if(e.target.id==='a-del'){S.delTxt=e.target.value;S.delArm=false;const b=$('#b-del');if(b){b.disabled=S.delTxt!==S.me.username;b.textContent='Delete my account'}}});
+document.addEventListener('keydown',e=>{if(e.target.id==='mi'&&e.target.tagName==='TEXTAREA'&&e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();e.target.form.requestSubmit()}else if(e.key==='Enter'&&e.target.matches&&e.target.matches('[data-ss][role=button]'))e.target.click()});
+
+/* ---------- views ---------- */
+function render(){const app=$('#app');if(!S.me){app.innerHTML=authView();return}
+ if(S.mode==='newpw'){app.innerHTML=authView();return}
+ app.innerHTML=`<div class="shell"><main id="main"></main><nav class="nav">${[['chats','💬 Chats'],['friends','👥 Friends'],['profile','👤 Profile'],['settings','⚙️ Settings']].map(([k,l])=>`<button data-a="tab" data-id="${k}" class="${S.tab===k?'on':''}">${l} <span id="b-${k}"></span></button>`).join('')}</nav></div>`;
+ const m=$('#main');
+ if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread()}
+ else if(S.tab==='friends'){m.innerHTML='<div class="pg" id="fr"></div>';paintFr()}
+ else if(S.tab==='settings'){paintSettings()}
+ else m.innerHTML=`<div class="pg"><h2>Your profile</h2><p class="m">@${esc(S.me.username)} · ID ${esc(S.me.user_code)}</p><form id="pf"><label for="pd">Display name</label><input id="pd" maxlength="32" value="${esc(S.me.display_name)}"><label for="pb">About me</label><textarea id="pb" maxlength="190" rows="3">${esc(S.me.bio||'')}</textarea><label for="ps">Custom status</label><input id="ps" maxlength="60" value="${esc(S.me.custom_status||'')}"><label for="pst">Status</label><select id="pst">${['online','idle','dnd','invisible'].map(s=>`<option ${S.me.status===s?'selected':''} value="${s}">${{online:'Online',idle:'Idle',dnd:'Do Not Disturb',invisible:'Invisible'}[s]}</option>`).join('')}</select><button style="width:100%">Save profile</button></form><p></p><button class="d" data-a="out" style="width:100%">Log out</button></div>`;
+ paintNav()}
+function paintNav(){const u=S.convs.filter(c=>c.un).length,r=S.fr.filter(x=>x.status==='pending'&&x.addressee===S.me.id).length;document.title=(ST.n.badge&&u?'('+u+') ':'')+'Chatterbox';try{if(navigator.setAppBadge)ST.n.badge&&u?navigator.setAppBadge(u):navigator.clearAppBadge()}catch(e){}const a=$('#b-chats'),b=$('#b-friends');if(a)a.innerHTML=ST.n.badge&&u?'<i class="dot"></i>':'';if(b)b.innerHTML=r?`(${r})`:''}
+function paintList(){const l=$('#cl');if(!l)return;l.innerHTML=`<h3>Messages</h3>`+(S.convs.length?S.convs.map(c=>{const p=P(c.peer);return `<div class="ci ${S.cv&&S.cv.id===c.id?'on':''}" data-a="open" data-id="${c.id}">${av(p)}<div class="g1" style="flex:1;min-width:0"><b>${esc(p.display_name)}</b> ${c.un?'<i class="dot"></i>':''}<div class="m t" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><small>${c.last?(c.last.sender_id===S.me.id?'You: ':'')+(ST.lp?esc(c.last.body):'Message'):'No messages yet'}</small></div></div><small>${c.last?tm(c.last.created_at):''}</small></div>`}).join(''):'<div class="empty">No conversations yet.<br>Add a friend, then tap Message.</div>')}
+function paintThread(){const t=$('#th');if(!t)return;if(!S.cv){t.innerHTML='<div class="empty" style="margin:auto">Select a conversation</div>';return}const p=P(S.cv.peer);
+ t.innerHTML=`<div class="hd"><button class="g bk" data-a="back" aria-label="Back">←</button>${av(p)}<div><b>${esc(p.display_name)}</b><br><small>@${esc(p.username)}</small></div></div><div id="ml" role="log" ${ST.sr?'aria-live="polite"':''}></div><form class="cmp" id="mf">${ST.enter?`<input id="mi" placeholder="Message ${esc(p.display_name)}" maxlength="2000" autocomplete="off" aria-label="Message">`:`<textarea id="mi" rows="2" placeholder="Message ${esc(p.display_name)}" maxlength="2000" aria-label="Message"></textarea>`}<button>Send</button></form>`;paintMsgs(true)}
+function paintMsgs(force){const l=$('#ml');if(!l)return;const end=force||l.scrollHeight-l.scrollTop-l.clientHeight<90;
+ l.innerHTML=S.msgs.length?S.msgs.map(m=>{const me=m.sender_id===S.me.id;return `<div class="msg ${me?'me':''}"><div class="bub">${esc(m.body)}</div><small>${[ST.ts?tm(m.created_at):'',m.edited_at&&ST.edited?'edited':'',...(me?[`<span class="act" data-a="edit" data-id="${m.id}">Edit</span>`,`<span class="act" data-a="rm" data-id="${m.id}">Delete</span>`]:[])].filter(Boolean).join(' · ')}</small></div>`}).join(''):'<div class="empty">No messages yet. Say hi!</div>';if(end)l.scrollTop=l.scrollHeight}
+function paintFr(){const f=$('#fr');if(!f)return;const me=S.me.id,oth=r=>r.requester===me?r.addressee:r.requester,row=(id,acts)=>{const p=P(id);return `<div class="row">${av(p)}<div class="g1"><div class="t"><b>${esc(p.display_name)}</b> <small>@${esc(p.username)}</small></div>${p.custom_status?`<small>${esc(p.custom_status)}</small>`:''}</div>${acts}</div>`};
+ const inc=S.fr.filter(r=>r.status==='pending'&&r.addressee===me),out=S.fr.filter(r=>r.status==='pending'&&r.requester===me),fs=S.fr.filter(r=>r.status==='accepted');
+ f.innerHTML=`<h2>Friends</h2><div class="card"><form id="sf"><label for="sq">Find people by username or ID</label><input id="sq" value="${esc(S.q)}" placeholder="username or CB12345678" autocapitalize="none"><button style="width:100%">Search</button></form>${S.res.map(p=>row(p.id,S.fr.some(r=>oth(r)===p.id)?'<small>Already connected</small>':S.bl.some(b=>b.blocked===p.id)?'':`<button data-a="add" data-id="${p.id}">Add</button>`)).join('')}</div>
+ ${inc.length?`<div class="card"><h3>Requests (${inc.length})</h3>${inc.map(r=>row(r.requester,`<button data-a="acc" data-id="${r.id}">Accept</button><button class="g" data-a="del" data-id="${r.id}">Decline</button>`)).join('')}</div>`:''}
+ ${out.length?`<div class="card"><h3>Sent</h3>${out.map(r=>row(r.addressee,`<button class="g" data-a="del" data-id="${r.id}">Cancel</button>`)).join('')}</div>`:''}
+ <div class="card"><h3>All friends (${fs.length})</h3>${fs.length?fs.map(r=>row(oth(r),`<button data-a="dm" data-id="${oth(r)}">Message</button><button class="g" data-a="blk" data-id="${oth(r)}">Block</button><button class="d" data-a="del" data-id="${r.id}" data-c="Remove this friend?">Remove</button>`)).join(''):'<div class="empty">No friends yet. Search above to add someone.</div>'}</div>
+ ${S.bl.length?`<div class="card"><h3>Blocked</h3>${S.bl.map(b=>row(b.blocked,`<button class="g" data-a="unb" data-id="${b.blocked}">Unblock</button>`)).join('')}</div>`:''}`}
+</script></body></html>
