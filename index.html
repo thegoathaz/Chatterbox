@@ -43,6 +43,28 @@ html.hc{--line:#fff;--mute:#e6e8ff}html.hc[data-theme=light]{--line:#000;--mute:
 .sw input:checked+i{background:var(--ac)}.sw input:checked+i:after{transform:translateX(18px)}.sw input:focus-visible+i{outline:2px solid var(--tx);outline-offset:2px}
 .sws{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.swt{width:30px;height:30px;min-height:30px;padding:0;border-radius:50%;border:2px solid transparent}.swt.on{border-color:var(--tx)}
 .cmp textarea{margin:0;resize:none}.sf label{display:block;margin-top:6px}
+
+.av{overflow:hidden}.pvl{cursor:pointer}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.pban{aspect-ratio:3/1;background:linear-gradient(135deg,var(--pa),color-mix(in srgb,var(--pa) 35%,#000));overflow:hidden;position:relative}
+.pavw{position:relative;width:96px;height:96px;margin:-48px 0 0 16px}
+.pav{width:96px;height:96px;border-radius:50%;border:4px solid var(--card);overflow:hidden;display:grid;place-items:center;font-size:36px;font-weight:700;color:#fff;box-sizing:border-box}
+.sdot{position:absolute;right:4px;bottom:4px;width:22px;height:22px;border-radius:50%;border:4px solid var(--card);box-sizing:border-box}
+.pbody{padding:6px 16px 16px}.pn{margin:6px 0 0;font-size:22px;overflow-wrap:anywhere}.pu{color:var(--mute)}.pcs{margin-top:8px}
+.pbx{margin-top:12px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--pa) 10%,var(--bg))}.pbx b{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}.pbx p{margin:4px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}.pbx a{display:block;margin-top:6px;color:var(--pa);overflow-wrap:anywhere}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;color:var(--mute);font-size:13px}
+#pov{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto}.pvtop{padding:10px 12px;position:sticky;top:0;background:var(--bg);z-index:1}
+.pact{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.pact>*{flex:1 1 120px}
+#ped{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column}
+.edh{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)}
+.edm{flex:1;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:12px}
+.edt{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px}.edt button{flex:none;padding:8px 14px;border-radius:99px;background:var(--card);font-size:14px;font-weight:600}.edt button.on{background:var(--ac);color:#fff}
+.edb{padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--bg)}.edbb{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.cvp{position:relative;overflow:hidden;touch-action:none;cursor:grab;background:var(--bg);border:2px dashed var(--line);display:grid;place-items:center;color:var(--mute);margin:0 auto;user-select:none;-webkit-user-select:none}
+.cvp.round{width:min(240px,70vw);aspect-ratio:1;border-radius:50%}.cvp.wide{width:100%;aspect-ratio:3/1;border-radius:14px}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--ac);width:0}
+.edr{display:flex;gap:8px;margin-bottom:8px}.edr input{margin:0;min-width:0}.edr button{flex:none;width:44px}
+@media(min-width:900px){.edm{flex-direction:row;align-items:flex-start}.edp{width:380px;position:sticky;top:0;flex:none}.edf{flex:1;min-width:0;max-width:640px}}
 </style></head><body>
 <div id="app"><p class="empty">Loading…</p></div><div id="toast" hidden></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
@@ -68,10 +90,15 @@ function saveST(){try{localStorage.setItem('cb-settings',JSON.stringify(ST))}cat
 apply();matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(ST.theme==='system')apply()});
 let tt;const toast=(m)=>{const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,4000)};
 const fail=(e,m)=>{console.error(e);toast(m||(e&&e.message)||'Something went wrong. Try again.')};
-const av=u=>{const n=(u&&u.username)||'?',h=[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%360;return `<div class="av" style="background:hsl(${h} 55% 40%)">${esc((u&&(u.display_name||n)||'?')[0].toUpperCase())}</div>`};
+const okU=u=>typeof u==='string'&&u.startsWith(SUPABASE_URL+'/storage/v1/object/public/profile-media/');
+const asrc=u=>okU(u)?u:'';
+const cl=(n,a,b,d)=>{n=Number(n);return Number.isFinite(n)?Math.min(b,Math.max(a,n)):d};
+const mimg=(src,c,alt)=>{if(!src)return'';const z=cl(c&&c.z,1,4,1),x=cl(c&&c.x,0,100,50),y=cl(c&&c.y,0,100,50);return `<img src="${esc(src)}" alt="${esc(alt||'')}" draggable="false" decoding="async" style="width:100%;height:100%;display:block;object-fit:cover;object-position:${x}% ${y}%;transform:scale(${z});transform-origin:${x}% ${y}%">`};
+const PC=()=>'id,username,display_name,custom_status,status,bio'+((S.px||[]).length?','+S.px.join(','):'');
+const av=u=>{if(u&&asrc(u.avatar_url))return `<div class="av" style="background:none">${mimg(u.avatar_url,u.avatar_crop,u.display_name)}</div>`;const n=(u&&u.username)||'?',h=[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%360;return `<div class="av" style="background:hsl(${h} 55% 40%)">${esc((u&&(u.display_name||n)||'?')[0].toUpperCase())}</div>`};
 const P=id=>S.pf[id]||{username:'user',display_name:'User'};
 const tm=d=>{d=new Date(d);const h12=ST.clock==='12'?true:ST.clock==='24'?false:undefined,loc=ST.date==='dmy'?'en-GB':ST.date==='mdy'?'en-US':[];return d.toDateString()===new Date().toDateString()?d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit',hour12:h12}):d.toLocaleDateString(loc,{month:'short',day:'numeric'})};
-async function prof(ids){ids=[...new Set(ids)].filter(i=>i&&!S.pf[i]);if(!ids.length)return;const{data}=await sb.from('profiles').select('id,username,display_name,custom_status,status,bio').in('id',ids);(data||[]).forEach(p=>S.pf[p.id]=p)}
+async function prof(ids){ids=[...new Set(ids)].filter(i=>i&&!S.pf[i]);if(!ids.length)return;const{data}=await sb.from('profiles').select(PC()).in('id',ids);(data||[]).forEach(p=>S.pf[p.id]=p)}
 
 /* ---------- auth ---------- */
 sb.auth.onAuthStateChange((ev,ses)=>{
@@ -94,18 +121,18 @@ document.addEventListener('submit',async e=>{e.preventDefault();const id=e.targe
   else if(m==='reset'){const{error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.href.split('#')[0]});if(error)throw error;toast('If that email exists, a reset link is on its way.');S.mode='login';render()}
   else{const{error}=await sb.auth.updateUser({password:pw});if(error)throw error;toast('Password updated.');S.mode='login';if(S.me)render()}
  }catch(err){console.error(err);const t=authMsg(err),a=$('#ae');if(a)a.textContent=t;else toast(t)}finally{if($('#ab'))$('#ab').disabled=false}}
- else if(id==='sf'){S.q=v('sq').trim();if(S.q.length<2)return;const{data,error}=await sb.from('profiles').select('id,username,display_name').or(`username.ilike.${S.q.replace(/[^a-z0-9_@]/gi,'')}%,user_code.eq.${S.q.toUpperCase().replace(/[^A-Z0-9]/g,'')}`).neq('id',S.me.id).limit(10);if(error)return fail(error);S.res=data||[];(data||[]).forEach(p=>S.pf[p.id]=p);paintFr()}
- else if(id==='pf'){const{error}=await sb.from('profiles').update({display_name:v('pd').trim()||S.me.username,bio:v('pb').trim().slice(0,190),custom_status:v('ps').trim().slice(0,60),status:v('pst')}).eq('id',S.me.id);if(error)return fail(error);Object.assign(S.me,{display_name:v('pd').trim()||S.me.username,bio:v('pb').trim(),custom_status:v('ps').trim(),status:v('pst')});S.pf[S.me.id]=S.me;toast('Profile saved.')}
+ else if(id==='sf'){S.q=v('sq').trim();if(S.q.length<2)return;const{data,error}=await sb.from('profiles').select(PC()).or(`username.ilike.${S.q.replace(/[^a-z0-9_@]/gi,'')}%,user_code.eq.${S.q.toUpperCase().replace(/[^A-Z0-9]/g,'')}`).neq('id',S.me.id).limit(10);if(error)return fail(error);S.res=data||[];(data||[]).forEach(p=>S.pf[p.id]=p);paintFr()}
+ else if(id==='pf'){const st=v('pst');const{error}=await sb.from('profiles').update({status:st}).eq('id',S.me.id);if(error)return fail(error);S.me.status=st;S.pf[S.me.id]=S.me;toast('Status saved.');render()}
  else if(id==='mf'){const i=$('#mi'),t=i.value.trim();if(!t||!S.cv)return;i.value='';const{error}=await sb.from('dm_messages').insert({conversation_id:S.cv.id,sender_id:S.me.id,body:t.slice(0,2000)});if(error){i.value=t;fail(error)}}
 });
 
 /* ---------- data ---------- */
 async function enter(user){S.user=user;{const us=user.user_metadata&&user.user_metadata.settings;if(us&&typeof us==='object'){ST=mg(DEF,us);try{localStorage.setItem('cb-settings',JSON.stringify(ST))}catch(e){}apply()}}
  const{data,error}=await sb.from('profiles').select('*').eq('id',user.id).single();if(error||!data)return fail(error,'Couldn’t load your profile. Did you run the SQL schema?');
- S.me=data;S.pf[data.id]=data;render();await Promise.all([loadFr(),loadConvs()]);
+ S.px=['avatar_url','banner_url','avatar_crop','banner_crop','pronouns','links','accent','created_at'].filter(c=>c in data);S.pm=S.px.includes('avatar_url');S.me=data;S.pf[data.id]=data;render();await Promise.all([loadFr(),loadConvs()]);
  if(!S.live){S.live=true;sb.channel('cb').on('postgres_changes',{event:'*',schema:'public',table:'friendships'},()=>loadFr()).on('postgres_changes',{event:'*',schema:'public',table:'dm_messages'},onMsg).subscribe()}}
 async function loadFr(){const[a,b]=await Promise.all([sb.from('friendships').select('*'),sb.from('blocks').select('*')]);if(a.error)return fail(a.error);
- S.fr=a.data||[];S.bl=b.data||[];await prof([...S.fr.flatMap(r=>[r.requester,r.addressee]),...S.bl.map(x=>x.blocked)]);paintFr();paintNav();paintSet()}
+ S.fr=a.data||[];S.bl=b.data||[];await prof([...S.fr.flatMap(r=>[r.requester,r.addressee]),...S.bl.map(x=>x.blocked)]);paintFr();paintNav();paintSet();paintPv()}
 async function loadConvs(){const{data:mm,error}=await sb.from('conversation_members').select('conversation_id,user_id,last_read_at');if(error)return fail(error);
  const ids=[...new Set((mm||[]).map(x=>x.conversation_id))];if(!ids.length){S.convs=[];return paintList()}
  const[c,m]=await Promise.all([sb.from('conversations').select('id,kind,name,last_message_at').in('id',ids),sb.from('dm_messages').select('conversation_id,sender_id,body,created_at').in('conversation_id',ids).order('created_at',{ascending:false}).limit(300)]);
@@ -202,6 +229,120 @@ document.addEventListener('submit',async e=>{const id=e.target.id;if(!id||!id.st
 document.addEventListener('input',e=>{if(e.target.id==='a-del'){S.delTxt=e.target.value;S.delArm=false;const b=$('#b-del');if(b){b.disabled=S.delTxt!==S.me.username;b.textContent='Delete my account'}}});
 document.addEventListener('keydown',e=>{if(e.target.id==='mi'&&e.target.tagName==='TEXTAREA'&&e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();e.target.form.requestSubmit()}else if(e.key==='Enter'&&e.target.matches&&e.target.matches('[data-ss][role=button]'))e.target.click()});
 
+/* ---------- profiles ---------- */
+const STC={online:'#3ba55d',idle:'#faa81a',dnd:'#ed4245'};
+const safeLinks=l=>(Array.isArray(l)?l:[]).filter(x=>{if(!x||typeof x.u!=='string'||!/^https?:\/\//i.test(x.u))return false;try{new URL(x.u);return true}catch(e){return false}}).slice(0,5);
+const pmedia=p=>({av:asrc(p.avatar_url)?{src:p.avatar_url,crop:p.avatar_crop}:null,bn:asrc(p.banner_url)?{src:p.banner_url,crop:p.banner_crop}:null});
+function pcard(p,o={}){const acc=/^#[0-9a-f]{6}$/i.test(p.accent||'')?p.accent:'#7c5cff',st=p.status&&p.status!=='invisible'?p.status:'offline',ls=safeLinks(p.links),h=[...(p.username||'?')].reduce((a,c)=>a+c.charCodeAt(0),0)%360,nm=p.display_name||p.username||'?';
+ return `<div class="pcard" style="--pa:${acc}"><div class="pban">${o.bn?mimg(o.bn.src,o.bn.crop):''}</div><div class="pavw"><div class="pav" style="background:hsl(${h} 55% 40%)">${o.av&&o.av.src?mimg(o.av.src,o.av.crop,nm):esc(nm[0].toUpperCase())}</div><i class="sdot" style="background:${STC[st]||'#747f8d'}" title="${st}"></i></div><div class="pbody"><h2 class="pn">${esc(nm)}</h2><div class="pu">@${esc(p.username||'')}${p.pronouns?' · '+esc(p.pronouns):''}</div>${p.custom_status?`<div class="pcs">💬 ${esc(p.custom_status)}</div>`:''}${p.bio?`<div class="pbx"><b>About me</b><p>${esc(p.bio)}</p></div>`:''}${ls.length?`<div class="pbx"><b>Links</b>${ls.map(x=>`<a href="${esc(x.u)}" target="_blank" rel="noopener noreferrer nofollow ugc">🔗 ${esc(x.l||new URL(x.u).hostname)}</a>`).join('')}</div>`:''}<div class="pmeta">${p.created_at?`<span>Joined ${esc(new Date(p.created_at).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}))}</span>`:''}<span>${{dnd:'Do Not Disturb'}[st]||st[0].toUpperCase()+st.slice(1)}</span></div>${o.extra||''}</div></div>`}
+async function openProfile(id){S.pv=id;S.pvMore=false;S.mut=null;paintPv();if(id===S.me.id)return;
+ try{const{data}=await sb.from('profiles').select(PC()).eq('id',id).single();if(data&&S.pv===id){S.pf[id]=data;paintPv()}}catch(e){}
+ try{const{data,error}=await sb.rpc('mutual_friends',{other:id});if(!error&&Array.isArray(data)&&S.pv===id){await prof(data);S.mut={id,ids:data};paintPv()}}catch(e){}}
+function paintPv(){let o=$('#pov');if(!S.pv){if(o)o.remove();document.body.style.overflow='';return}
+ if(!o){o=document.createElement('div');o.id='pov';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label','Profile');document.body.appendChild(o);document.body.style.overflow='hidden'}
+ const id=S.pv,p=P(id),mine=id===S.me.id,fr=S.fr.find(r=>(r.requester===S.me.id&&r.addressee===id)||(r.addressee===S.me.id&&r.requester===id)),bl=S.bl.some(b=>b.blocked===id);let act='',ex='';
+ if(mine)act='<button data-ped>✏️ Edit Profile</button>';
+ else if(bl)act=`<button class="g" disabled>Blocked</button><button data-a="unb" data-id="${id}">Unblock</button>`;
+ else{act=`<button data-a="dm" data-id="${id}">💬 Message</button>`+(!fr?`<button data-a="add" data-id="${id}">➕ Add Friend</button>`:fr.status==='accepted'?'<button class="g" disabled>✓ Friends</button>':fr.requester===S.me.id?'<button class="g" disabled>Request sent</button>':`<button data-a="acc" data-id="${fr.id}">Accept request</button>`)+`<button class="d" data-a="blk" data-id="${id}">🚫 Block</button><button class="g" data-pvmore aria-expanded="${!!S.pvMore}">⋯ More</button>`;
+  if(S.pvMore)ex+=`<div class="pact"><button class="g" data-pvcopy="@${esc(p.username)}">Copy username</button></div>`}
+ if(S.mut&&S.mut.id===id)ex+=`<div class="pbx" style="--pa:#7c5cff"><b>Mutual friends (${S.mut.ids.length})</b>${S.mut.ids.length?S.mut.ids.slice(0,8).map(i=>`<div class="row pvl" data-pv="${i}" role="button" tabindex="0">${av(P(i))}<div class="g1"><b>${esc(P(i).display_name)}</b> <small>@${esc(P(i).username)}</small></div></div>`).join(''):'<p>No mutual friends yet.</p>'}</div>`;
+ o.innerHTML=`<div class="pvtop"><button class="g" data-pvclose>← Back</button></div><div class="pg">${pcard(p,{...pmedia(p),extra:`<div class="pact">${act}</div>${ex}`})}</div>`}
+const normUrl=u=>{u=String(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u)){if(/^[a-z][a-z0-9+.-]*:/i.test(u))return'';u='https://'+u}try{const x=new URL(u);return x.protocol==='http:'||x.protocol==='https:'?x.href:''}catch(e){return''}};
+let E=null;
+const edDef=sec=>{const m=S.me,mk=(u,c)=>({src:asrc(u),crop:{z:1,x:50,y:50,...(c||{})},file:null,mime:'',gif:/\.gif$/i.test(u||''),up:null,removed:false,bu:null});return{d:{display_name:m.display_name||'',username:m.username||'',bio:m.bio||'',custom_status:m.custom_status||'',pronouns:m.pronouns||'',accent:/^#[0-9a-f]{6}$/i.test(m.accent||'')?m.accent:'#7c5cff',links:safeLinks(m.links).map(x=>({l:x.l||'',u:x.u}))},av:mk(m.avatar_url,m.avatar_crop),bn:mk(m.banner_url,m.banner_crop),sec:sec||'avatar',busy:0,prog:{},err:null,dirty:false}};
+const edRevoke=()=>{if(E)['av','bn'].forEach(k=>{if(E[k].bu)URL.revokeObjectURL(E[k].bu)})};
+function edOpen(){S.pv=null;paintPv();E=edDef();const o=document.createElement('div');o.id='ped';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label','Edit profile');document.body.appendChild(o);document.body.style.overflow='hidden';
+ o.innerHTML=`<header class="edh"><button class="g" data-ed="cancel">✕ Cancel</button><b>Edit Profile</b><span style="width:80px"></span></header><div class="edm"><div class="edp"><small class="m">Live preview</small><div id="ed-prev"></div></div><div class="edf"><nav class="edt" id="ed-tabs" role="tablist"></nav><div id="ed-sec"></div></div></div><footer class="edb"><div id="ed-msg" role="alert" style="min-height:20px;font-size:14px;margin-bottom:6px"></div><div class="edbb"><button class="g" data-ed="reset">Reset changes</button><button data-ed="save" id="ed-save">Save Changes</button></div></footer>`;edPaint()}
+function edClose(){edRevoke();E=null;const o=$('#ped');if(o)o.remove();document.body.style.overflow=S.pv?'hidden':''}
+const ED_TABS=[['avatar','Profile Picture'],['banner','Banner'],['info','Profile Information'],['look','Appearance'],['links','Links']];
+function edPaint(){if(!E)return;$('#ed-tabs').innerHTML=ED_TABS.map(([k,n])=>`<button role="tab" aria-selected="${E.sec===k}" class="${E.sec===k?'on':''}" data-ed="tab" data-k="${k}">${n}</button>`).join('');$('#ed-sec').innerHTML=edSec();edPrev();edMsg();const b=$('#ed-save');if(b){b.disabled=!!E.busy;b.textContent=E.busy?'Saving…':'Save Changes'}document.querySelectorAll('#ped [data-ed=reset],#ped [data-ed=cancel]').forEach(x=>x.disabled=!!E.busy)}
+function edDraft(){const d=E.d;return{...S.me,display_name:d.display_name.trim()||S.me.username,username:d.username.trim().toLowerCase(),bio:d.bio.trim(),custom_status:d.custom_status.trim(),pronouns:d.pronouns.trim(),accent:d.accent,links:d.links.map(x=>({l:x.l.trim(),u:normUrl(x.u)})).filter(x=>x.u)}}
+function edPrev(){const e=$('#ed-prev');if(!e||!E)return;const m=k=>!E[k].removed&&E[k].src?{src:E[k].src,crop:E[k].crop}:null;e.innerHTML=pcard(edDraft(),{av:m('av'),bn:m('bn')})}
+function edMsg(){const e=$('#ed-msg');if(!e||!E)return;if(E.busy){const k=Object.keys(E.prog).filter(k=>E.prog[k]!=null&&E.prog[k]<1)[0];e.innerHTML=k?`Uploading ${k==='av'?'profile picture':'banner'}… <span id="ed-pp">${Math.round(E.prog[k]*100)}%</span><div class="bar"><i id="ed-pb" style="width:${E.prog[k]*100}%"></i></div>`:'Saving…';return}
+ e.innerHTML=E.err?`<span style="color:var(--bad)">${esc(E.err.t)}</span> ${E.err.retry?'<button class="g" data-ed="save" style="padding:4px 12px">Retry</button>':''}`:''}
+function edProg(){const p=$('#ed-pp'),b=$('#ed-pb');if(!p||!b){edMsg();return}const k=Object.keys(E.prog).filter(k=>E.prog[k]<1)[0];if(k!=null){p.textContent=Math.round(E.prog[k]*100)+'%';b.style.width=E.prog[k]*100+'%'}}
+function edSec(){const k=E.sec,d=E.d,off='<div class="card"><p class="m">This part needs a one-time database setup that hasn’t been done yet. The app owner needs to run the profile SQL migration in Supabase.</p></div>';
+ if(k==='avatar'||k==='banner'){if(!S.pm)return off;const kk=k==='avatar'?'av':'bn',m=E[kk],has=!m.removed&&m.src;
+  return `<div class="card"><h3>${k==='avatar'?'Profile picture':'Banner'}</h3><div class="cvp ${k==='avatar'?'round':'wide'}" data-k="${kk}" id="cvp-${kk}" aria-label="Drag to reposition the image">${has?mimg(m.src,m.crop):'No image yet'}</div><p class="m" style="text-align:center;font-size:13px">${has?'Drag to reposition. Pinch, scroll or use the slider to zoom.':(k==='avatar'?'PNG, JPG or GIF.':'PNG, JPG, WebP or GIF.')}${has&&m.gif?' Animated GIF: the animation is kept.':''}</p><label for="zm-${kk}">Zoom</label><input type="range" id="zm-${kk}" data-zm="${kk}" min="1" max="4" step="0.01" value="${m.crop.z}" ${has?'':'disabled'}><div class="pact"><button data-ed="pick" data-k="${kk}">${has?'Change image':'Choose image'}</button>${has?`<button class="d" data-ed="rm" data-k="${kk}">Remove</button>`:''}</div><input type="file" id="f-${kk}" data-fk="${kk}" accept="${k==='avatar'?'image/png,image/jpeg,image/gif':'image/png,image/jpeg,image/webp,image/gif'}" hidden><div id="ferr-${kk}" role="alert" style="color:var(--bad);min-height:18px;font-size:14px"></div></div>`}
+ if(k==='info')return `<div class="card"><label for="ed-dn">Display name</label><input id="ed-dn" data-f="display_name" maxlength="32" value="${esc(d.display_name)}"><label for="ed-un">Username</label><input id="ed-un" data-f="username" maxlength="20" autocapitalize="none" value="${esc(d.username)}"><label for="ed-bio">About me</label><textarea id="ed-bio" data-f="bio" maxlength="190" rows="4">${esc(d.bio)}</textarea><label for="ed-cs">Custom status</label><input id="ed-cs" data-f="custom_status" maxlength="60" value="${esc(d.custom_status)}"><label for="ed-pr">Pronouns (optional)</label><input id="ed-pr" data-f="pronouns" maxlength="24" placeholder="e.g. she/her" value="${esc(d.pronouns)}" ${S.pm?'':'disabled'}>${S.pm?'':'<p class="m" style="font-size:13px">Pronouns need the one-time database setup.</p>'}</div>`;
+ if(k==='look')return !S.pm?off:`<div class="card"><h3>Profile theme</h3><p class="m" style="font-size:14px">Used for your banner background (when there’s no banner image), links and About me box.</p><div class="sws" style="justify-content:flex-start;margin:10px 0">${['#7c5cff','#3b82f6','#10b981','#f59e0b','#ef4444','#ec4899','#14b8a6','#64748b'].map(c=>`<button class="swt ${d.accent.toLowerCase()===c?'on':''}" data-ed="acc" data-v="${c}" style="background:${c}" aria-label="Theme ${c}"></button>`).join('')}</div><label for="ed-ac">Custom color</label><input type="color" id="ed-ac" data-f="accent" value="${esc(d.accent)}" style="height:48px;padding:4px"></div>`;
+ if(!S.pm)return off;return `<div class="card"><h3>Links</h3><p class="m" style="font-size:14px">Up to 5 links. Only http and https addresses are allowed.</p>${d.links.map((x,i)=>`<div class="edr"><input data-lk="${i}" data-lf="l" maxlength="30" placeholder="Label (optional)" aria-label="Link label" value="${esc(x.l)}"><input data-lk="${i}" data-lf="u" maxlength="200" placeholder="https://…" aria-label="Link address" value="${esc(x.u)}"><button class="g" data-ed="lrm" data-i="${i}" aria-label="Remove link">✕</button></div>`).join('')}${d.links.length<5?'<button class="g" data-ed="ladd" style="width:100%">+ Add link</button>':''}</div>`}
+function edCrop(kk){const m=E[kk],c=$('#cvp-'+kk);if(c&&m.src)c.innerHTML=mimg(m.src,m.crop);const z=$('#zm-'+kk);if(z)z.value=m.crop.z;E.dirty=true;edPrev()}
+async function procImg(f,kind){const av=kind==='av',lim=av?8e6:10e6,glim=av?4e6:8e6,max=av?1024:1920;
+ if(!f||f.size<12)throw Error('That file is empty.');if(f.size>lim)throw Error('That file is too large. The limit is '+lim/1e6+' MB.');
+ const hx=[...new Uint8Array(await f.slice(0,12).arrayBuffer())].map(x=>x.toString(16).padStart(2,'0')).join('');
+ const png=hx.startsWith('89504e470d0a1a0a'),jpg=hx.startsWith('ffd8ff'),gif=hx.startsWith('474946383961')||hx.startsWith('474946383761'),wp=hx.startsWith('52494646')&&hx.slice(16,24)==='57454250';
+ if(!(png||jpg||gif||(wp&&!av)))throw Error(av?'Unsupported file type. Use PNG, JPG or GIF.':'Unsupported file type. Use PNG, JPG, WebP or GIF.');
+ if(gif&&f.size>glim)throw Error('That GIF is too large to keep animated. The limit is '+glim/1e6+' MB.');
+ const url=URL.createObjectURL(f);let im;try{im=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(Error('That file isn’t a valid image.'));i.src=url})}finally{URL.revokeObjectURL(url)}
+ const w=im.naturalWidth,h=im.naturalHeight;if(!w||!h||w>8192||h>8192)throw Error('That image is too large (max 8192 × 8192 pixels).');
+ if(gif)return{blob:f,mime:'image/gif',gif:true};
+ const k=Math.min(1,max/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k));c.height=Math.max(1,Math.round(h*k));c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+ let out=await new Promise(r=>c.toBlob(r,'image/webp',.85));if(!out||out.type!=='image/webp')out=await new Promise(r=>c.toBlob(r,png?'image/png':'image/jpeg',.88));
+ if(!out)throw Error('Couldn’t process that image.');return{blob:out,mime:out.type,gif:false}}
+async function edFile(kk,file){const er=t=>{const e=$('#ferr-'+kk);if(e)e.textContent=t};er('');if(!file||!E)return;er('Processing…');
+ try{const r=await procImg(file,kk);if(!E)return;const m=E[kk];if(m.bu)URL.revokeObjectURL(m.bu);m.bu=URL.createObjectURL(r.blob);Object.assign(m,{src:m.bu,file:r.blob,mime:r.mime,gif:r.gif,crop:{z:1,x:50,y:50},up:null,removed:false});E.dirty=true;E.err=null;edPaint()}
+ catch(err){er(err.message||'Couldn’t use that file.')}}
+const upErr=m=>Object.assign(Error(m),{up:true});
+function upload(path,blob,mime,onp){return new Promise(async(res,rej)=>{const{data:{session}}=await sb.auth.getSession();if(!session)return rej(upErr('You’re signed out. Log in again, then retry.'));
+ const x=new XMLHttpRequest(),fd=new FormData();fd.append('cacheControl','31536000');fd.append('',new File([blob],'upload',{type:mime}));
+ x.open('POST',`${SUPABASE_URL}/storage/v1/object/profile-media/${path}`);x.setRequestHeader('Authorization','Bearer '+session.access_token);x.setRequestHeader('apikey',SUPABASE_KEY);x.setRequestHeader('x-upsert','true');x.timeout=180000;
+ x.upload.onprogress=e=>{if(e.lengthComputable)onp(e.loaded/e.total)};
+ x.onload=()=>{if(x.status>=200&&x.status<300)return res(`${SUPABASE_URL}/storage/v1/object/public/profile-media/${path}`);let m='';try{m=JSON.parse(x.responseText).message||''}catch(e){}
+  rej(upErr(/bucket not found/i.test(m)?'Picture storage isn’t set up yet. The app owner needs to run the profile SQL migration.':x.status===413?'That file is too large for the server.':/row-level|policy|unauthorized|403/i.test(m+x.status)?'You’re not allowed to upload right now. Log in again and retry.':'Upload failed'+(m?': '+m:'. Check your connection and retry.')))};
+ x.onerror=()=>rej(upErr('Network error during upload. Check your connection and retry.'));x.ontimeout=()=>rej(upErr('The upload timed out. Retry.'));x.send(fd)})}
+const perr=e=>{const m=(e&&e.message)||'',c=e&&e.code;if(e&&e.up)return m;if(c==='23505')return 'That username is taken.';if(c==='PGRST204'||c==='42703'||/schema cache|column/i.test(m))return 'Profile customization isn’t set up in the database yet. The app owner needs to run the profile SQL migration.';if(c==='23514')return 'The database rejected one of the values. Check your links and details.';return authMsg(e)};
+async function edSave(){if(!E||E.busy)return;const d=E.d,bad=(t,sec)=>{E.err={t};if(sec)E.sec=sec;edPaint()};
+ const dn=d.display_name.trim(),un=d.username.trim().toLowerCase(),pr=d.pronouns.trim();
+ if(!dn||dn.length>32)return bad('Display name must be 1–32 characters.','info');
+ if(!/^[a-z0-9_]{3,20}$/.test(un))return bad('Username must be 3–20 letters, numbers or underscores.','info');
+ if(d.bio.length>190||d.custom_status.length>60||pr.length>24)return bad('One of your details is too long.','info');
+ const links=[];for(const x of d.links){if(!x.u.trim()&&!x.l.trim())continue;const u=normUrl(x.u);if(!u)return bad('One of your links isn’t a valid http or https address.','links');links.push({l:x.l.trim().slice(0,30),u})}
+ const L=safeLinks(S.me.links).map(x=>({l:x.l||'',u:x.u})),chg=JSON.stringify(links)!==JSON.stringify(L)||pr!==(S.me.pronouns||'')||d.accent.toLowerCase()!==(S.me.accent||'#7c5cff').toLowerCase()||E.av.file||E.bn.file||E.av.removed||E.bn.removed;
+ if(!S.pm&&chg)return bad('Pictures, banners, pronouns, links and theme need the one-time database setup first.');
+ E.busy=1;E.err=null;E.prog={};edPaint();
+ try{for(const kk of ['av','bn']){const m=E[kk];if(m.file&&!m.up){E.prog[kk]=0;edMsg();m.up=await upload(`${S.me.id}/${kk==='av'?'avatar':'banner'}-${Date.now()}.${m.gif?'gif':m.mime==='image/webp'?'webp':m.mime==='image/png'?'png':'jpg'}`,m.file,m.mime,f=>{E.prog[kk]=f;edProg()});E.prog[kk]=1}}
+  const upd={display_name:dn,username:un,bio:d.bio.trim(),custom_status:d.custom_status.trim()};
+  if(S.pm){const r2=c=>({z:+cl(c.z,1,4,1).toFixed(2),x:+cl(c.x,0,100,50).toFixed(1),y:+cl(c.y,0,100,50).toFixed(1)});Object.assign(upd,{pronouns:pr||null,links,accent:d.accent.toLowerCase()});
+   for(const[kk,f2] of [['av','avatar'],['bn','banner']]){const m=E[kk],u=m.removed?null:(m.up||asrc(S.me[f2+'_url'])||null);upd[f2+'_url']=u;upd[f2+'_crop']=u?r2(m.crop):null}}
+  const{error}=await sb.from('profiles').update(upd).eq('id',S.me.id);if(error)throw error;
+  const old=[S.me.avatar_url,S.me.banner_url].filter(u=>okU(u)&&u.includes('/'+S.me.id+'/'));Object.assign(S.me,upd);S.pf[S.me.id]=S.me;
+  const gone=old.filter(u=>u!==upd.avatar_url&&u!==upd.banner_url).map(u=>u.slice((SUPABASE_URL+'/storage/v1/object/public/profile-media/').length));if(gone.length)sb.storage.from('profile-media').remove(gone).catch(()=>{});
+  edClose();render();toast('Profile saved.')}
+ catch(err){console.error(err);E.busy=0;E.err={t:perr(err),retry:true};edPaint()}}
+const pdist=()=>{const a=[...pts.values()];return a.length===2?Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y):0};
+const pts=new Map();let drag=null;
+document.addEventListener('pointerdown',e=>{const c=e.target.closest&&e.target.closest('.cvp');if(!c||!E)return;const kk=c.dataset.k;if(!E[kk].src||E[kk].removed)return;try{c.setPointerCapture(e.pointerId)}catch(x){}pts.set(e.pointerId,{x:e.clientX,y:e.clientY});drag={k:kk,w:c.clientWidth,h:c.clientHeight,d0:pdist()}});
+document.addEventListener('pointermove',e=>{if(!drag||!pts.has(e.pointerId))return;const o=pts.get(e.pointerId),cr=E[drag.k].crop;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(pts.size===1){cr.x=cl(cr.x-(e.clientX-o.x)/drag.w*100/cr.z,0,100,50);cr.y=cl(cr.y-(e.clientY-o.y)/drag.h*100/cr.z,0,100,50)}else if(pts.size===2){const d=pdist();if(drag.d0)cr.z=cl(cr.z*d/drag.d0,1,4,1);drag.d0=d}edCrop(drag.k)});
+const pend=e=>{pts.delete(e.pointerId);if(!pts.size)drag=null};document.addEventListener('pointerup',pend);document.addEventListener('pointercancel',pend);
+document.addEventListener('wheel',e=>{const c=e.target.closest&&e.target.closest('.cvp');if(!c||!E)return;const m=E[c.dataset.k];if(!m.src||m.removed)return;e.preventDefault();m.crop.z=cl(m.crop.z*(e.deltaY<0?1.06:.94),1,4,1);edCrop(c.dataset.k)},{passive:false});
+document.addEventListener('input',e=>{const t=e.target;if(!E||!t.dataset)return;
+ if(t.dataset.zm){E[t.dataset.zm].crop.z=cl(t.value,1,4,1);edCrop(t.dataset.zm);return}
+ if(t.dataset.f){E.d[t.dataset.f]=t.value;E.dirty=true;E.err=null;edPrev();edMsg()}
+ else if(t.dataset.lk!==undefined){E.d.links[+t.dataset.lk][t.dataset.lf]=t.value;E.dirty=true;edPrev()}});
+document.addEventListener('change',e=>{const t=e.target;if(E&&t.dataset&&t.dataset.fk){const f=t.files&&t.files[0];t.value='';edFile(t.dataset.fk,f)}});
+document.addEventListener('click',e=>{const t=e.target;
+ let x=t.closest('[data-pv]');if(x){openProfile(x.dataset.pv);return}
+ if(t.closest('[data-pvclose]')){S.pv=null;paintPv();return}
+ if(t.closest('[data-pvmore]')){S.pvMore=!S.pvMore;paintPv();return}
+ x=t.closest('[data-pvcopy]');if(x){const v=x.dataset.pvcopy;(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Copied.'),()=>toast(v));return}
+ if(t.closest('#pov [data-a=dm]')){S.pv=null;paintPv();return}
+ if(t.closest('[data-ped]')){edOpen();return}
+ x=t.closest('[data-ed]');if(!x||!E)return;const a=x.dataset.ed,kk=x.dataset.k;
+ if(a==='tab'){E.sec=kk;edPaint()}
+ else if(a==='pick'){const i=$('#f-'+kk);if(i)i.click()}
+ else if(a==='rm'){const m=E[kk];m.removed=true;m.file=null;m.up=null;m.gif=false;m.src='';E.dirty=true;edPaint()}
+ else if(a==='acc'){E.d.accent=x.dataset.v;E.dirty=true;edPaint()}
+ else if(a==='ladd'){E.d.links.push({l:'',u:''});edPaint()}
+ else if(a==='lrm'){E.d.links.splice(+x.dataset.i,1);E.dirty=true;edPaint()}
+ else if(a==='reset'){if(E.busy)return;const sec=E.sec;edRevoke();E=edDef(sec);edPaint()}
+ else if(a==='cancel'){if(E.busy)return;if(E.dirty&&!confirm('Discard your unsaved changes?'))return;edClose()}
+ else if(a==='save')edSave()});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('[data-pv][role=button]')){e.preventDefault();openProfile(e.target.dataset.pv)}
+ else if(e.key==='Escape'){if(E&&!E.busy&&!S.dlg){if(!E.dirty||confirm('Discard your unsaved changes?'))edClose()}else if(!E&&S.pv){S.pv=null;paintPv()}}});
+addEventListener('beforeunload',e=>{if(E&&E.dirty){e.preventDefault();e.returnValue=''}});
+
 /* ---------- views ---------- */
 function render(){const app=$('#app');if(!S.me){app.innerHTML=authView();return}
  if(S.mode==='newpw'){app.innerHTML=authView();return}
@@ -210,15 +351,15 @@ function render(){const app=$('#app');if(!S.me){app.innerHTML=authView();return}
  if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread()}
  else if(S.tab==='friends'){m.innerHTML='<div class="pg" id="fr"></div>';paintFr()}
  else if(S.tab==='settings'){paintSettings()}
- else m.innerHTML=`<div class="pg"><h2>Your profile</h2><p class="m">@${esc(S.me.username)} · ID ${esc(S.me.user_code)}</p><form id="pf"><label for="pd">Display name</label><input id="pd" maxlength="32" value="${esc(S.me.display_name)}"><label for="pb">About me</label><textarea id="pb" maxlength="190" rows="3">${esc(S.me.bio||'')}</textarea><label for="ps">Custom status</label><input id="ps" maxlength="60" value="${esc(S.me.custom_status||'')}"><label for="pst">Status</label><select id="pst">${['online','idle','dnd','invisible'].map(s=>`<option ${S.me.status===s?'selected':''} value="${s}">${{online:'Online',idle:'Idle',dnd:'Do Not Disturb',invisible:'Invisible'}[s]}</option>`).join('')}</select><button style="width:100%">Save profile</button></form><p></p><button class="d" data-a="out" style="width:100%">Log out</button></div>`;
+ else m.innerHTML=`<div class="pg">${pcard(S.me,pmedia(S.me))}<p></p><button style="width:100%" data-ped>✏️ Edit Profile</button><div class="card" style="margin-top:12px"><form id="pf"><label for="pst">Status</label><select id="pst">${['online','idle','dnd','invisible'].map(x=>`<option ${S.me.status===x?'selected':''} value="${x}">${{online:'Online',idle:'Idle',dnd:'Do Not Disturb',invisible:'Invisible'}[x]}</option>`).join('')}</select><button style="width:100%">Save status</button></form></div><p class="m" style="font-size:13px">ID ${esc(S.me.user_code)}</p><button class="d" data-a="out" style="width:100%">Log out</button></div>`;
  paintNav()}
 function paintNav(){const u=S.convs.filter(c=>c.un).length,r=S.fr.filter(x=>x.status==='pending'&&x.addressee===S.me.id).length;document.title=(ST.n.badge&&u?'('+u+') ':'')+'Chatterbox';try{if(navigator.setAppBadge)ST.n.badge&&u?navigator.setAppBadge(u):navigator.clearAppBadge()}catch(e){}const a=$('#b-chats'),b=$('#b-friends');if(a)a.innerHTML=ST.n.badge&&u?'<i class="dot"></i>':'';if(b)b.innerHTML=r?`(${r})`:''}
 function paintList(){const l=$('#cl');if(!l)return;l.innerHTML=`<h3>Messages</h3>`+(S.convs.length?S.convs.map(c=>{const p=P(c.peer);return `<div class="ci ${S.cv&&S.cv.id===c.id?'on':''}" data-a="open" data-id="${c.id}">${av(p)}<div class="g1" style="flex:1;min-width:0"><b>${esc(p.display_name)}</b> ${c.un?'<i class="dot"></i>':''}<div class="m t" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><small>${c.last?(c.last.sender_id===S.me.id?'You: ':'')+(ST.lp?esc(c.last.body):'Message'):'No messages yet'}</small></div></div><small>${c.last?tm(c.last.created_at):''}</small></div>`}).join(''):'<div class="empty">No conversations yet.<br>Add a friend, then tap Message.</div>')}
 function paintThread(){const t=$('#th');if(!t)return;if(!S.cv){t.innerHTML='<div class="empty" style="margin:auto">Select a conversation</div>';return}const p=P(S.cv.peer);
- t.innerHTML=`<div class="hd"><button class="g bk" data-a="back" aria-label="Back">←</button>${av(p)}<div><b>${esc(p.display_name)}</b><br><small>@${esc(p.username)}</small></div></div><div id="ml" role="log" ${ST.sr?'aria-live="polite"':''}></div><form class="cmp" id="mf">${ST.enter?`<input id="mi" placeholder="Message ${esc(p.display_name)}" maxlength="2000" autocomplete="off" aria-label="Message">`:`<textarea id="mi" rows="2" placeholder="Message ${esc(p.display_name)}" maxlength="2000" aria-label="Message"></textarea>`}<button>Send</button></form>`;paintMsgs(true)}
+ t.innerHTML=`<div class="hd"><button class="g bk" data-a="back" aria-label="Back">←</button><span class="pvl" data-pv="${S.cv.peer}" role="button" tabindex="0" aria-label="View profile" style="display:flex;gap:10px;align-items:center">${av(p)}<div><b>${esc(p.display_name)}</b><br><small>@${esc(p.username)}</small></div></span></div><div id="ml" role="log" ${ST.sr?'aria-live="polite"':''}></div><form class="cmp" id="mf">${ST.enter?`<input id="mi" placeholder="Message ${esc(p.display_name)}" maxlength="2000" autocomplete="off" aria-label="Message">`:`<textarea id="mi" rows="2" placeholder="Message ${esc(p.display_name)}" maxlength="2000" aria-label="Message"></textarea>`}<button>Send</button></form>`;paintMsgs(true)}
 function paintMsgs(force){const l=$('#ml');if(!l)return;const end=force||l.scrollHeight-l.scrollTop-l.clientHeight<90;
  l.innerHTML=S.msgs.length?S.msgs.map(m=>{const me=m.sender_id===S.me.id;return `<div class="msg ${me?'me':''}"><div class="bub">${esc(m.body)}</div><small>${[ST.ts?tm(m.created_at):'',m.edited_at&&ST.edited?'edited':'',...(me?[`<span class="act" data-a="edit" data-id="${m.id}">Edit</span>`,`<span class="act" data-a="rm" data-id="${m.id}">Delete</span>`]:[])].filter(Boolean).join(' · ')}</small></div>`}).join(''):'<div class="empty">No messages yet. Say hi!</div>';if(end)l.scrollTop=l.scrollHeight}
-function paintFr(){const f=$('#fr');if(!f)return;const me=S.me.id,oth=r=>r.requester===me?r.addressee:r.requester,row=(id,acts)=>{const p=P(id);return `<div class="row">${av(p)}<div class="g1"><div class="t"><b>${esc(p.display_name)}</b> <small>@${esc(p.username)}</small></div>${p.custom_status?`<small>${esc(p.custom_status)}</small>`:''}</div>${acts}</div>`};
+function paintFr(){const f=$('#fr');if(!f)return;const me=S.me.id,oth=r=>r.requester===me?r.addressee:r.requester,row=(id,acts)=>{const p=P(id);return `<div class="row"><span class="pvl" data-pv="${id}" role="button" tabindex="0" aria-label="View profile">${av(p)}</span><div class="g1 pvl" data-pv="${id}" role="button" tabindex="0"><div class="t"><b>${esc(p.display_name)}</b> <small>@${esc(p.username)}</small></div>${p.custom_status?`<small>${esc(p.custom_status)}</small>`:''}</div>${acts}</div>`};
  const inc=S.fr.filter(r=>r.status==='pending'&&r.addressee===me),out=S.fr.filter(r=>r.status==='pending'&&r.requester===me),fs=S.fr.filter(r=>r.status==='accepted');
  f.innerHTML=`<h2>Friends</h2><div class="card"><form id="sf"><label for="sq">Find people by username or ID</label><input id="sq" value="${esc(S.q)}" placeholder="username or CB12345678" autocapitalize="none"><button style="width:100%">Search</button></form>${S.res.map(p=>row(p.id,S.fr.some(r=>oth(r)===p.id)?'<small>Already connected</small>':S.bl.some(b=>b.blocked===p.id)?'':`<button data-a="add" data-id="${p.id}">Add</button>`)).join('')}</div>
  ${inc.length?`<div class="card"><h3>Requests (${inc.length})</h3>${inc.map(r=>row(r.requester,`<button data-a="acc" data-id="${r.id}">Accept</button><button class="g" data-a="del" data-id="${r.id}">Decline</button>`)).join('')}</div>`:''}
