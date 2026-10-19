@@ -636,13 +636,6 @@ function paintFr(){const f=$('#fr');if(!f)return;const me=S.me.id,oth=r=>r.reque
 .cm{position:absolute;top:calc(14px + env(safe-area-inset-top));left:14px;width:42px;height:42px;min-height:0;padding:0;border-radius:50%;background:#16233f;display:grid;place-items:center}
 #call.min .cm{display:none}#cmx{display:none;cursor:pointer;flex:1;text-align:left;background:none;padding:0;min-height:0}
 .cdlg{position:fixed;inset:0;z-index:99;background:#000a;display:grid;place-items:center;padding:20px}.cbx{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;max-width:360px;width:100%}.cb2{display:flex;gap:8px;justify-content:flex-end}
-#adm{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
-.ah{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,#1d4ed833,transparent)}.ah h2{margin:0;flex:1;font-size:20px}
-.at{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;border-bottom:1px solid var(--line)}.at button{flex:none;background:var(--card);border:1px solid var(--line);border-radius:99px;min-height:38px}.at button.on{background:#1d4ed8;color:#fff;border-color:#3b82f6}
-#ab2{flex:1;overflow:auto;padding:14px;max-width:760px;width:100%;margin:0 auto}
-.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.sg .card b{display:block;font-size:30px;font-family:'Bricolage Grotesque',system-ui}
-.arow{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:var(--card);margin-bottom:6px;cursor:pointer}.arow .av{width:40px;height:40px}.arow .g1{flex:1;min-width:0}
-.arow.static{cursor:default}
 </style>
 <script>
 (()=>{
@@ -667,7 +660,7 @@ hook('render',()=>{if(S.tab==='profile')decor()});
 async function decor(){const pg=document.querySelector('.pg');if(!pg||!S.me)return;await loadB([S.me.id]);injProf();if(pg.querySelector('#ext'))return;
  const[{data:mb},{data:nt}]=await Promise.all([sb.from('user_badges').select('badge_key,hidden,awarded_at,badges(name,icon,description)').eq('user_id',S.me.id),sb.from('notifications').select('id,body,read,created_at').order('created_at',{ascending:false}).limit(6)]);
  if(!document.querySelector('.pg')||pg.querySelector('#ext'))return;
- const x=document.createElement('div');x.id='ext';x.innerHTML=`${ROLE==='admin'?`<button style="width:100%;margin:12px 0 0;display:flex;gap:8px;align-items:center;justify-content:center" data-c="adm">${I('shield',20)}Admin panel</button>`:''}
+ const x=document.createElement('div');x.id='ext';x.innerHTML=`
  <div class="card" style="margin-top:12px"><h3>Voice calls</h3><label for="cp" class="m">Who can call you</label><select id="cp" data-c="cp"><option value="everyone">Everyone</option><option value="friends">Friends only</option><option value="none">No one</option></select><small class="m">Microphone access is requested by your browser when you start or answer a call.</small></div>
  ${(mb||[]).length?`<div class="card"><h3>Your badges</h3>${mb.map(r=>`<label class="srow"><span style="font-size:20px">${esc(r.badges.icon)}</span><span class="g1"><b>${esc(r.badges.name)}</b><br><small class="m">${esc(r.badges.description)}</small></span><span class="sw"><input type="checkbox" data-c="bh" data-k="${esc(r.badge_key)}" ${r.hidden?'':'checked'} aria-label="Show ${esc(r.badges.name)} on profile"><i></i></span></label>`).join('')}</div>`:''}
  <div class="card"><h3>Notifications</h3>${(nt||[]).length?nt.map(n=>`<div class="srow"><span class="g1">${n.read?'':'<i class="dot"></i> '}${esc(n.body)}<br><small class="m">${dt(n.created_at)}</small></span></div>`).join(''):'<p class="m">Nothing new.</p>'}</div>`;
@@ -701,51 +694,24 @@ function ui(){let o=$('#call');if(!o){o=document.createElement('div');o.id='call
  <div class="cacts">${inc?`<button class="cb red" data-c="dec" aria-label="Decline">${I('phone',28)}</button><button class="cb grn" data-c="acc" aria-label="Accept">${I('phone',28)}</button>`:`<button class="cb ${C.muted?'on':''}" data-c="mute" aria-pressed="${!!C.muted}" aria-label="${C.muted?'Unmute microphone':'Mute microphone'}">${I(C.muted?'micoff':'mic',28)}</button><button class="cb red" data-c="end" aria-label="${C.up?'End call':'Cancel call'}">${I('phone',28)}</button>`}</div>`;upd();clearInterval(C.tm);C.tm=setInterval(upd,1000)}
 function upd(){if(!C)return;const s=$('#cst'),t=$('#ct'),s2=$('#cst2');let tx=C.st;if(C.up&&C.t0){const d=Math.floor((Date.now()-C.t0)/1e3),f=`${String(Math.floor(d/60)).padStart(2,'0')}:${String(d%60).padStart(2,'0')}`;if(t)t.textContent=f;tx=C.st+(C.muted?' · Muted':'')+' · '+f}if(s)s.textContent=C.st+(C.muted?' · Muted':'');if(s2)s2.textContent=tx;
  if(C.dir==='in'&&C.pc&&$('#call [data-c=acc]'))ui()}
-/* ---------- admin ---------- */
-const A={tab:'dash',q:'',off:0,u:null};
-const ok=async(f,m)=>{try{await f();toast(m);return true}catch(e){toast(e.message||'Something went wrong.');return false}};
-function openAdm(){if(ROLE!=='admin')return;let o=$('#adm');if(!o){o=document.createElement('div');o.id='adm';o.setAttribute('role','dialog');o.setAttribute('aria-label','Admin panel');document.body.appendChild(o)}
- o.innerHTML=`<div class="ah"><h2>Admin panel</h2><button class="g" data-c="ax">Close</button></div><div class="at" role="tablist">${[['dash','Dashboard'],['users','Users'],['badges','Badges'],['audit','Audit log']].map(([k,l])=>`<button role="tab" data-c="at" data-k="${k}" class="${A.tab===k?'on':''}">${l}</button>`).join('')}</div><div id="ab2"><p class="empty">Loading…</p></div>`;admView()}
-const ab=()=>$('#ab2'),fail2=e=>{const b=ab();if(b)b.innerHTML=`<p class="empty">${esc(e.message||'You don’t have permission to view this.')}</p>`};
-async function admView(){const b=ab();if(!b)return;b.innerHTML='<p class="empty">Loading…</p>';document.querySelectorAll('#adm .at button').forEach(x=>x.classList.toggle('on',x.dataset.k===A.tab));
- try{if(A.tab==='dash'){const s=await R('admin_stats');b.innerHTML=`<div class="sg">${[['Users',s.users],['Badge types',s.badges],['Badges awarded',s.awards],['Awards this week',s.recent]].map(([l,v])=>`<div class="card"><b>${v}</b><span class="m">${l}</span></div>`).join('')}</div>`}
- else if(A.tab==='users'&&A.u)await userView();
- else if(A.tab==='users'){const d=await R('admin_users',{q:A.q,lim:20,off:A.off});b.innerHTML=`<form data-c="us" class="edr"><input id="uq" value="${esc(A.q)}" placeholder="Search username or display name" aria-label="Search users"><button style="width:90px">Search</button></form>${d.length?d.map(u=>`<div class="arow" role="button" tabindex="0" data-c="uo" data-id="${u.id}">${av(u)}<span class="g1"><b>${esc(u.display_name||u.username)}</b><br><small class="m">@${esc(u.username)}${u.created_at?' · joined '+new Date(u.created_at).toLocaleDateString():''}</small></span><small>${u.badges} badge${u.badges==1?'':'s'}</small></div>`).join(''):'<p class="empty">No users found.</p>'}<div class="cb2">${A.off?'<button class="g" data-c="pg" data-d="-20">Previous</button>':''}${d.length==20?'<button class="g" data-c="pg" data-d="20">Next</button>':''}</div>`}
- else if(A.tab==='badges'){const{data}=await sb.from('badges').select('*').order('created_at');const e=A.eb||{};b.innerHTML=`<form data-c="bs" class="card"><h3>${e.key?'Edit':'New'} badge</h3><input id="bk" placeholder="key (a-z, 0-9, _)" value="${esc(e.key||'')}" ${e.key?'readonly':''} aria-label="Key"><input id="bn" placeholder="Name" maxlength="40" value="${esc(e.name||'')}" aria-label="Name"><input id="bi" placeholder="Icon (one emoji)" maxlength="8" value="${esc(e.icon||'')}" aria-label="Icon"><input id="bd" placeholder="Description" maxlength="200" value="${esc(e.description||'')}" aria-label="Description"><input id="bc" type="color" value="${esc(e.color||'#3b82f6')}" aria-label="Color" style="height:44px;padding:4px"><label class="srow"><span class="g1">Enabled</span><span class="sw"><input id="be" type="checkbox" ${e.enabled===false?'':'checked'}><i></i></span></label><button style="width:100%">Save badge</button></form>${(data||[]).map(x=>`<div class="arow static"><span style="font-size:24px">${esc(x.icon)}</span><span class="g1"><b>${esc(x.name)}</b> ${x.enabled?'':'<small class="m">(disabled)</small>'}<br><small class="m">${esc(x.description)}</small></span><button class="g" data-c="be" data-k="${esc(x.key)}">Edit</button><button class="d" data-c="bx" data-k="${esc(x.key)}">Delete</button></div>`).join('')}`;A.bl=data}
- else{const d=await R('admin_audit',{lim:30,off:A.off});b.innerHTML=(d.length?d.map(a=>`<div class="arow static"><span class="g1"><b>${esc(a.action.replace('_',' '))}</b> ${esc(a.badge||'')}<br><small class="m">by @${esc(a.by||'?')}${a.target?' → @'+esc(a.target):''} · ${dt(a.at)}</small></span></div>`).join(''):'<p class="empty">No actions recorded yet.</p>')+`<div class="cb2">${A.off?'<button class="g" data-c="pg" data-d="-30">Previous</button>':''}${d.length==30?'<button class="g" data-c="pg" data-d="30">Next</button>':''}</div>`}}catch(e){fail2(e)}}
-async function userView(){const u=A.u,d=await R('admin_user_detail',{uid:u.id}),{data:bl}=await sb.from('badges').select('key,name,icon').eq('enabled',true).order('name'),have=new Set(d.badges.map(x=>x.key));
- ab().innerHTML=`<button class="g" data-c="ub">← All users</button><div class="arow static" style="margin-top:10px">${av(u)}<span class="g1"><b>${esc(u.display_name||u.username)}</b><br><small class="m">@${esc(u.username)}</small></span></div><h3>Badges</h3>${d.badges.length?d.badges.map(x=>`<div class="arow static"><span style="font-size:22px">${esc(x.icon)}</span><span class="g1"><b>${esc(x.name)}</b><br><small class="m">Awarded ${dt(x.awarded_at)}${x.by?' by @'+esc(x.by):''}</small></span><button class="d" data-c="br" data-k="${esc(x.key)}" data-n="${esc(x.name)}">Remove</button></div>`).join(''):'<p class="empty">No badges yet.</p>'}<div class="edr"><select id="ba" aria-label="Badge to award">${(bl||[]).filter(x=>!have.has(x.key)).map(x=>`<option value="${esc(x.key)}">${esc(x.icon+' '+x.name)}</option>`).join('')}</select><button style="width:90px" data-c="ba">Award</button></div><h3>History</h3>${d.history.length?d.history.map(h=>`<div class="srow"><span class="g1">${esc(h.action.replace('_',' '))} ${esc(h.badge||'')}<br><small class="m">by @${esc(h.by||'?')} · ${dt(h.at)}</small></span></div>`).join(''):'<p class="m">No history.</p>'}`}
 /* ---------- events ---------- */
 document.addEventListener('click',async e=>{const t=e.target.closest('[data-c]');if(!t)return;const c=t.dataset.c,k=t.dataset.k;
  if(c==='call')startCall();else if(c==='acc')accept();else if(c==='dec')fin('',false,'decline');else if(c==='end')fin('',true);
  else if(c==='mute'&&C){C.muted=!C.muted;C.stream.getAudioTracks().forEach(x=>x.enabled=!C.muted);ui()}
  else if(c==='min'){$('#call').classList.add('min')}else if(c==='max'){$('#call').classList.remove('min')}
  else if(c==='bd'){const b=(BC[t.dataset.u]||[]).find(x=>x.badge_key===k);if(b)toast(b.badges.icon+' '+b.badges.name+' — '+b.badges.description)}
- else if(c==='adm')openAdm();else if(c==='ax'){const o=$('#adm');o&&o.remove()}
- else if(c==='at'){A.tab=k;A.off=0;A.u=null;A.eb=null;admView()}
- else if(c==='uo'){const{data}=await sb.from('profiles').select('id,username,display_name,avatar_url,avatar_crop').eq('id',t.dataset.id).single();A.u=data;admView()}
- else if(c==='ub'){A.u=null;admView()}
- else if(c==='pg'){A.off=Math.max(0,A.off+Number(t.dataset.d));admView()}
- else if(c==='ba'){const key=$('#ba').value;if(key&&await ask('Award this badge to @'+A.u.username+'?')&&await ok(()=>R('admin_award',{uid:A.u.id,bkey:key}),'Badge awarded.')){delete BC[A.u.id];userView()}}
- else if(c==='br'){if(await ask('Remove the '+t.dataset.n+' badge from @'+A.u.username+'?')&&await ok(()=>R('admin_remove',{uid:A.u.id,bkey:k}),'Badge removed.')){delete BC[A.u.id];userView()}}
- else if(c==='be'){A.eb=(A.bl||[]).find(x=>x.key===k);admView()}
- else if(c==='bx'){if(await ask('Delete this badge for everyone? It is removed from all users.')&&await ok(()=>R('admin_badge_delete',{k}),'Badge deleted.')){BC={};admView()}}});
-document.addEventListener('submit',async e=>{const f=e.target.closest('form[data-c]');if(!f)return;e.preventDefault();const v=i=>$('#'+i).value.trim();
- if(f.dataset.c==='us'){A.q=v('uq');A.off=0;admView()}
- else if(f.dataset.c==='bs'){if(!/^[a-z0-9_]{2,32}$/.test(v('bk')))return toast('Key must be 2–32 lowercase letters, numbers or underscores.');if(!v('bn')||!v('bi'))return toast('Name and icon are required.');
-  if(await ask('Save this badge?')&&await ok(()=>R('admin_badge_save',{k:v('bk'),n:v('bn'),d:v('bd'),i:v('bi'),c:$('#bc').value,e:$('#be').checked}),'Badge saved.')){A.eb=null;BC={};admView()}}},true);
+});
 document.addEventListener('change',async e=>{const t=e.target,c=t.dataset&&t.dataset.c;
  if(c==='cp'){const{error}=await sb.from('profiles').update({call_pref:t.value}).eq('id',S.me.id);if(error)return toast('Couldn’t save that setting.');S.me.call_pref=t.value;toast('Call setting saved.')}
  else if(c==='bh'){try{await R('set_badge_hidden',{bkey:t.dataset.k,hide:!t.checked});delete BC[S.me.id]}catch(x){toast(x.message)}}});
 /* ---------- realtime ---------- */
 function sub(uid){if(subUid===uid)return;subUid=uid;if(CH)sb.removeChannel(CH);
  if(!au){au=document.createElement('audio');au.setAttribute('playsinline','');au.autoplay=true;document.body.appendChild(au)}
- R('my_role').then(r=>{ROLE=r||'user';if(S.tab==='profile')decor()}).catch(()=>{});
  CH=sb.channel('cb-ext').on('postgres_changes',{event:'INSERT',schema:'public',table:'calls',filter:'callee=eq.'+uid},p=>incoming(p.new))
  .on('postgres_changes',{event:'UPDATE',schema:'public',table:'calls'},p=>onCall(p.new))
  .on('postgres_changes',{event:'INSERT',schema:'public',table:'call_signals'},p=>onSig(p.new))
  .on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+uid},p=>{toast(p.new.body);delete BC[uid];if(document.hidden&&window.Notification&&Notification.permission==='granted')try{new Notification('Chatter Box',{body:p.new.body})}catch(x){}}).subscribe()}
-sb.auth.onAuthStateChange((ev,s)=>{if(s&&s.user)sub(s.user.id);else{subUid=null;ROLE='user';BC={};if(C)fin('',false);if(CH){sb.removeChannel(CH);CH=null}const o=$('#adm');o&&o.remove()}});
+sb.auth.onAuthStateChange((ev,s)=>{if(s&&s.user)sub(s.user.id);else{subUid=null;ROLE='user';BC={};if(C)fin('',false);if(CH){sb.removeChannel(CH);CH=null}}});
 sb.auth.getSession().then(({data})=>data.session&&sub(data.session.user.id));
 addEventListener('beforeunload',()=>{if(C&&C.up)R('call_respond',{cid:C.id,act:'end'}).catch(()=>{})});
 })();
