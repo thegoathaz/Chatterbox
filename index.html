@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Chatterbox</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet"><meta name="theme-color" content="#0c0d17">
+<title>Chatterbox</title><meta name="theme-color" content="#0f1020">
 <style>
 :root{--bg:#0f1020;--card:#1a1b30;--line:#2a2c47;--tx:#eef0ff;--mute:#9aa0c8;--ac:#7c5cff;--bad:#fb7185;--ok:#34d399;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}#app{height:100%}
@@ -72,85 +72,9 @@ html.hc{--line:#fff;--mute:#e6e8ff}html.hc[data-theme=light]{--line:#000;--mute:
 .sn{font-size:12px;color:var(--mute);margin-top:2px;cursor:pointer}
 #ml{padding:8px 14px}.msg{flex-direction:row;align-items:flex-start;gap:10px;margin:0;padding:1px 0}.msg.f{margin-top:14px}.mav{width:40px;flex:none}.mc{min-width:0;flex:1}.mn b{font-size:16px}.mn small{margin-left:4px}.bub{background:none!important;padding:0;border-radius:0;max-width:100%}.atc{max-width:100%}
 #inf{position:fixed;inset:0;z-index:45;background:var(--bg);overflow:auto;padding-top:env(safe-area-inset-top)}.ihd{padding:10px 12px}.ipf{display:flex;gap:12px;align-items:center;padding:4px 16px 12px}.ipf .av{width:64px;height:64px;font-size:28px}.itb{display:flex;gap:4px;overflow:auto;padding:0 12px;border-bottom:1px solid var(--line)}.itb button{background:none;border-radius:0;color:var(--mute);flex:none}.itb button.on{color:var(--ac);box-shadow:inset 0 -2px var(--ac)}.ibd{padding:14px 16px;max-width:640px;margin:0 auto}.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.mg img,.mg video{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
-.bdg{font-size:11px;background:var(--ac);color:#fff;border-radius:99px;padding:1px 7px;margin-left:4px}
-/* ---------- UI refresh ---------- */
-:root{--bg:#0c0d17;--card:#171826;--line:#25273b;--mute:#8b90b4;--r:20px;--g2:color-mix(in srgb,var(--ac) 55%,#ff7ab8)}
-html[data-theme=light]{--bg:#f3f4fb;--card:#fff;--line:#e2e4f1;--mute:#6a6f96}
-*{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
-body{font-family:Figtree,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(900px 520px at 85% -10%,color-mix(in srgb,var(--ac) 14%,transparent),transparent) fixed,var(--bg)}
-h1,h2,h3,.mh,.pn{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif;letter-spacing:-.02em}
-svg.ic{display:block;flex:none}
-button{font-weight:600;transition:transform .12s,background .15s,color .15s}button:active{transform:scale(.97)}
-button:focus-visible,[role=button]:focus-visible,.ci:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
-input,textarea,select{border-radius:14px;background:color-mix(in srgb,var(--card) 70%,var(--bg));transition:border-color .15s,box-shadow .15s}
-input:focus,textarea:focus,select:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)}
-.card,.pcard{border-radius:var(--r)}
-.empty{padding:48px 20px;font-size:15px}
-#toast{background:var(--card);border:1px solid var(--line);box-shadow:0 12px 32px #0006;border-radius:16px;bottom:96px;font-weight:600}
-.mbx{border-radius:26px 26px 0 0}.mbk{backdrop-filter:blur(3px)}
-/* auth */
-.auth{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:28px 24px;box-shadow:0 24px 60px -24px #000a}
-.auth h1{font-size:30px;display:flex;align-items:center;gap:12px;margin-bottom:4px}
-.logo,.av.gr{background:linear-gradient(140deg,var(--ac),var(--g2));color:#fff}
-.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center}
-.auth label{font-size:13px;font-weight:600;color:var(--mute)}
-/* nav */
-.nav{gap:4px;padding:6px 10px calc(6px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-.nav button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:54px;padding:6px 0;border-radius:18px;font-size:12px;box-shadow:none!important}
-.nav button.on{color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
-.nb:empty{display:none}.nb{position:absolute;top:5px;left:calc(50% + 6px);font-size:11px;line-height:1;color:#fff;background:var(--bad);border-radius:99px;padding:3px 6px}
-.nb:has(.dot){background:none;padding:0;top:8px;left:calc(50% + 9px)}.nb .dot{background:var(--bad);box-shadow:0 0 0 2px var(--bg)}
-/* rail */
-.rail{width:76px;background:color-mix(in srgb,var(--bg) 70%,#000)}
-.rb{width:50px;height:50px;display:grid;place-items:center;border-radius:18px;color:var(--mute)}
-.rb.on{background:var(--ac);color:#fff}
-/* chat list */
-.cl{padding:14px 12px}
-.mh{font-size:34px;font-weight:800;margin:6px 6px 14px}
-.tb{flex-wrap:wrap;margin:0 4px 12px}
-.tb button{display:flex;align-items:center;gap:7px;min-height:42px;padding:0 15px;border-radius:99px;font-size:14px}
-.tb button.on{outline:0;background:color-mix(in srgb,var(--ac) 18%,var(--card));color:var(--ac)}
-.ci{gap:14px;padding:11px 12px;margin:2px 0;border-radius:18px;transition:background .15s}
-.ci:hover{background:color-mix(in srgb,var(--card) 70%,transparent)}
-.ci.on{background:var(--card);box-shadow:inset 3px 0 var(--ac)}
-.ci .av{width:52px;height:52px;font-size:20px}
-.ci b{font-size:16px;font-weight:700}.ci small{font-size:14px}
-.ci:not([data-id]) b{font-weight:600}
-.ci>small{align-self:flex-start;margin-top:4px;font-size:12px}
-.ci.un .m small{color:var(--tx);font-weight:600}.ci.un>small{color:var(--ac);font-weight:700}
-.dot{width:10px;height:10px;margin-left:6px;box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)}
-.av.q{background:color-mix(in srgb,var(--ac) 14%,var(--card));color:var(--ac)}
-/* thread */
-.hd{gap:6px;padding:10px 12px;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.hd .bk{width:40px;min-height:40px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;background:none}
-.hd .av{width:42px;height:42px}.hd b{font-size:16px}
-#ml{padding:10px 14px 16px}
-.msg{padding:1px 0}.msg.f{margin-top:12px}
-.mav,.mav .av{width:36px}.mav .av{height:36px;font-size:15px}
-.mc{flex:none;max-width:80%}
-.mn{margin:0 4px 3px}.mn b{font-size:13px;font-weight:700}.mn small{font-size:11px}
-.bub{background:var(--card)!important;padding:9px 14px;border-radius:20px 20px 20px 6px;width:fit-content;max-width:100%;line-height:1.38}
-.msg.me{justify-content:flex-end}.msg.me .mav,.msg.me .mn b{display:none}
-.msg.me .mc{display:flex;flex-direction:column;align-items:flex-end}
-.me .bub{background:var(--ac)!important;color:#fff;border-radius:20px 20px 6px 20px}.me .bub .rq{border-color:#fff9}
-.atc img,.atc video,.fl{border-radius:16px}
-.rpb,.pnb{background:color-mix(in srgb,var(--card) 80%,transparent)}
-/* composer */
-.cmp{padding:8px 12px calc(10px + env(safe-area-inset-bottom));border-top:0}
-.pill{padding:4px 5px;border-radius:99px;background:var(--card)}
-.pill:focus-within{border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 20%,transparent)}
-.pill input,.pill textarea{padding:11px 8px;box-shadow:none!important}
-.ib{display:grid;place-items:center;width:42px;min-height:42px}.ib:hover{color:var(--tx)}.ib.snd{background:var(--ac);color:#fff}
-
-/* icon-only nav */
-.nav{padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
-.nav button{min-height:56px;border-radius:0;background:none!important;color:color-mix(in srgb,var(--tx) 45%,var(--bg))}
-.nav button.on{color:var(--tx)}.nav button.on svg{stroke-width:2.2}
-.nav-av{position:relative;display:block;width:34px;height:34px;border-radius:50%;opacity:.75}
-.nav button.on .nav-av{opacity:1;box-shadow:0 0 0 2px var(--ac)}
-.nav-av .av{width:34px;height:34px;font-size:15px}
-.sd{position:absolute;right:-5px;top:-5px;width:15px;height:15px;border-radius:50%;border:3px solid var(--bg);background:#34d399}
-.sd.s-idle{background:#f5b84b}.sd.s-dnd{background:var(--bad)}.sd.s-invisible{background:#8b90b4}
+.ptb{display:flex;background:var(--bg);border-radius:12px;padding:3px;margin-bottom:6px}.ptb button{flex:1;background:none;color:var(--mute);min-height:36px;border-radius:10px}.ptb button.on{background:var(--line);color:var(--tx)}#emp input{margin:0 0 6px}.emg.gg{grid-template-columns:repeat(2,1fr);gap:6px;max-height:270px}.gi{padding:0;background:none;min-height:0;border-radius:10px;overflow:hidden}.gi img{width:100%;display:block;border-radius:10px}.gt{min-height:64px;border-radius:10px;font-size:16px;font-weight:600;color:#fff;background:hsl(var(--h) 40% 30%)}
+.bdg{font-size:11px;background:var(--ac);color:#fff;border-radius:8px;padding:1px 6px;vertical-align:middle}.gd{margin-top:4px;color:var(--mute);font-size:14px;overflow-wrap:anywhere}.gac{display:flex;gap:8px;overflow:auto;padding:0 16px 12px}.gac button{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:64px;background:var(--card);border:1px solid var(--line)}#mnu label{display:block;font-size:13px;color:var(--mute)}
+.rb{overflow:hidden;font-weight:700;font-size:15px}.rb img{width:100%;height:100%;object-fit:cover}.sh{display:flex;justify-content:space-between;align-items:center;padding:14px 12px;font-size:18px;border-bottom:1px solid var(--line);cursor:pointer}.sc{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);padding:14px 12px 4px}#wz{position:fixed;inset:0;z-index:55;background:var(--bg);overflow:auto;padding-top:env(safe-area-inset-top)}.wzb{max-width:520px;margin:0 auto;padding:16px 16px 40px}.wzs{display:flex;gap:6px;margin-bottom:16px}.wzs i{flex:1;height:4px;border-radius:2px;background:var(--line)}.wzs i.on{background:var(--ac)}.tg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}.tg button{min-height:76px;text-align:center}.tg button.sel{outline:2px solid var(--ac)}.wzn{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.wzn button{flex:1}
 </style></head><body>
 <div id="app"><p class="empty">Loading…</p></div><div id="toast" hidden></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
@@ -159,8 +83,6 @@ const SUPABASE_URL='https://fenohwqkuudnotifkqpv.supabase.co',SUPABASE_KEY='sb_p
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 if(typeof supabase==='undefined'){document.getElementById('app').innerHTML='<p class="empty">Couldn’t load the sign-in library from cdn.jsdelivr.net. Check your connection or content blocker, then reload.</p>';throw new Error('supabase library missing')}
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const IC={chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17.5 14.5c2.4.2 4 1.8 4.5 4.5"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 4-6 8-6s7.3 2 8 6"/>',sliders:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 8 8 5.5L20 8"/>',userplus:'<circle cx="10" cy="8" r="4"/><path d="M3 21c.6-3.8 3.4-6 7-6M18 9v6M15 12h6"/>',link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1"/>',bookmark:'<path d="M6 4h12v17l-6-4-6 4z"/>',plus:'<path d="M12 5v14M5 12h14"/>',back:'<path d="m15 5-7 7 7 7"/>',smile:'<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.2 2.1 1.8 3.5 1.8s2.5-.6 3.5-1.8M9 9.5v.01M15 9.5v.01"/>',mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',send:'<path d="M3.4 20.4 21 12 3.4 3.6l.1 6.5L15 12 3.5 13.9z" fill="currentColor" stroke="none"/>'};
-const I=(n,s=22)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 const authMsg=e=>{const m=(e&&e.message)||'',st=e&&e.status;
  if(/permission denied/i.test(m))return 'The database doesn’t allow this change. The app owner needs to update the database permissions.';
  if(/already (been )?registered|already exists/i.test(m))return 'An account with that email already exists. Log in instead, or reset your password.';
@@ -174,7 +96,7 @@ const DEF={theme:'system',accent:'#7c5cff',fs:100,lt:false,spacing:'cozy',bg:'de
 const mg=(d,o)=>{const r={...d};for(const k in d)if(o&&k in o)r[k]=d[k]&&typeof d[k]==='object'?mg(d[k],o[k]||{}):(typeof o[k]===typeof d[k]?o[k]:d[k]);return r};
 let ST;try{ST=mg(DEF,JSON.parse(localStorage.getItem('cb-settings')||'{}'))}catch(e){ST=mg(DEF,{})}
 let syncT;
-function apply(){const h=document.documentElement,th=ST.theme==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):ST.theme;h.dataset.theme=th;h.style.setProperty('--ac',ST.accent);h.style.setProperty('--fs',(ST.fs/100)*(ST.lt?1.15:1));h.className=['sp-'+ST.spacing,'bg-'+ST.bg,ST.rm?'rm':'',ST.hc?'hc':''].filter(Boolean).join(' ');const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=th==='light'?'#f3f4fb':'#0c0d17'}
+function apply(){const h=document.documentElement,th=ST.theme==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):ST.theme;h.dataset.theme=th;h.style.setProperty('--ac',ST.accent);h.style.setProperty('--fs',(ST.fs/100)*(ST.lt?1.15:1));h.className=['sp-'+ST.spacing,'bg-'+ST.bg,ST.rm?'rm':'',ST.hc?'hc':''].filter(Boolean).join(' ');const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=th==='light'?'#f6f7ff':'#0f1020'}
 function saveST(){try{localStorage.setItem('cb-settings',JSON.stringify(ST))}catch(e){}apply();clearTimeout(syncT);syncT=setTimeout(async()=>{if(!S.user)return;const{error}=await sb.auth.updateUser({data:{settings:ST}});if(error)console.error(error)},1000)}
 apply();matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(ST.theme==='system')apply()});
 let tt;const toast=(m)=>{const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,4000)};
@@ -195,7 +117,7 @@ sb.auth.onAuthStateChange((ev,ses)=>{
   if(ses&&(!S.me||S.me.id!==ses.user.id))setTimeout(()=>enter(ses.user),0);
   else if(!ses){S.me=null;S.live=false;render()}});
 function authView(){const m=S.mode,f=(id,l,t='text',x='')=>`<label for="${id}">${l}</label><input id="${id}" type="${t}" ${x}>`;
- return `<div class="auth"><h1><span class="logo">${I('chat',24)}</span>Chatterbox</h1><p class="m">${{login:'Log in to your account',signup:'Create your account',reset:'Reset your password',newpw:'Choose a new password'}[m]}</p>${S.note?`<p role="status" style="color:var(--ok)">${esc(S.note)}</p>`:''}
+ return `<div class="auth"><h1>💬 Chatterbox</h1><p class="m">${{login:'Log in to your account',signup:'Create your account',reset:'Reset your password',newpw:'Choose a new password'}[m]}</p>${S.note?`<p role="status" style="color:var(--ok)">${esc(S.note)}</p>`:''}
  <form id="af">${m==='signup'?f('un','Username (3–20 letters, numbers, _)','text','autocapitalize="none" maxlength="20"')+f('dn','Display name','text','maxlength="32"'):''}
  ${m!=='newpw'?f('em','Email','email','autocomplete="email"'):''}${m!=='reset'?f('pw',m==='newpw'?'New password':'Password','password','minlength="8" autocomplete="'+(m==='login'?'current':'new')+'-password"'):''}
  <div id="ae" role="alert" style="color:var(--bad);font-size:14px;margin:0 0 10px;min-height:20px"></div><button id="ab" style="width:100%">${{login:'Log in',signup:'Sign up',reset:'Send reset email',newpw:'Save password'}[m]}</button></form>
@@ -222,12 +144,12 @@ async function enter(user){S.user=user;{const us=user.user_metadata&&user.user_m
  if(!S.live){S.live=true;sb.channel('cb').on('postgres_changes',{event:'*',schema:'public',table:'friendships'},()=>loadFr()).on('postgres_changes',{event:'*',schema:'public',table:'dm_messages'},onMsg).on('postgres_changes',{event:'UPDATE',schema:'public',table:'conversation_members'},()=>{if(S.cv)loadSeen().then(c=>c&&paintMsgs())}).subscribe()}}
 async function loadFr(){const[a,b]=await Promise.all([sb.from('friendships').select('*'),sb.from('blocks').select('*')]);if(a.error)return fail(a.error);
  S.fr=a.data||[];S.bl=b.data||[];await prof([...S.fr.flatMap(r=>[r.requester,r.addressee]),...S.bl.map(x=>x.blocked)]);paintFr();paintNav();paintSet();paintPv()}
-async function loadConvs(){const{data:mm,error}=await sb.from('conversation_members').select('conversation_id,user_id,last_read_at,notify,muted_until');if(error)return fail(error);
+async function loadConvs(){if(!S.sl||Date.now()-S.sl>3e4){const f=!S.sl;S.sl=Date.now();loadServers().then(()=>f&&checkJoin())}const{data:mm,error}=await sb.from('conversation_members').select('conversation_id,user_id,last_read_at');if(error)return fail(error);
  const ids=[...new Set((mm||[]).map(x=>x.conversation_id))];if(!ids.length){S.convs=[];return paintList()}
- const[c,m]=await Promise.all([sb.from('conversations').select('id,kind,name,description,avatar_url,banner_url,join_mode,last_message_at').in('id',ids),sb.from('dm_messages').select('conversation_id,sender_id,body,created_at').in('conversation_id',ids).order('created_at',{ascending:false}).limit(300)]);
+ const[c,m]=await Promise.all([sb.from('conversations').select('id,kind,name,last_message_at').in('id',ids),sb.from('dm_messages').select('conversation_id,sender_id,body,created_at').in('conversation_id',ids).order('created_at',{ascending:false}).limit(300)]);
  await prof(mm.filter(x=>x.user_id!==S.me.id).map(x=>x.user_id));
  S.convs=(c.data||[]).map(v=>{const mine=mm.find(x=>x.conversation_id===v.id&&x.user_id===S.me.id),p=mm.find(x=>x.conversation_id===v.id&&x.user_id!==S.me.id),l=(m.data||[]).find(x=>x.conversation_id===v.id);
-  return{...v,notify:mine.notify,muted_until:mine.muted_until,n:mm.filter(x=>x.conversation_id===v.id).length,peer:p&&p.user_id,last:l,un:!!(l&&l.sender_id!==S.me.id&&new Date(l.created_at)>new Date(mine.last_read_at)&&!(S.cv&&S.cv.id===v.id))}}).sort((a,b)=>new Date(b.last_message_at)-new Date(a.last_message_at));paintList();paintNav()}
+  return{...v,n:mm.filter(x=>x.conversation_id===v.id).length,peer:p&&p.user_id,last:l,un:!!(l&&l.sender_id!==S.me.id&&new Date(l.created_at)>new Date(mine.last_read_at)&&!(S.cv&&S.cv.id===v.id))}}).sort((a,b)=>new Date(b.last_message_at)-new Date(a.last_message_at));paintList();paintNav()}
 let lt;const onMsg=p=>{notifyMsg(p);const r=p.new&&p.new.id?p.new:p.old;
  if(p.eventType==='DELETE')S.msgs=S.msgs.filter(x=>x.id!==r.id);
  else if(S.cv&&r.conversation_id===S.cv.id){if(p.eventType==='INSERT'&&!S.msgs.some(x=>x.id===r.id))S.msgs.push(r);else if(p.eventType==='UPDATE')S.msgs=S.msgs.map(x=>x.id===r.id?r:x);markRead()}
@@ -264,8 +186,22 @@ document.addEventListener('drop',e=>{if(S.cv&&e.target.closest&&e.target.closest
 document.addEventListener('input',e=>{if(e.target.id==='mi')toggleSend()});
 function toggleSend(){const i=$('#mi'),h=!!(i&&i.value.trim()),m=$('#mic'),s=$('#snd');if(m)m.hidden=h;if(s)s.hidden=!h}
 const EMC={'🕘':'','😀':'😀 😃 😄 😁 😆 😅 😂 🤣 🙂 😉 😊 😍 🥰 😘 😎 🤩 🥳 😏 😒 😞 😢 😭 😡 😱 🤔 🙄 😴 🤗 😬 🥺','👍':'👍 👎 👏 🙌 🙏 💪 👋 🤝 ✌️ 🤞 👌 🤙 ☝️ 👀 🫶 🤌','❤️':'❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💔 ❣️ 💕 💖 🔥 ✨ 🎉 💯','🐶':'🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐸 🐵 🐧 🦄 🐢','🍕':'🍕 🍔 🍟 🌭 🍿 🍩 🍪 🎂 🍫 🍎 🍌 🍉 🍓 ☕ 🍺 🍜','🎮':'🎮 ⚽ 🏀 🎧 📱 💻 📷 🎁 🚀 💎 🏆 💡 🔔 ⭐ 🎵 🎬'};
-function paintEmo(){const p=$('#emp');if(!p)return;if(!S.eo){p.hidden=true;return}p.hidden=false;const k=S.ec||'😀';let l;if(k==='🕘'){try{l=JSON.parse(localStorage.getItem('cb-recent')||'[]')}catch(x){l=[]}}else l=EMC[k].split(' ');
- p.innerHTML=`<div class="emt">${Object.keys(EMC).map(c=>`<button type="button" class="${c===k?'on':''}" data-a="ec" data-id="${c}" aria-label="Emoji category">${c}</button>`).join('')}</div><div class="emg">${l.length?l.map(e=>`<button type="button" data-a="ei" data-e="${e}">${e}</button>`).join(''):'<small class="m" style="grid-column:1/-1;padding:8px">Emojis you use show up here.</small>'}</div>`}
+const GIFK=''; /* free Giphy API key: developers.giphy.com */
+const GCAT=['Trending','hello','lol','love','happy birthday','thank you','excited','yes','no','sorry','happy','sad','thumbs up'];
+const gifRecent=()=>{try{return JSON.parse(localStorage.getItem('cb-gifs')||'[]').filter(x=>x&&okUrl(x.u)&&okUrl(x.p))}catch(e){return[]}};
+function gifGrid(items){const g=$('#gr');if(!g)return;S.gl=items.filter(x=>okUrl(x.u)&&okUrl(x.p));g.className='emg gg';g.innerHTML=S.gl.length?S.gl.map((x,i)=>`<button type="button" class="gi" data-a="gif" data-i="${i}" aria-label="Send GIF: ${esc(x.t)}"><img loading="lazy" src="${esc(x.p)}" alt="${esc(x.t)}"></button>`).join(''):'<div class="empty" style="grid-column:1/-1">No GIFs found.</div>'}
+async function gifShow(){const g=$('#gr');if(!g)return;const q=(S.gs||'').trim();
+ if(!GIFK){g.className='';g.innerHTML='<div class="empty">GIF search needs a free Giphy API key. Add it to the <b>GIFK</b> line in index.html.</div>';return}
+ if(!q){g.className='emg gg tl';g.innerHTML=(gifRecent().length?[['★ Recent','__recent']]:[]).concat(GCAT.map(c=>[c,c])).map(([l,v],i)=>`<button type="button" class="gt" style="--h:${i*37%360}" data-a="gc" data-id="${esc(v)}">${esc(l)}</button>`).join('');return}
+ if(q==='__recent')return gifGrid(gifRecent());
+ g.className='emg gg';g.innerHTML='<small class="m" style="grid-column:1/-1;padding:8px">Loading…</small>';
+ try{const r=await fetch(q==='Trending'?`https://api.giphy.com/v1/gifs/trending?api_key=${GIFK}&limit=24&rating=pg-13`:`https://api.giphy.com/v1/gifs/search?api_key=${GIFK}&q=${encodeURIComponent(q)}&limit=24&rating=pg-13&lang=en`);if(!r.ok)throw 0;const j=await r.json();if((S.gs||'').trim()!==q)return;gifGrid((j.data||[]).map(x=>({u:(x.images.downsized||x.images.original).url,p:(x.images.fixed_width_small||x.images.fixed_width).url,t:x.title||'GIF'})))}catch(e){g.innerHTML='<div class="empty">Couldn’t load GIFs. Check your connection and API key.</div>'}}
+let gqt;document.addEventListener('input',e=>{if(e.target.id==='gq'){S.gq=e.target.value;clearTimeout(gqt);gqt=setTimeout(()=>{S.gs=S.gq.trim();gifShow()},350)}});
+function paintEmo(){const p=$('#emp');if(!p)return;if(!S.eo){p.hidden=true;return}p.hidden=false;S.pt=S.pt||'emo';
+ const tabs=`<div class="ptb"><button type="button" class="${S.pt==='emo'?'on':''}" data-a="pt" data-id="emo">Emoji</button><button type="button" class="${S.pt==='gif'?'on':''}" data-a="pt" data-id="gif">GIFs</button></div>`;
+ if(S.pt==='gif'){p.innerHTML=tabs+`<input id="gq" placeholder="Search GIFs" autocomplete="off" value="${esc(S.gq||'')}" aria-label="Search GIFs"><div class="emg gg" id="gr"></div>`;gifShow();return}
+ const k=S.ec||'😀';let l;if(k==='🕘'){try{l=JSON.parse(localStorage.getItem('cb-recent')||'[]')}catch(x){l=[]}}else l=EMC[k].split(' ');
+ p.innerHTML=tabs+`<div class="emt">${Object.keys(EMC).map(c=>`<button type="button" class="${c===k?'on':''}" data-a="ec" data-id="${c}" aria-label="Emoji category">${c}</button>`).join('')}</div><div class="emg">${l.length?l.map(e=>`<button type="button" data-a="ei" data-e="${e}">${e}</button>`).join(''):'<small class="m" style="grid-column:1/-1;padding:8px">Emojis you use show up here.</small>'}</div>`}
 let rec=null;
 function paintRec(){const u=$('#upb');if(!u)return;if(!rec){if(!u.textContent.includes('Uploading'))u.innerHTML='';return}const s=Math.floor((Date.now()-rec.t0)/1e3);u.innerHTML=`<div class="rpb" style="width:100%;align-items:center">🔴 Recording ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}<span style="margin-left:auto;display:flex;gap:8px"><button type="button" class="g" data-a="micx">🗑️ Cancel</button><button type="button" data-a="mics">Send</button></span></div>`}
 async function micStart(){if(rec||!S.cv)return;try{if(!window.MediaRecorder)throw 0;const st=await navigator.mediaDevices.getUserMedia({audio:true}),mt=['audio/webm;codecs=opus','audio/mp4','audio/webm'].find(t=>MediaRecorder.isTypeSupported(t)),mr=new MediaRecorder(st,mt?{mimeType:mt}:{}),r={mr,ch:[],t0:Date.now(),cancel:false,cid:S.cv.id};rec=r;
@@ -275,7 +211,7 @@ async function micStart(){if(rec||!S.cv)return;try{if(!window.MediaRecorder)thro
 
 /* seen / delivered status */
 S.mem=[];
-async function loadSeen(){if(!S.cv||!S.me)return false;const cid=S.cv.id,{data,error}=await sb.from('conversation_members').select('user_id,seen_at,role,notify,muted_until').eq('conversation_id',cid);if(error||!data||!S.cv||S.cv.id!==cid)return false;data.sort((a,b)=>a.user_id<b.user_id?-1:1);await prof(data.map(x=>x.user_id));const J=JSON.stringify,ch=J(data)!==J(S.mem);S.mem=data;return ch}
+async function loadSeen(){if(!S.cv||!S.me)return false;const cid=S.cv.id,{data,error}=await sb.from('conversation_members').select('user_id,seen_at').eq('conversation_id',cid);if(error||!data||!S.cv||S.cv.id!==cid)return false;data.sort((a,b)=>a.user_id<b.user_id?-1:1);await prof(data.map(x=>x.user_id));const J=JSON.stringify,ch=J(data)!==J(S.mem);S.mem=data;return ch}
 const seenBy=(m,oth)=>oth.filter(x=>x.seen_at&&new Date(x.seen_at)>=new Date(m.created_at));
 function seenInfo(){const own=S.msgs.filter(m=>m.sender_id===S.me.id),oth=S.mem.filter(x=>x.user_id!==S.me.id);if(ST.rr===false||!own.length||!oth.length)return{};let sn=null;for(let i=own.length-1;i>=0;i--)if(seenBy(own[i],oth).length){sn=own[i];break}const last=own[own.length-1],o={};if(sn)o[sn.id]=seenBy(sn,oth);if(!sn||last.id!==sn.id)o[last.id]=[];return o}
 function sr(m,o){const v=o[m.id];if(!v)return'';if(!v.length)return `<div class="sn" data-a="sn" data-id="${m.id}">Delivered</div>`;const nm=v.map(x=>P(x.user_id).display_name),grp=S.mem.filter(x=>x.user_id!==S.me.id).length>1,t=nm.length<=2?nm.join(', '):nm.slice(0,2).join(', ')+' + '+(nm.length-2)+' other'+(nm.length-2>1?'s':'');return `<div class="sn" data-a="sn" data-id="${m.id}">${grp?'Seen by '+esc(t):'Seen'}</div>`}
@@ -286,41 +222,76 @@ function snList(id){const m=S.msgs.find(x=>x.id===id);if(!m||ST.rr===false)retur
 function groupDlg(pre){const fs=S.fr.filter(r=>r.status==='accepted').map(r=>r.requester===S.me.id?r.addressee:r.requester);
  overlay('<h3>New group</h3>'+(fs.length?`<input id="gn" placeholder="Group name (optional)" maxlength="40" autocomplete="off"><small class="m">Pick friends to add</small>`+fs.map(id=>{const u=P(id);return `<label class="row" style="cursor:pointer">${av(u)}<div class="g1"><b>${esc(u.display_name)}</b> <small>@${esc(u.username)}</small></div><input type="checkbox" class="gck" value="${id}" ${id===pre?'checked':''} style="width:auto;margin:0"></label>`}).join('')+'<button data-a="gmk" data-keep="1">Create group</button>':'<p class="m">Groups can only include your friends, and you don’t have any yet. Add some from the Friends tab first.</p>'))}
 function showInfo(tab){if(!S.cv)return;S.it=tab||'mem';const g=S.cv.kind==='group',p=P(S.cv.peer),title=g?(S.cv.name||'Group chat'):p.display_name;let d=$('#inf');if(!d){d=document.createElement('div');d.id='inf';document.body.appendChild(d)}
- const ats=f=>S.msgs.flatMap(m=>(Array.isArray(m.attachments)?m.attachments:[]).filter(x=>x&&okUrl(x.url)&&f(x)).map(x=>({...x,mid:m.id}))),vis=x=>x.kind==='image'||x.kind==='video',T=[['mem','Members'],['med','Media'],['pin','Pins'],['lnk','Links'],['fil','Files'],...(g&&gR()!=='member'?[['aud','Log']]:[])];let b='';
- if(S.it==='mem'){const fr=!g&&S.fr.some(r=>r.status==='accepted'&&(r.requester===S.cv.peer||r.addressee===S.cv.peer)),ms=S.mem.length?S.mem:[{user_id:S.me.id},{user_id:S.cv.peer}];
-  b=(fr?`<div class="card" role="button" tabindex="0" data-a="ng" data-id="${S.cv.peer}" style="cursor:pointer"><b>New Group</b><br><small>Create a new group with @${esc(p.username)}</small></div>`:'')+`<h3>Members — ${ms.length}</h3>`+ms.map(x=>{const u=P(x.user_id);return `<div style="display:flex;align-items:center;gap:6px"><div class="row pvl" style="flex:1;min-width:0" data-pv="${x.user_id}" role="button" tabindex="0">${av(u)}<div class="g1"><b>${esc(u.display_name)}</b> <small>@${esc(u.username)}</small>${x.role==='owner'?' <span class="bdg">👑 Owner</span>':x.role==='admin'?' <span class="bdg">Admin</span>':''}</div></div>${g&&canManage(x)?`<button class="g" data-a="gmm" data-id="${x.user_id}" aria-label="Member options">⋯</button>`:''}</div>`}).join('')}
+ const ats=f=>S.msgs.flatMap(m=>(Array.isArray(m.attachments)?m.attachments:[]).filter(x=>x&&okUrl(x.url)&&f(x)).map(x=>({...x,mid:m.id}))),vis=x=>x.kind==='image'||x.kind==='video',T=[['mem','Members'],['med','Media'],['pin','Pins'],['lnk','Links'],['fil','Files']].concat(g&&gadm()?[['log','Log']]:[]);let b='';
+ if(S.it==='mem'&&g)b=grpMembers();else if(S.it==='log')b=grpLog();else if(S.it==='mem'){const fr=!g&&S.fr.some(r=>r.status==='accepted'&&(r.requester===S.cv.peer||r.addressee===S.cv.peer)),ms=S.mem.length?S.mem:[{user_id:S.me.id},{user_id:S.cv.peer}];
+  b=(fr?`<div class="card" role="button" tabindex="0" data-a="ng" data-id="${S.cv.peer}" style="cursor:pointer"><b>New Group</b><br><small>Create a new group with @${esc(p.username)}</small></div>`:'')+`<h3>Members — ${ms.length}</h3>`+ms.map(x=>{const u=P(x.user_id);return `<div class="row pvl" data-pv="${x.user_id}" role="button" tabindex="0">${av(u)}<div class="g1"><b>${esc(u.display_name)}</b> <small>@${esc(u.username)}</small></div></div>`}).join('')}
  else if(S.it==='med'){const a=ats(vis);b=a.length?`<div class="mg">${a.map(x=>x.kind==='image'?`<img loading="lazy" src="${esc(x.url)}" alt="${esc(x.name)}" data-a="img" data-u="${esc(x.url)}">`:`<video preload="metadata" playsinline controls src="${esc(x.url)}"></video>`).join('')}</div>`:'<div class="empty">No photos or videos yet.</div>'}
  else if(S.it==='pin'){const a=S.msgs.filter(m=>m.pinned_at);b=a.length?a.map(m=>`<div class="row"><div class="g1"><small>${esc(P(m.sender_id).display_name)}</small><div>${esc((m.body||'📎 Attachment').slice(0,160))}</div></div><button class="g" data-a="ij" data-id="${m.id}">Jump</button></div>`).join(''):'<div class="empty">No pinned messages.</div>'}
- else if(S.it==='aud'){if(S.audFor!==S.cv.id)loadAud();const L={renamed:'renamed the group',description_changed:'changed the description',member_added:'added',member_removed:'removed',member_left:'left the group',admin_added:'made admin:',admin_removed:'removed admin:',ownership_transferred:'transferred ownership to',member_joined:'joined',member_banned:'banned',member_unbanned:'unbanned',invite_created:'created an invite',invite_revoked:'revoked an invite',join_mode_changed:'changed who can join',picture_changed:'changed the picture',banner_changed:'changed the banner'};b=S.aud&&S.audFor===S.cv.id?(S.aud.length?S.aud.map(a=>`<div class="row"><div class="g1"><small>${tm(a.created_at)}</small><div><b>${esc(P(a.actor_id).display_name)}</b> ${L[a.action]||esc(a.action)} ${a.target_id?'<b>'+esc(P(a.target_id).display_name)+'</b>':''}</div></div></div>`).join(''):'<div class="empty">No activity yet.</div>'):'<div class="empty">Loading…</div>'}
  else if(S.it==='lnk'){const a=[...new Set(S.msgs.flatMap(m=>(m.body||'').match(/https?:\/\/[^\s<>"]+/g)||[]))];b=a.length?a.map(u=>`<div class="row"><a href="${esc(u)}" target="_blank" rel="noopener" style="overflow-wrap:anywhere;color:var(--ac)">${esc(u)}</a></div>`).join(''):'<div class="empty">No links yet.</div>'}
  else{const a=ats(x=>!vis(x));b=a.length?a.map(x=>x.kind==='audio'||x.kind==='voice'?`<div class="row"><audio controls preload="none" src="${esc(x.url)}" style="width:100%"></audio></div>`:`<div class="row"><a class="fl" href="${esc(x.url)}" target="_blank" rel="noopener" download="${esc(x.name)}">📄 <span>${esc(x.name)}</span> <small>${fsz(x.size)}</small></a></div>`).join(''):'<div class="empty">No files yet.</div>'}
- d.innerHTML=`<div class="ihd"><button class="g" data-a="ix" aria-label="Back">←</button></div>${g&&okG(S.cv.banner_url)?`<img src="${esc(S.cv.banner_url)}" alt="" style="width:100%;height:120px;object-fit:cover">`:''}<div class="ipf">${g?(okG(S.cv.avatar_url)?`<img class="av" src="${esc(S.cv.avatar_url)}" alt="" style="object-fit:cover">`:'<div class="av gr">'+I('users',24)+'</div>'):av(p)}<div><h2 style="margin:0">${esc(title)}</h2><small>${g?(S.cv.n||S.mem.length||'')+' members':'@'+esc(p.username)}</small></div></div>${g?gbar():''}<div class="itb">${T.map(([k,l])=>`<button class="${S.it===k?'on':''}" data-a="it" data-id="${k}">${l}</button>`).join('')}</div><div class="ibd">${b}</div>`}
+ d.innerHTML=`<div class="ihd"><button class="g" data-a="ix" aria-label="Back">←</button></div><div class="ipf">${g?'<div class="av" style="background:var(--ac)">👥</div>':av(p)}<div><h2 style="margin:0">${esc(title)}</h2><small>${g?(S.gi&&S.gi.cid===S.cv.id?Object.keys(S.gi.roles).length:S.cv.n||'')+' members':'@'+esc(p.username)}</small>${g?grpDesc():''}</div></div>${g?grpActs():''}<div class="itb">${T.map(([k,l])=>`<button class="${S.it===k?'on':''}" data-a="it" data-id="${k}">${l}</button>`).join('')}</div><div class="ibd">${b}</div>`}
 
+/* group chats: roles, settings, members, audit log */
+const gr=()=>S.cv&&S.gi&&S.gi.cid===S.cv.id?S.gi.roles[S.me.id]:null,gadm=()=>{const r=gr();return r==='owner'||r==='admin'},gcan=k=>gadm()||!!(S.gi&&S.gi.cid===S.cv.id&&(k==='invite'?S.gi.pi:S.gi.pr)==='everyone');
+async function loadGroup(){const cid=S.cv.id,[m,c]=await Promise.all([sb.from('conversation_members').select('user_id,role').eq('conversation_id',cid),sb.from('conversations').select('description,owner_id,perm_invite,perm_rename').eq('id',cid).single()]);
+ if(m.error||c.error){S.gi={cid,roles:{},desc:''};return fail(m.error||c.error,'Group tools aren’t set up yet. Run the group SQL.')}
+ const roles={};m.data.forEach(x=>roles[x.user_id]=x.role||'member');S.gi={cid,roles,desc:c.data.description||'',pi:c.data.perm_invite,pr:c.data.perm_rename,owner:c.data.owner_id,log:[]};await prof(m.data.map(x=>x.user_id));
+ if(gadm()){const l=await sb.from('group_audit').select('*').eq('conversation_id',cid).order('created_at',{ascending:false}).limit(50);S.gi.log=l.data||[];await prof(S.gi.log.flatMap(x=>[x.actor,x.target]).filter(Boolean))}}
+async function gRefresh(){await loadConvs();S.cv=S.convs.find(x=>x.id===S.cv.id)||S.cv;await loadGroup();paintThread();showInfo(S.it||'mem')}
+async function gExit(){const d=$('#inf');if(d)d.remove();S.cv=null;S.gi=null;await loadConvs();render()}
+async function gAct(fn,args,msg){if(msg&&!confirm(msg))return;const{error}=await sb.rpc(fn,{cid:S.cv.id,...args});if(error)throw error;closeMenu();await gRefresh()}
+const grpDesc=()=>S.gi&&S.gi.desc?`<div class="gd">${esc(S.gi.desc)}</div>`:'';
+const grpActs=()=>`<div class="gac">${gcan('invite')?'<button data-a="gadd">➕<small>Add</small></button>':''}<button data-a="it" data-id="pin">📌<small>Pins</small></button><button data-a="it" data-id="med">📷<small>Media</small></button><button data-a="it" data-id="mem">👥<small>Members</small></button><button data-a="gset">⚙️<small>Settings</small></button></div>`;
+function grpMembers(){if(!S.gi||S.gi.cid!==S.cv.id)return'';const R=S.gi.roles,o={owner:0,admin:1,member:2},ids=Object.keys(R).sort((a,b)=>o[R[a]]-o[R[b]]);
+ return `<h3>Members — ${ids.length}</h3><input id="mq" placeholder="Search members" autocomplete="off" aria-label="Search members">`+ids.map(id=>{const u=P(id),r=R[id];return `<div class="row" data-n="${esc((u.display_name+' '+u.username).toLowerCase())}"><span class="pvl" data-pv="${id}" role="button" tabindex="0">${av(u)}</span><div class="g1"><b>${esc(u.display_name)}</b>${r!=='member'?` <span class="bdg">${r==='owner'?'👑 Owner':'Admin'}</span>`:''}<br><small>${esc(u.custom_status||'@'+u.username)}</small></div>${id!==S.me.id?`<button class="g" data-a="gmm" data-id="${id}" aria-label="Member options">⋯</button>`:''}</div>`}).join('')+(gr()==='owner'?'':'<button class="d" style="width:100%;margin-top:12px" data-a="glv">Leave group</button>')}
+document.addEventListener('input',e=>{if(e.target.id==='mq'){const q=e.target.value.toLowerCase();document.querySelectorAll('#inf [data-n]').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')}});
+function gMenu(id){const R=S.gi.roles,me=gr(),r=R[id],u=P(id),b=(a,l,x='')=>`<button class="g" data-a="${a}" data-id="${id}" ${x}>${l}</button>`;
+ overlay(`<h3>${esc(u.display_name)}</h3>`+b('gdm','💬 Message')+(me==='owner'&&r!=='owner'?(r==='admin'?b('gsr','Remove as admin','data-r="member"'):b('gsr','Make admin','data-r="admin"'))+b('gtr','👑 Make owner'):'')+((me==='owner'&&r!=='owner')||(me==='admin'&&r==='member')?b('grm','🚫 Remove from group'):''))}
+function gAdd(){const fs=S.fr.filter(r=>r.status==='accepted').map(r=>r.requester===S.me.id?r.addressee:r.requester).filter(id=>!S.gi.roles[id]);
+ overlay('<h3>Add people</h3>'+(fs.length?fs.map(id=>{const u=P(id);return `<label class="row" style="cursor:pointer">${av(u)}<div class="g1"><b>${esc(u.display_name)}</b> <small>@${esc(u.username)}</small></div><input type="checkbox" class="gck" value="${id}" style="width:auto;margin:0"></label>`}).join('')+'<button data-a="gadk" data-keep="1">Add to group</button>':'<p class="m">Everyone you’re friends with is already here, or you have no friends to add yet.</p>'))}
+function gSet(){const o=gr()==='owner',ed=gcan('rename'),sel=(i,v)=>`<select id="${i}"><option value="admins" ${v!=='everyone'?'selected':''}>Only admins</option><option value="everyone" ${v==='everyone'?'selected':''}>Everyone</option></select>`;
+ overlay('<h3>Group settings</h3>'+(ed?`<label>Name<input id="gsn" maxlength="40" value="${esc(S.cv.name||'')}"></label><label>Description<textarea id="gsd" rows="3" maxlength="200">${esc(S.gi.desc||'')}</textarea></label>`:'')+(o?`<label>Who can add people${sel('gpi',S.gi.pi)}</label><label>Who can edit name and description${sel('gpr',S.gi.pr)}</label>`:'')+(ed||o?'<button data-a="gsv" data-keep="1">Save</button>':'<p class="m">Only admins can change group settings.</p>')+(o?'<button class="d" data-a="gdel">Delete group</button>':''))}
+function grpLog(){const l=(S.gi&&S.gi.log)||[],n=id=>id?esc(P(id).display_name):'';return l.length?l.map(x=>`<div class="row"><div class="g1"><b>${n(x.actor)}</b> ${esc(x.detail)} ${n(x.target)}<br><small>${new Date(x.created_at).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}</small></div></div>`).join(''):'<div class="empty">Nothing logged yet.</div>'}
 
-/* group management */
-const gR=()=>{const m=S.mem.find(x=>x.user_id===S.me.id);return m&&m.role||'member'};
-const canManage=x=>gR()==='owner'?x.user_id!==S.me.id&&x.role!=='owner':(gR()==='admin'&&x.role==='member');
-function gbar(){const c=S.cv,r=gR();return `<div style="padding:0 14px">${c.description?`<p style="margin:8px 0;overflow-wrap:anywhere">${esc(c.description)}</p>`:'<p class="m" style="margin:8px 0">No description.</p>'}<div style="display:flex;gap:8px;flex-wrap:wrap">${r!=='member'?'<button class="g" data-a="grn">✏️ Rename</button><button class="g" data-a="gds">📝 Description</button><button class="g" data-a="gad">➕ Add people</button><button class="g" data-a="gin">🔗 Invites</button><button class="g" data-a="gmd">🖼️ Picture</button><button class="g" data-a="gst">🛡️ Join and bans</button>':''}<button class="g" data-a="gnt">🔔 Notifications</button><button class="d" data-a="glv">Leave group</button>${r==='owner'?'<button class="d" data-a="gdl">Delete group</button>':''}</div></div>`}
-async function loadAud(){const cid=S.cv.id,{data,error}=await sb.from('group_audit_log').select('*').eq('conversation_id',cid).order('created_at',{ascending:false}).limit(100);if(error)return fail(error);await prof((data||[]).flatMap(a=>[a.actor_id,a.target_id]));S.aud=data||[];S.audFor=cid;if($('#inf')&&S.it==='aud')showInfo('aud')}
-async function gref(){S.audFor=null;const id=S.cv.id;await Promise.all([loadConvs(),loadSeen()]);S.cv=S.convs.find(c=>c.id===id)||S.cv;paintThread();paintMsgs(true);if($('#inf'))showInfo(S.it)}
-const grpc=async(fn,a)=>{const{error}=await sb.rpc(fn,{cid:S.cv.id,...a});if(error)throw error;closeMenu();await gref()};
-
-/* group chat step 2: invites, join modes, bans, picture, notifications */
-const okG=u=>typeof u==='string'&&u.startsWith(SUPABASE_URL+'/storage/v1/object/public/group-media/');
-const JM={invite:'Anyone with an invite link',approval:'Members must be approved',admins:'Only admins can add people'};
-async function gInv(){const cid=S.cv.id,{data,error}=await sb.from('gc_invites').select('*').eq('conversation_id',cid).order('created_at',{ascending:false});if(error)return fail(error);await prof((data||[]).map(x=>x.created_by));
- overlay('<h3>Invite links</h3><input id="inn" placeholder="Invite name (optional)" maxlength="40"><select id="inh" aria-label="Expires"><option value="">Never expires</option><option value="1">Expires in 1 hour</option><option value="24">Expires in 24 hours</option><option value="168">Expires in 7 days</option></select><select id="inu" aria-label="Max uses"><option value="">Unlimited uses</option><option value="1">1 use</option><option value="5">5 uses</option><option value="25">25 uses</option></select><button data-a="gnc" data-keep="1">Create invite link</button>'+(data||[]).map(x=>{const dead=x.revoked||(x.expires_at&&new Date(x.expires_at)<new Date())||(x.max_uses&&x.uses>=x.max_uses);return `<div class="card"><b>${esc(x.name||'Invite')}</b> ${dead?'<span class="bdg">Inactive</span>':''}<br><small>Code ${esc(x.code)} · ${x.uses}${x.max_uses?'/'+x.max_uses:''} uses${x.expires_at?' · expires '+new Date(x.expires_at).toLocaleString():''} · by ${esc(P(x.created_by).display_name)}</small>${dead?'':`<div style="display:flex;gap:8px;margin-top:8px"><button class="g" data-a="gic" data-id="${esc(x.code)}" data-keep="1">Copy link</button><button class="d" data-a="gir" data-id="${x.id}" data-keep="1">Revoke</button></div>`}</div>`}).join(''))}
-async function gSet(){const cid=S.cv.id,[a,b]=await Promise.all([sb.from('gc_requests').select('*').eq('conversation_id',cid),sb.from('gc_bans').select('*').eq('conversation_id',cid)]),rq=a.data||[],bn=b.data||[];await prof([...rq,...bn].map(x=>x.user_id));
- const row=(x,btns)=>{const u=P(x.user_id);return `<div class="row">${av(u)}<div class="g1"><b>${esc(u.display_name)}</b> <small>@${esc(u.username)}</small></div>${btns}</div>`};
- overlay('<h3>Who can join</h3>'+(gR()==='owner'?`<select id="gjm" aria-label="Join mode">${Object.entries(JM).map(([k,l])=>`<option value="${k}" ${(S.cv.join_mode||'invite')===k?'selected':''}>${l}</option>`).join('')}</select><button data-a="gjs" data-keep="1">Save</button>`:`<p class="m">${JM[S.cv.join_mode||'invite']}</p>`)+`<h3>Join requests (${rq.length})</h3>`+(rq.map(x=>row(x,`<button data-a="grq" data-id="${x.id}" data-v="1" data-keep="1">Approve</button><button class="g" data-a="grq" data-id="${x.id}" data-v="0" data-keep="1">Deny</button>`)).join('')||'<p class="m">None</p>')+`<h3>Banned (${bn.length})</h3>`+(bn.map(x=>row(x,`<button class="g" data-a="gub" data-id="${x.user_id}" data-keep="1">Unban</button>`)).join('')||'<p class="m">None</p>'))}
-function gMedia(){const c=S.cv,t='image/png,image/jpeg,image/webp,image/gif';overlay(`<h3>Group picture and banner</h3>${okG(c.banner_url)?`<img src="${esc(c.banner_url)}" alt="" style="width:100%;height:100px;object-fit:cover;border-radius:12px">`:''}<label for="gpf">Picture (PNG, JPG, WebP or GIF, up to 8 MB)</label><input id="gpf" type="file" accept="${t}"><label for="gbf">Banner</label><input id="gbf" type="file" accept="${t}"><p class="m" id="gpm">Animated GIFs stay animated.</p>`)}
-function gNtf(){const m=S.mem.find(x=>x.user_id===S.me.id)||{},mu=m.muted_until&&new Date(m.muted_until)>new Date();overlay('<h3>Notifications</h3>'+[['all','All messages'],['mentions','Mentions only'],['none','Nothing']].map(([k,l])=>`<button class="${(m.notify||'all')===k?'':'g'}" data-a="gnn" data-v="${k}" data-keep="1">${l}</button>`).join('')+'<h3>Mute</h3>'+[['1','1 hour'],['8','8 hours'],['24','24 hours'],['-1','Until I turn it back on']].map(([h,l])=>`<button class="g" data-a="gmu" data-h="${h}" data-keep="1">${l}</button>`).join('')+(mu?`<button class="d" data-a="gmu" data-h="0" data-keep="1">Unmute</button><p class="m">Muted ${m.muted_until.startsWith('9999')?'until you unmute':'until '+new Date(m.muted_until).toLocaleString()}</p>`:''))}
-const mine=u=>sb.from('conversation_members').update(u).eq('conversation_id',S.cv.id).eq('user_id',S.me.id);
-document.addEventListener('change',async e=>{const f=e.target,k=f.id==='gpf'?'avatar':f.id==='gbf'?'banner':null;if(!k||!f.files[0]||!S.cv)return;const file=f.files[0],ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'}[file.type],m=$('#gpm');
- if(!ext){if(m)m.textContent='Use a PNG, JPG, WebP or GIF.';return}if(file.size>8e6){if(m)m.textContent='That file is over 8 MB.';return}
- try{const url=await upload(`${S.cv.id}/${k}-${Date.now()}.${ext}`,file,file.type,p=>{if(m)m.textContent='Uploading… '+Math.round(p*100)+'%'},'group-media');const{error}=await sb.rpc('gc_set_media',{cid:S.cv.id,['p_'+k]:url});if(error)throw error;closeMenu();await gref();toast('Saved.')}catch(err){if(m)m.textContent=(err&&err.message)||'Upload failed. Retry.'}});
-async function joinCode(c){const{data,error}=await sb.rpc('gc_join',{p_code:c});if(error)throw error;await loadConvs();toast(data==='requested'?'Request sent. An admin needs to approve it.':'You joined the group.')}
-{let n=0;const jt=setInterval(()=>{if(++n>120)return clearInterval(jt);if(!S.me)return;clearInterval(jt);const c=new URLSearchParams(location.search).get('join');if(!c)return;history.replaceState(null,'',location.pathname);joinCode(c).catch(e=>fail(e))},500)}
+/* servers */
+const R_=(f,a)=>sb.rpc(f,a).then(r=>{if(r.error)throw r.error;return r.data});
+S.srvs=[];S.chs={};S.srv=null;
+const ini=n=>(n||'?').split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase(),invLink=c=>location.origin+location.pathname+'#join='+c;
+const chName=(n,k)=>(k==='voice'?(n||'').replace(/[^A-Za-z0-9 _-]/g,''):(n||'').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9_-]/g,'')).trim().slice(0,32);
+const srvIcon=x=>x.icon_url&&okUrl(x.icon_url)?`<img src="${esc(x.icon_url)}" alt="">`:esc(ini(x.name));
+function railIn(){return `<button class="rb ${S.srv?'':'on'}" data-a="home" aria-label="Messages" title="Messages">💬</button><i class="rsep"></i>`+S.srvs.map(x=>`<button class="rb ${S.srv===x.id?'on':''}" data-a="srv" data-id="${x.id}" aria-label="${esc(x.name)}" title="${esc(x.name)}">${srvIcon(x)}</button>`).join('')+`<button class="rb" data-a="srvn" aria-label="Create or join a server" title="Create or join a server">＋</button>`}
+function paintRail(){const r=document.querySelector('.rail');if(r)r.innerHTML=railIn()}
+async function loadServers(){const{data,error}=await sb.from('server_members').select('role,servers(id,name,description,kind,icon_url,owner_id)').eq('user_id',S.me.id);if(error)return;const n=(data||[]).filter(x=>x.servers).map(x=>({...x.servers,role:x.role})),J=JSON.stringify;if(J(n)===J(S.srvs))return;S.srvs=n;paintRail();if(S.srv){if(!n.some(x=>x.id===S.srv))S.srv=null;paintList()}}
+async function loadChannels(sid){const{data}=await sb.from('server_channels').select('*').eq('server_id',sid).order('position');S.chs[sid]=data||[]}
+function paintServer(){const l=$('#cl'),sv=S.srvs.find(x=>x.id===S.srv);if(!l)return;if(!sv){S.srv=null;return paintList()}const chs=S.chs[sv.id]||[],cats=[...new Set(chs.map(c=>c.category||'Channels'))];
+ l.innerHTML=`<div class="sh" data-a="smn" role="button" tabindex="0" aria-label="Server menu"><b>${esc(sv.name)}</b><span>⌄</span></div>`+(cats.map(k=>`<div class="sc">${esc(k)}</div>`+chs.filter(c=>(c.category||'Channels')===k).map(c=>c.kind==='voice'?`<div class="ci" data-a="vc"><span class="av">🔊</span><b>${esc(c.name)}</b><small class="m">voice · soon</small></div>`:`<div class="ci ${S.cv&&S.cv.id===c.conversation_id?'on':''}" data-a="och" data-id="${c.id}"><span class="av">#</span><b>${esc(c.name)}</b></div>`).join('')).join('')||'<div class="empty">No channels yet.</div>')}
+const sRole=()=>(S.srvs.find(x=>x.id===S.srv)||{}).role,sAdm=()=>['owner','admin'].includes(sRole());
+function sMenu(){const sv=S.srvs.find(x=>x.id===S.srv);if(!sv)return;const b=(a,l)=>`<button class="g" data-a="${a}">${l}</button>`;
+ overlay(`<h3>${esc(sv.name)}</h3>${sv.description?`<p class="m">${esc(sv.description)}</p>`:''}`+b('sinv','➕ Invite people')+(sAdm()?b('scc','# Create channel'):'')+b('smem','👥 Members')+b('sset','⚙️ Server settings')+(sRole()==='owner'?'':b('slv','🚪 Leave server')))}
+async function sInvite(){const{data,error}=await sb.from('server_invites').select('code,created_by,uses,max_uses,expires_at').eq('server_id',S.srv).eq('revoked',false).order('created_at',{ascending:false});const l=(data||[]).filter(x=>!x.expires_at||new Date(x.expires_at)>new Date());await prof(l.map(x=>x.created_by));
+ overlay(`<h3>Invite people</h3><label>Expires<select id="iex"><option value="0">Never</option><option value="30">30 minutes</option><option value="60">1 hour</option><option value="360">6 hours</option><option value="720">12 hours</option><option value="1440">1 day</option><option value="10080" selected>7 days</option></select></label><label>Max uses<select id="imx"><option value="0">Unlimited</option><option value="1">1</option><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="100">100</option></select></label><button data-a="sinc" data-keep="1">Create &amp; copy invite link</button>`+(l.length?'<small class="m">Active invites</small>'+l.map(x=>`<div class="row"><div class="g1"><b>${esc(x.code)}</b><br><small>by ${esc(P(x.created_by).display_name)} · ${x.uses}${x.max_uses?'/'+x.max_uses:''} uses · ${x.expires_at?'expires '+new Date(x.expires_at).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'never expires'}</small></div><button class="d" data-a="sirv" data-id="${x.code}" data-keep="1">Revoke</button></div>`).join(''):(error?'<p class="m">Invites need the server SQL to be run.</p>':'')))}
+function sChan(){overlay(`<h3>Create channel</h3><label>Name<input id="scn" maxlength="32" placeholder="new-channel"></label><label>Type<select id="sck"><option value="text">Text</option><option value="voice">Voice (coming soon)</option></select></label><label>Category<input id="scg" maxlength="32" placeholder="Text channels"></label><button data-a="scm" data-keep="1">Create</button>`)}
+async function sMembers(){const{data}=await sb.from('server_members').select('user_id,role').eq('server_id',S.srv);const m=data||[];await prof(m.map(x=>x.user_id));const o={owner:0,admin:1,mod:2,member:3},nm={owner:'👑 Owner',admin:'Admin',mod:'Moderator'};
+ overlay(`<h3>Members — ${m.length}</h3>`+m.sort((a,b)=>o[a.role]-o[b.role]).map(x=>{const u=P(x.user_id);return `<div class="row">${av(u)}<div class="g1"><b>${esc(u.display_name)}</b> ${nm[x.role]?`<span class="bdg">${nm[x.role]}</span>`:''}<br><small>@${esc(u.username)}</small></div></div>`}).join(''))}
+function sSettings(){const sv=S.srvs.find(x=>x.id===S.srv);overlay('<h3>Server settings</h3>'+(sAdm()?`<label>Name<input id="ssn" maxlength="40" value="${esc(sv.name)}"></label><label>Description<textarea id="ssd" rows="3" maxlength="200">${esc(sv.description||'')}</textarea></label><button data-a="ssv" data-keep="1">Save</button>`:'<p class="m">Only admins can change server settings.</p>')+`<p class="m">Type: ${sv.kind==='community'?'Community':'Private'}</p>`+(sRole()==='owner'?'<button class="d" data-a="sdel">Delete server</button>':''))}
+function sDelete(){const sv=S.srvs.find(x=>x.id===S.srv);overlay(`<h3>Delete “${esc(sv.name)}”?</h3><p class="m">This permanently deletes the server, its channels, messages and invites for everyone. It can’t be undone.</p><label>Type the server name to confirm<input id="sdn" autocomplete="off" placeholder="${esc(sv.name)}"></label><button class="d" id="sdb" data-a="sdc" data-keep="1" disabled>Delete forever</button>`)}
+async function joinPreview(code){try{const r=await R_('invite_preview',{p_code:code}),x=Array.isArray(r)?r[0]:r;if(!x||!x.valid)return toast('That invite is invalid or has expired.');
+ overlay(`<div style="text-align:center"><div class="rb on" style="margin:0 auto 8px;width:72px;height:72px;font-size:24px">${srvIcon(x)}</div><h3 style="margin:4px 0">${esc(x.name)}</h3><small class="m">${x.members} member${x.members===1?'':'s'} · ${x.kind==='community'?'Community':'Private'} server</small>${x.description?`<p>${esc(x.description)}</p>`:''}</div><button data-a="jn" data-id="${esc(code)}">Join server</button>`)}catch(e){fail(e)}}
+function checkJoin(){const m=location.hash.match(/join=([\w-]+)/);if(m)joinPreview(m[1])}
+const TPL={own:['➕','Create My Own','Text channels:general;Voice:~Lounge'],gaming:['🎮','Gaming','Information:welcome;Community:general,gaming,clips;Voice:~General Voice,~Gaming Voice'],friends:['👥','Friends','Text channels:general,memes,media;Voice:~Hangout'],community:['💬','Community','Information:welcome,rules,announcements;Community:general,media,suggestions;Voice:~General'],creator:['🎨','Creator','Information:welcome,announcements;Community:general,showcase,feedback;Voice:~Hangout'],study:['📚','Study','Information:welcome,announcements;Study:general,homework-help,resources;Voice:~Study Room'],org:['💼','Organization','Information:welcome,announcements;Team:general,projects,resources;Voice:~Meeting Room']};
+const tplCh=t=>TPL[t][2].split(';').flatMap(g=>{const[c,l]=g.split(':');return l.split(',').map(n=>n[0]==='~'?{name:n.slice(1),kind:'voice',category:c}:{name:n,kind:'text',category:c})});
+let W=null;
+function wzOpen(){W={step:0,name:'',desc:'',kind:'private',chs:[],icon:null,iu:null,tpl:'own'};wz()}
+function wz(){let d=$('#wz');if(!d){d=document.createElement('div');d.id='wz';document.body.appendChild(d)}const st=W.step,T=['Start','Details','Channels','Review'];let b='';
+ const nav=(nx,nl,x='')=>`<div class="wzn"><button class="g" data-a="${st?'wb':'wx'}">${st?'← Back':'Cancel'}</button><button id="wnx" data-a="${nx}" ${x}>${nl}</button></div>`;
+ if(st===0)b=`<h2>Create a server</h2><p class="m">Start from scratch or use a template.</p><div class="tg">${Object.entries(TPL).map(([k,v])=>`<button class="g" data-a="wt" data-id="${k}"><span style="font-size:26px">${v[0]}</span><br><b>${v[1]}</b></button>`).join('')}</div><h3>Have an invite?</h3><input id="wjc" placeholder="Paste an invite link or code" autocomplete="off"><button class="g" data-a="wjn">Join a server</button><div class="wzn"><button class="g" data-a="wx">Cancel</button></div>`;
+ else if(st===1)b=`<h2>Tell us about it</h2><label>Server name<input data-w="name" maxlength="40" value="${esc(W.name)}" placeholder="Chatterbox Gaming" autocomplete="off"></label><small id="wcn" class="m">${W.name.length}/40</small><label>Description (optional)<textarea data-w="desc" rows="2" maxlength="200" placeholder="A community for Roblox players, developers, and creators.">${esc(W.desc)}</textarea></label><div class="tg"><button class="g ${W.kind==='private'?'sel':''}" data-a="wk" data-id="private"><b>🔒 Private</b><br><small>Only people with an invite can join.</small></button><button class="g ${W.kind==='community'?'sel':''}" data-a="wk" data-id="community"><b>🌎 Community</b><br><small>For bigger groups, with extra moderation tools coming.</small></button></div><small class="m">You can change this later in Server settings.</small><h3>Icon (optional)</h3><div class="row"><div class="rb on" data-a="wip" role="button" style="width:64px;height:64px;font-size:22px">${W.iu?`<img src="${W.iu}" alt="">`:esc(ini(W.name)||'＋')}</div><button class="g" data-a="wip">${W.iu?'Replace':'Upload'}</button>${W.iu?'<button class="g" data-a="wir">Remove</button>':''}</div><input type="file" id="wic" accept="image/png,image/jpeg,image/webp,image/gif" hidden>${nav('wn','Next',W.name.trim()?'':'disabled')}`;
+ else if(st===2)b=`<h2>Channels</h2><p class="m">Rename, remove or add channels. You can change these any time.</p>`+W.chs.map((c,i)=>`<div class="row"><span>${c.kind==='voice'?'🔊':'#'}</span><input data-wc="${i}" maxlength="32" value="${esc(c.name)}" style="margin:0" aria-label="Channel name"><small class="m">${esc(c.category)}</small><button class="g" data-a="wcr" data-id="${i}" aria-label="Remove channel">✕</button></div>`).join('')+`<div class="row"><button class="g" data-a="wca" data-id="text">+ Text channel</button><button class="g" data-a="wca" data-id="voice">+ Voice channel</button></div>${nav('wn','Next')}`;
+ else if(st===3)b=`<h2>Review</h2><div class="row"><div class="rb on" style="width:56px;height:56px">${W.iu?`<img src="${W.iu}" alt="">`:esc(ini(W.name))}</div><div class="g1"><b>${esc(W.name)}</b><br><small>${W.kind==='community'?'🌎 Community':'🔒 Private'} server</small></div></div>${W.desc?`<p>${esc(W.desc)}</p>`:''}<h3>Channels</h3>${W.chs.map(c=>`<div>${c.kind==='voice'?'🔊':'#'} ${esc(chName(c.name,c.kind))}</div>`).join('')}<h3>Roles</h3><div>👑 Owner · 🛡️ Admin · 🔨 Moderator · 👥 Member</div><small class="m">You’ll be the owner. Everyone who joins starts as a Member.</small>${nav('wmk','Create server')}`;
+ else b=`<div style="text-align:center;padding-top:40px"><div style="font-size:64px">🎉</div><h2>Your server has been created!</h2><p class="m">Let’s get your community started.</p><button data-a="winv">Invite People</button><button class="g" data-a="wst">Start Chatting</button></div>`;
+ d.innerHTML=`<div class="wzb">${st<4?`<div class="wzs">${T.map((t,i)=>`<i class="${i<=st?'on':''}"></i>`).join('')}</div>`:''}${b}</div>`}
+document.addEventListener('input',e=>{const t=e.target;if(t.id==='sdn'){const sv=S.srvs.find(x=>x.id===S.srv),bt=$('#sdb');if(bt)bt.disabled=!(sv&&t.value===sv.name)}if(!W)return;if(t.dataset.w){W[t.dataset.w]=t.value;if(t.dataset.w==='name'){const c=$('#wcn'),n=$('#wnx'),i=document.querySelector('.rb.on[data-a="wip"]');if(c)c.textContent=t.value.length+'/40';if(n)n.disabled=!t.value.trim();if(i&&!W.iu)i.textContent=ini(t.value)||'＋'}}else if(t.dataset.wc!==undefined)W.chs[+t.dataset.wc].name=t.value});
+document.addEventListener('change',e=>{if(W&&e.target.id==='wic'&&e.target.files[0]){const f=e.target.files[0];if(!/^image\/(png|jpe?g|webp|gif)$/.test(f.type)||f.size>8e6)return toast('Use a PNG, JPG, WebP or GIF under 8 MB.');W.icon=f;W.iu=URL.createObjectURL(f);wz()}});
 
 /* live sync: backup for realtime (also catches up after the phone sleeps or loses signal) */
 let syncing=0;
@@ -332,7 +303,7 @@ setInterval(()=>{if(!S.me||document.hidden)return;tick++;
  else if(S.tab==='friends'&&tick%2===0&&!(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)))loadFr()},3000);
 const resync=()=>{if(!S.me||document.hidden)return;if(S.cv){syncMsgs();markRead()}else{loadConvs();if(S.tab==='friends')loadFr()}};
 document.addEventListener('visibilitychange',resync);window.addEventListener('online',resync);window.addEventListener('focus',resync);
-async function openConv(id){S.cv=S.convs.find(c=>c.id===id)||{id,peer:null};S.tab='chats';const{data,error}=await sb.from('dm_messages').select('*').eq('conversation_id',id).order('created_at',{ascending:false}).limit(100);if(error)return fail(error);
+async function openConv(id){S.cv=S.convs.find(c=>c.id===id)||(S.nx&&S.nx.id===id&&S.nx)||{id,peer:null};S.tab='chats';const{data,error}=await sb.from('dm_messages').select('*').eq('conversation_id',id).order('created_at',{ascending:false}).limit(100);if(error)return fail(error);
  S.msgs=(data||[]).reverse();await prof([S.cv.peer,...S.msgs.map(m=>m.sender_id)].filter(Boolean));render();markRead();S.rp=null;S.rx={};S.mem=[];Promise.all([loadRx(),loadSeen()]).then(r=>(r[0]||r[1])&&paintMsgs())}
 async function markRead(){if(!S.cv||!S.msgs.length||document.hidden)return;const t=S.msgs[S.msgs.length-1].created_at;const q=b=>sb.from('conversation_members').update(b).eq('conversation_id',S.cv.id).eq('user_id',S.me.id),rr=ST.rr!==false;const r=await q(rr?{last_read_at:t,seen_at:t}:{last_read_at:t});if(r.error&&rr)await q({last_read_at:t});const c=S.convs.find(x=>x.id===S.cv.id);if(c){c.un=false;paintList();paintNav()}}
 
@@ -350,49 +321,70 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
  else if(a==='blk'){if(!confirm('Block this person? This also removes them as a friend.'))return;const{error}=await sb.from('blocks').insert({blocker:S.me.id,blocked:id});if(error)throw error;await sb.from('friendships').delete().or(`and(requester.eq.${S.me.id},addressee.eq.${id}),and(requester.eq.${id},addressee.eq.${S.me.id})`);await loadFr()}
  else if(a==='unb'){const{error}=await sb.from('blocks').delete().eq('blocker',S.me.id).eq('blocked',id);if(error)throw error;await loadFr()}
  else if(a==='mn')menu(id);
- else if(a==='ci')showInfo('mem')
+ else if(a==='home'){S.srv=null;S.cv=null;render()}
+ else if(a==='srv'){S.srv=id;S.cv=null;S.tab='chats';render();await loadChannels(id);paintServer()}
+ else if(a==='och'){const c=Object.values(S.chs).flat().find(x=>x.id===id),sv=S.srvs.find(x=>x.id===S.srv);if(c){S.nx={id:c.conversation_id,kind:'channel',name:'#'+c.name,peer:null,sname:sv?sv.name:''};await openConv(c.conversation_id)}}
+ else if(a==='vc')toast('Voice channels are coming soon.')
+ else if(a==='smn')sMenu()
+ else if(a==='sinv')await sInvite()
+ else if(a==='sinc'){const f=x=>$(x).value,{error,data}=await sb.rpc('server_invite_create',{sid:S.srv,minutes:+f('#iex'),max_uses:+f('#imx')});if(error)throw error;try{await navigator.clipboard.writeText(invLink(data));toast('Invite link copied.')}catch(e){toast('Invite created.')}await sInvite()}
+ else if(a==='sirv'){const{error}=await sb.rpc('server_invite_revoke',{p_code:id});if(error)throw error;await sInvite()}
+ else if(a==='scc')sChan()
+ else if(a==='scm'){const n=$('#scn').value.trim(),k=$('#sck').value,{error}=await sb.rpc('create_channel',{sid:S.srv,p_name:chName(n,k),p_kind:k,p_category:$('#scg').value.trim()||(k==='voice'?'Voice':'Text channels')});if(error)throw error;closeMenu();await loadChannels(S.srv);paintServer()}
+ else if(a==='smem')await sMembers()
+ else if(a==='sset')sSettings()
+ else if(a==='ssv'){const{error}=await sb.rpc('server_update',{sid:S.srv,p_name:$('#ssn').value.trim(),p_desc:$('#ssd').value.trim()});if(error)throw error;closeMenu();toast('Saved.');await loadServers()}
+ else if(a==='sdel')sDelete()
+ else if(a==='sdc'){const sv=S.srvs.find(x=>x.id===S.srv);if(!sv||$('#sdn').value!==sv.name)return;if(!confirm('Last chance: permanently delete “'+sv.name+'”?'))return;const{error}=await sb.rpc('delete_server',{sid:sv.id,confirm_name:sv.name});if(error)throw error;closeMenu();S.srv=null;S.cv=null;await loadServers();render()}
+ else if(a==='slv'){if(!confirm('Leave this server?'))return;const{error}=await sb.rpc('leave_server',{sid:S.srv});if(error)throw error;S.srv=null;S.cv=null;await loadServers();render()}
+ else if(a==='jn'){const{data,error}=await sb.rpc('join_server',{p_code:id});if(error)throw error;closeMenu();history.replaceState(null,'',location.pathname);await loadServers();S.srv=data;S.cv=null;render();await loadChannels(data);paintServer()}
+ else if(a==='wx'){const d=$('#wz');if(d)d.remove();W=null}
+ else if(a==='wb'){W.step--;wz()}
+ else if(a==='wn'){if(W.step===1&&!/^[A-Za-z0-9 _.'&!-]{1,40}$/.test(W.name.trim()))return toast('Use letters, numbers and spaces in the server name.');W.step++;wz()}
+ else if(a==='wt'){W.tpl=id;W.chs=tplCh(id);W.step=1;wz()}
+ else if(a==='wk'){W.kind=id;wz()}
+ else if(a==='wip'){const f=$('#wic');if(f)f.click()}
+ else if(a==='wir'){W.icon=null;W.iu=null;wz()}
+ else if(a==='wca'){W.chs.push({name:id==='voice'?'Voice':'new-channel',kind:id,category:id==='voice'?'Voice':'Text channels'});wz()}
+ else if(a==='wcr'){W.chs.splice(+id,1);wz()}
+ else if(a==='wjn'){const m=($('#wjc').value||'').match(/([A-Za-z0-9_-]{6,})\s*$/);if(!m)return toast('Paste an invite link or code.');joinPreview(m[1])}
+ else if(a==='wmk'){const chs=W.chs.map(c=>({...c,name:chName(c.name,c.kind)})).filter(c=>c.name),{data,error}=await sb.rpc('create_server',{p_name:W.name.trim(),p_desc:W.desc.trim(),p_kind:W.kind,p_chans:chs});if(error)throw error;
+  if(W.icon){try{const path=`${S.me.id}/srv-${data}-${Math.random().toString(36).slice(2,8)}-${W.icon.name.replace(/[^\w.\-]+/g,'_')}`,u=await sb.storage.from('chat-files').upload(path,W.icon,{contentType:W.icon.type});if(u.error)throw u.error;await sb.rpc('server_set_icon',{sid:data,p_url:sb.storage.from('chat-files').getPublicUrl(path).data.publicUrl})}catch(e){toast('Server created, but the icon didn’t upload.')}}
+  await loadServers();W.step=4;W.sid=data;wz()}
+ else if(a==='wst'){const sid=W.sid,d=$('#wz');if(d)d.remove();W=null;S.srv=sid;S.cv=null;render();await loadChannels(sid);paintServer();const c=(S.chs[sid]||[]).find(x=>x.kind==='text');if(c)await ((a2)=>{S.nx={id:c.conversation_id,kind:'channel',name:'#'+c.name,peer:null,sname:(S.srvs.find(x=>x.id===sid)||{}).name};return openConv(c.conversation_id)})()}
+ else if(a==='winv'){S.srv=W.sid;const d=$('#wz');if(d)d.remove();W=null;S.cv=null;render();await loadChannels(S.srv);paintServer();await sInvite()}
+ else if(a==='ci'){if(S.cv.kind==='group')await loadGroup();showInfo('mem')}
+ else if(a==='gmm')gMenu(id)
+ else if(a==='gadd')gAdd()
+ else if(a==='gset')gSet()
+ else if(a==='gsr')await gAct('group_set_role',{uid:id,new_role:t.dataset.r})
+ else if(a==='gtr')await gAct('group_transfer',{uid:id},'Make this person the owner? You’ll become an admin.')
+ else if(a==='grm')await gAct('group_remove',{uid:id},'Remove this person from the group?')
+ else if(a==='gdm'){const{data,error}=await sb.rpc('start_dm',{other:id});if(error)throw error;const d=$('#inf');if(d)d.remove();await loadConvs();await openConv(data)}
+ else if(a==='glv'){if(!confirm('Leave this group?'))return;const{error}=await sb.rpc('group_leave',{cid:S.cv.id});if(error)throw error;await gExit()}
+ else if(a==='gdel'){if(!confirm('Delete this group and all its messages for everyone?'))return;const{error}=await sb.rpc('group_delete',{cid:S.cv.id});if(error)throw error;closeMenu();await gExit()}
+ else if(a==='gadk'){const ids=[...document.querySelectorAll('.gck:checked')].map(x=>x.value);if(!ids.length)return toast('Pick at least one friend.');const{error}=await sb.rpc('group_add',{cid:S.cv.id,uids:ids});if(error)throw error;closeMenu();await gRefresh()}
+ else if(a==='gsv'){const q=x=>$(x)?$(x).value:null;let r;if($('#gsn')){r=await sb.rpc('group_update',{cid:S.cv.id,new_name:q('#gsn').trim(),new_desc:q('#gsd').trim()});if(r.error)throw r.error}if($('#gpi')){r=await sb.rpc('group_settings',{cid:S.cv.id,p_invite:q('#gpi'),p_rename:q('#gpr')});if(r.error)throw r.error}closeMenu();toast('Saved.');await gRefresh()}
  else if(a==='it')showInfo(id)
  else if(a==='ix'){const d=$('#inf');if(d)d.remove()}
  else if(a==='ij'){const d=$('#inf');if(d)d.remove();jump(id)}
  else if(a==='ng')groupDlg(id)
  else if(a==='gmk'){const ids=[...document.querySelectorAll('.gck:checked')].map(x=>x.value);if(!ids.length)return toast('Pick at least one friend.');const gn=$('#gn'),nm=(gn&&gn.value||'').trim().slice(0,40),{data,error}=await sb.rpc('create_group',{group_name:nm,member_ids:ids});if(error)throw error;closeMenu();const d=$('#inf');if(d)d.remove();await loadConvs();await openConv(data)}
- else if(a==='gjc')overlay('<h3>Join a group</h3><input id="gjcode" placeholder="Invite code or link" autocomplete="off" autocapitalize="none"><button data-a="gjn" data-keep="1">Join</button>')
- else if(a==='gjn'){const v=($('#gjcode')||{}).value||'',c=(v.match(/join=([a-z0-9]+)/i)||[0,v.trim()])[1];if(!c)return toast('Enter an invite code.');await joinCode(c);closeMenu()}
- else if(a==='gin')await gInv();
- else if(a==='gnc'){const h=($('#inh')||{}).value,u=($('#inu')||{}).value,{error}=await sb.rpc('gc_invite_create',{cid:S.cv.id,p_name:($('#inn')||{}).value||'',hours:h?+h:null,p_max:u?+u:null});if(error)throw error;S.audFor=null;await gInv()}
- else if(a==='gic'){const l=location.origin+location.pathname+'?join='+id;try{await navigator.clipboard.writeText(l);toast('Link copied.')}catch(e){prompt('Copy this link',l)}}
- else if(a==='gir'){if(!confirm('Revoke this invite link?'))return;const{error}=await sb.rpc('gc_invite_revoke',{invite_id:id});if(error)throw error;S.audFor=null;await gInv()}
- else if(a==='gmd')gMedia();
- else if(a==='gst')await gSet();
- else if(a==='gjs'){const{error}=await sb.rpc('gc_set_join_mode',{cid:S.cv.id,mode:($('#gjm')||{}).value});if(error)throw error;await gref();toast('Saved.')}
- else if(a==='grq'){const{error}=await sb.rpc('gc_request_resolve',{req:id,approve:t.dataset.v==='1'});if(error)throw error;await gref();await gSet()}
- else if(a==='gub'){const{error}=await sb.rpc('gc_unban',{cid:S.cv.id,uid:id});if(error)throw error;await gSet()}
- else if(a==='gbn'){if(!confirm('Ban this person? They will be removed and cannot rejoin.'))return;await grpc('gc_ban',{uid:id})}
- else if(a==='gnt')gNtf();
- else if(a==='gnn'){const{error}=await mine({notify:t.dataset.v});if(error)throw error;await gref();gNtf()}
- else if(a==='gmu'){const h=+t.dataset.h,{error}=await mine({muted_until:h===0?null:h<0?'9999-12-31T00:00:00Z':new Date(Date.now()+h*36e5).toISOString()});if(error)throw error;await gref();gNtf()}
- else if(a==='grn'){const v=prompt('Group name',S.cv.name||'');if(v!==null)await grpc('group_rename',{new_name:v})}
- else if(a==='gds'){const v=prompt('Group description',S.cv.description||'');if(v!==null)await grpc('group_set_description',{new_desc:v})}
- else if(a==='gad'){const have=new Set(S.mem.map(x=>x.user_id)),fs=S.fr.filter(r=>r.status==='accepted').map(r=>r.requester===S.me.id?r.addressee:r.requester).filter(i=>!have.has(i));overlay('<h3>Add people</h3>'+(fs.length?fs.map(i=>{const u=P(i);return `<label class="row" style="cursor:pointer">${av(u)}<div class="g1"><b>${esc(u.display_name)}</b> <small>@${esc(u.username)}</small></div><input type="checkbox" class="gck" value="${i}" style="width:auto;margin:0"></label>`}).join('')+'<button data-a="gam" data-keep="1">Add to group</button>':'<p class="m">All your friends are already in this group.</p>'))}
- else if(a==='gam'){const ids=[...document.querySelectorAll('.gck:checked')].map(x=>x.value);if(!ids.length)return toast('Pick at least one friend.');await grpc('group_add_members',{uids:ids})}
- else if(a==='gmm'){const x=S.mem.find(m=>m.user_id===id),u=P(id);overlay(`<h3>${esc(u.display_name)}</h3>`+(gR()==='owner'?(x.role==='admin'?`<button class="g" data-a="gsa" data-id="${id}" data-v="0" data-keep="1">Remove admin</button>`:`<button class="g" data-a="gsa" data-id="${id}" data-v="1" data-keep="1">Make admin</button>`)+`<button class="g" data-a="gtr" data-id="${id}" data-keep="1">Transfer ownership</button>`:'')+`<button class="d" data-a="grm" data-id="${id}" data-keep="1">Remove from group</button><button class="d" data-a="gbn" data-id="${id}" data-keep="1">Ban from group</button>`)}
- else if(a==='gsa')await grpc('group_set_admin',{uid:id,make_admin:t.dataset.v==='1'});
- else if(a==='gtr'){if(!confirm('Make this person the owner? You will become an admin.'))return;await grpc('group_transfer',{uid:id})}
- else if(a==='grm'){if(!confirm('Remove this person from the group?'))return;await grpc('group_remove_member',{uid:id})}
- else if(a==='glv'){if(!confirm('Leave this group?'))return;const{error}=await sb.rpc('group_leave',{cid:S.cv.id});if(error)throw error;const d=$('#inf');if(d)d.remove();S.cv=null;render();loadConvs()}
- else if(a==='gdl'){if(!confirm('Delete this group for everyone? This can’t be undone.'))return;const{error}=await sb.rpc('group_delete',{cid:S.cv.id});if(error)throw error;const d=$('#inf');if(d)d.remove();S.cv=null;render();loadConvs()}
  else if(a==='sn')snList(id);
  else if(a==='plus')overlay(`<button class="g" data-a="pk" data-id="media">🖼️ Photos &amp; videos</button><button class="g" data-a="pk" data-id="cam">📷 Take a photo</button><button class="g" data-a="pk" data-id="file">📄 Files</button>`)
  else if(a==='pk'){const f=$('#fi');if(f){f.accept=id==='file'?'':'image/*,video/*';if(id==='cam')f.setAttribute('capture','environment');else f.removeAttribute('capture');f.click()}}
  else if(a==='img')viewer(t.dataset.u)
  else if(a==='cpu'){try{await navigator.clipboard.writeText(t.dataset.u);toast('Link copied.')}catch(x){toast('Couldn’t copy in this browser.')}}
  else if(a==='emo'){S.eo=!S.eo;paintEmo()}
+ else if(a==='pt'){S.pt=id;paintEmo()}
+ else if(a==='gc'){S.gs=id;S.gq=id==='__recent'?'':id;paintEmo()}
+ else if(a==='gif'){const x=(S.gl||[])[+t.dataset.i];if(!x||!S.cv)return;try{localStorage.setItem('cb-gifs',JSON.stringify([x,...gifRecent().filter(y=>y.u!==x.u)].slice(0,12)))}catch(e){}const{error}=await sb.from('dm_messages').insert({conversation_id:S.cv.id,sender_id:S.me.id,body:'',attachments:[{url:x.u,name:(x.t||'GIF').slice(0,60)+'.gif',type:'image/gif',kind:'image',gif:true}],...(S.rp?{reply_to:S.rp.id}:{})});if(error)throw error;S.rp=null;paintRp();S.eo=false;paintEmo();syncMsgs()}
  else if(a==='ec'){S.ec=id;paintEmo()}
  else if(a==='ei'){const i=$('#mi'),e=t.dataset.e;if(i){const s0=i.selectionStart==null?i.value.length:i.selectionStart,s1=i.selectionEnd==null?s0:i.selectionEnd;i.value=i.value.slice(0,s0)+e+i.value.slice(s1);try{i.setSelectionRange(s0+e.length,s0+e.length)}catch(x){}toggleSend()}try{localStorage.setItem('cb-recent',JSON.stringify([e,...JSON.parse(localStorage.getItem('cb-recent')||'[]').filter(x=>x!==e)].slice(0,16)))}catch(x){}}
  else if(a==='mic')micStart()
  else if(a==='mics'){if(rec)rec.mr.stop()}
  else if(a==='micx'){if(rec){rec.cancel=true;rec.mr.stop()}}
- else if(a==='srvn')toast('Servers aren’t built into this version yet.');
+ else if(a==='srvn')wzOpen();
  else if(a==='lsr'){S.ls=!S.ls;S.lq='';const w=$('#lqw');if(w)w.innerHTML=S.ls?'<input id="lq" placeholder="Search conversations" autocomplete="off" aria-label="Search conversations">':'';const i=$('#lq');if(i)i.focus();paintList()}
  else if(a==='lun'){S.lu=!S.lu;const b=$('#lun');if(b)b.classList.toggle('on',S.lu);paintList()}
  else if(a==='mx'){}
@@ -447,7 +439,7 @@ function paintSet(){if(S.tab!=='settings')return;const l=$('#scl'),t=$('#sth');i
 async function estimate(){const e=$('#r-est');if(!e)return;try{const s=await navigator.storage.estimate(),f=n=>n>1e6?(n/1e6).toFixed(1)+' MB':Math.round(n/1e3)+' KB';e.textContent='Using '+f(s.usage||0)+' of '+f(s.quota||0)+' on this device.'}catch(x){e.textContent='Storage details aren’t available in this browser.'}}
 function beep(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=880;g.gain.value=.08;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.12)}catch(e){}}
 async function notifyMsg(p){if(p.eventType!=='INSERT'||!p.new||!S.me||p.new.sender_id===S.me.id)return;const r=p.new;
- if(S.cv&&S.cv.id===r.conversation_id&&!document.hidden&&S.tab==='chats')return;if(!ST.n.on||!ST.n.dm||S.me.status==='dnd')return;{const mc=S.convs.find(c=>c.id===r.conversation_id);if(mc&&(mc.notify==='none'||(mc.muted_until&&new Date(mc.muted_until)>new Date())||(mc.notify==='mentions'&&!new RegExp('@'+S.me.username+'\\b','i').test(r.body||''))))return}
+ if(S.cv&&S.cv.id===r.conversation_id&&!document.hidden&&S.tab==='chats')return;if(!ST.n.on||!ST.n.dm||S.me.status==='dnd')return;
  if(ST.n.sound)beep();if(!('Notification' in window)||Notification.permission!=='granted')return;await prof([r.sender_id]);
  try{new Notification(ST.n.preview?P(r.sender_id).display_name:'Chatterbox',{body:ST.n.preview?String(r.body).slice(0,120):'New message',tag:'cb-'+r.conversation_id})}catch(e){}}
 document.addEventListener('click',async e=>{
@@ -530,11 +522,11 @@ async function edFile(kk,file){const er=t=>{const e=$('#ferr-'+kk);if(e)e.textCo
  try{const r=await procImg(file,kk);if(!E)return;const m=E[kk];if(m.bu)URL.revokeObjectURL(m.bu);m.bu=URL.createObjectURL(r.blob);Object.assign(m,{src:m.bu,file:r.blob,mime:r.mime,gif:r.gif,crop:{z:1,x:50,y:50},up:null,removed:false});E.dirty=true;E.err=null;edPaint()}
  catch(err){er(err.message||'Couldn’t use that file.')}}
 const upErr=m=>Object.assign(Error(m),{up:true});
-function upload(path,blob,mime,onp,bk='profile-media'){return new Promise(async(res,rej)=>{const{data:{session}}=await sb.auth.getSession();if(!session)return rej(upErr('You’re signed out. Log in again, then retry.'));
+function upload(path,blob,mime,onp){return new Promise(async(res,rej)=>{const{data:{session}}=await sb.auth.getSession();if(!session)return rej(upErr('You’re signed out. Log in again, then retry.'));
  const x=new XMLHttpRequest(),fd=new FormData();fd.append('cacheControl','31536000');fd.append('',new File([blob],'upload',{type:mime}));
- x.open('POST',`${SUPABASE_URL}/storage/v1/object/${bk}/${path}`);x.setRequestHeader('Authorization','Bearer '+session.access_token);x.setRequestHeader('apikey',SUPABASE_KEY);x.setRequestHeader('x-upsert','true');x.timeout=180000;
+ x.open('POST',`${SUPABASE_URL}/storage/v1/object/profile-media/${path}`);x.setRequestHeader('Authorization','Bearer '+session.access_token);x.setRequestHeader('apikey',SUPABASE_KEY);x.setRequestHeader('x-upsert','true');x.timeout=180000;
  x.upload.onprogress=e=>{if(e.lengthComputable)onp(e.loaded/e.total)};
- x.onload=()=>{if(x.status>=200&&x.status<300)return res(`${SUPABASE_URL}/storage/v1/object/public/${bk}/${path}`);let m='';try{m=JSON.parse(x.responseText).message||''}catch(e){}
+ x.onload=()=>{if(x.status>=200&&x.status<300)return res(`${SUPABASE_URL}/storage/v1/object/public/profile-media/${path}`);let m='';try{m=JSON.parse(x.responseText).message||''}catch(e){}
   rej(upErr(/bucket not found/i.test(m)?'Picture storage isn’t set up yet. The app owner needs to run the profile SQL migration.':x.status===413?'That file is too large for the server.':/row-level|policy|unauthorized|403/i.test(m+x.status)?'You’re not allowed to upload right now. Log in again and retry.':'Upload failed'+(m?': '+m:'. Check your connection and retry.')))};
  x.onerror=()=>rej(upErr('Network error during upload. Check your connection and retry.'));x.ontimeout=()=>rej(upErr('The upload timed out. Retry.'));x.send(fd)})}
 const perr=e=>{const m=(e&&e.message)||'',c=e&&e.code;if(e&&e.up)return m;if(c==='42501'||/permission denied/i.test(m))return 'The database doesn’t allow this change yet. The app owner needs to run the “permissions” part of the profile SQL (profile_customization.sql).';if(c==='23505')return 'That username is taken.';if(c==='PGRST204'||c==='42703'||/schema cache|column/i.test(m))return 'Profile customization isn’t set up in the database yet. The app owner needs to run the profile SQL migration.';if(c==='23514')return 'The database rejected one of the values. Check your links and details.';return authMsg(e)};
@@ -592,25 +584,25 @@ addEventListener('beforeunload',e=>{if(E&&E.dirty){e.preventDefault();e.returnVa
 /* ---------- views ---------- */
 function render(){const app=$('#app');if(!S.me){app.innerHTML=authView();return}
  if(S.mode==='newpw'){app.innerHTML=authView();return}
- app.innerHTML=`<div class="shell"><main id="main"></main><nav class="nav">${[['chats','chat','Chats'],['friends','users','Friends'],['profile','user','Profile'],['settings','sliders','Settings']].map(([k,i,l])=>`<button data-a="tab" data-id="${k}" class="${S.tab===k?'on':''}" aria-label="${l}" title="${l}">${k==='profile'?`<span class="nav-av">${av(S.me)}<i class="sd s-${S.me.status||'online'}"></i></span>`:I(i,26)}<span id="b-${k}" class="nb"></span></button>`).join('')}</nav></div>`;
+ app.innerHTML=`<div class="shell"><main id="main"></main><nav class="nav">${[['chats','💬 Chats'],['friends','👥 Friends'],['profile','👤 Profile'],['settings','⚙️ Settings']].map(([k,l])=>`<button data-a="tab" data-id="${k}" class="${S.tab===k?'on':''}">${l} <span id="b-${k}"></span></button>`).join('')}</nav></div>`;
  const m=$('#main');
- if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" aria-label="Servers"><button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i><button class="rb" data-a="srvn" aria-label="Add a server" title="Add a server">${I('plus')}</button></aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread()}
+ if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" aria-label="Servers">${railIn()}</aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread()}
  else if(S.tab==='friends'){m.innerHTML='<div class="pg" id="fr"></div>';paintFr()}
  else if(S.tab==='settings'){paintSettings()}
  else m.innerHTML=`<div class="pg">${pcard(S.me,pmedia(S.me))}<p></p><button style="width:100%" data-ped>✏️ Edit Profile</button><div class="card" style="margin-top:12px"><form id="pf"><label for="pst">Status</label><select id="pst">${['online','idle','dnd','invisible'].map(x=>`<option ${S.me.status===x?'selected':''} value="${x}">${{online:'Online',idle:'Idle',dnd:'Do Not Disturb',invisible:'Invisible'}[x]}</option>`).join('')}</select><button style="width:100%">Save status</button></form></div><p class="m" style="font-size:13px">ID ${esc(S.me.user_code)}</p><button class="d" data-a="out" style="width:100%">Log out</button></div>`;
  paintNav()}
-function paintNav(){const u=S.convs.filter(c=>c.un).length,r=S.fr.filter(x=>x.status==='pending'&&x.addressee===S.me.id).length;document.title=(ST.n.badge&&u?'('+u+') ':'')+'Chatterbox';try{if(navigator.setAppBadge)ST.n.badge&&u?navigator.setAppBadge(u):navigator.clearAppBadge()}catch(e){}const a=$('#b-chats'),b=$('#b-friends');if(a)a.innerHTML=ST.n.badge&&u?'<i class="dot"></i>':'';if(b)b.innerHTML=r||''}
+function paintNav(){const u=S.convs.filter(c=>c.un).length,r=S.fr.filter(x=>x.status==='pending'&&x.addressee===S.me.id).length;document.title=(ST.n.badge&&u?'('+u+') ':'')+'Chatterbox';try{if(navigator.setAppBadge)ST.n.badge&&u?navigator.setAppBadge(u):navigator.clearAppBadge()}catch(e){}const a=$('#b-chats'),b=$('#b-friends');if(a)a.innerHTML=ST.n.badge&&u?'<i class="dot"></i>':'';if(b)b.innerHTML=r?`(${r})`:''}
 document.addEventListener('input',e=>{if(e.target.id==='lq'){S.lq=e.target.value;paintList()}});
-function paintList(){const l=$('#cl');if(!l)return;
- if(!l.querySelector('.mh'))l.innerHTML=`<h2 class="mh">Messages</h2><div class="tb"><button class="g" data-a="lsr" aria-label="Search conversations">${I('search',20)}</button><button class="g ${S.lu?'on':''}" id="lun" data-a="lun" aria-label="Show unread only">${I('mail',20)}<b id="uc">0</b></button><button class="g" data-a="tab" data-id="friends">${I('userplus',20)}Add friends</button><button class="g" data-a="gjc">${I('link',20)}Join group</button></div><div id="lqw">${S.ls?`<input id="lq" value="${esc(S.lq||'')}" placeholder="Search conversations" autocomplete="off" aria-label="Search conversations">`:''}</div><div id="rows"></div>`;
+function paintList(){const l=$('#cl');if(!l)return;if(S.srv){paintServer();return}
+ if(!l.querySelector('.mh'))l.innerHTML=`<h2 class="mh">Messages</h2><div class="tb"><button class="g" data-a="lsr" aria-label="Search conversations">🔍</button><button class="g ${S.lu?'on':''}" id="lun" data-a="lun" aria-label="Show unread only">✉️ <b id="uc">0</b></button><button class="g" data-a="tab" data-id="friends">👤 Add Friends</button></div><div id="lqw">${S.ls?`<input id="lq" value="${esc(S.lq||'')}" placeholder="Search conversations" autocomplete="off" aria-label="Search conversations">`:''}</div><div id="rows"></div>`;
  const uc=$('#uc');if(uc)uc.textContent=S.convs.filter(c=>c.un).length;
  const q=(S.lq||'').toLowerCase();let cs=S.convs;if(S.lu)cs=cs.filter(c=>c.un);if(q)cs=cs.filter(c=>{const p=P(c.peer);return (p.display_name+' '+p.username+' '+(c.name||'')).toLowerCase().includes(q)});
- $('#rows').innerHTML=`<div class="ci" data-a="svl"><span class="av q">${I('bookmark')}</span><b>Saved messages</b></div><div class="ci" data-a="ng"><span class="av q">${I('users')}</span><b>New group</b></div>`+(cs.length?cs.map(c=>{const p=P(c.peer);return `<div class="ci ${S.cv&&S.cv.id===c.id?'on':''} ${c.un?'un':''}" data-a="open" data-id="${c.id}">${c.kind==='group'?'<div class="av gr">'+I('users',24)+'</div>':av(p)}<div class="g1" style="flex:1;min-width:0"><b>${esc(c.kind==='group'?(c.name||'Group chat'):p.display_name)}</b> ${c.un?'<i class="dot"></i>':''}<div class="m t" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><small>${c.last?(c.last.sender_id===S.me.id?'You: ':'')+(ST.lp?esc(c.last.body||'📎 Attachment'):'Message'):'No messages yet'}</small></div></div><small>${c.last?tm(c.last.created_at):''}</small></div>`}).join(''):`<div class="empty">${S.lu?'No unread conversations.':q?'No matches.':'No conversations yet.<br>Add a friend, then tap Message.'}</div>`)}
-function paintThread(){const t=$('#th');if(!t)return;if(!S.cv){t.innerHTML='<div class="empty" style="margin:auto">Select a conversation</div>';return}const p=P(S.cv.peer),g=S.cv.kind==='group',title=g?(S.cv.name||'Group chat'):p.display_name,sub=g?(S.cv.n||S.mem.length||'')+' members':(p.custom_status||'@'+p.username);
- t.innerHTML=`<div class="hd"><button class="g bk" data-a="back" aria-label="Back">${I('back')}</button><span role="button" tabindex="0" data-a="ci" aria-label="Conversation info" style="display:flex;gap:10px;align-items:center;cursor:pointer">${g?'<div class="av gr">'+I('users',24)+'</div>':av(p)}<div><b>${esc(title)}</b><br><small>${esc(sub)}</small></div></span></div><div id="pnb"></div><div id="ml" role="log" ${ST.sr?'aria-live="polite"':''}></div><div id="upb"></div><div id="rpb"></div><div id="emp" hidden></div><form class="cmp" id="mf"><div class="pill"><button type="button" class="ib" data-a="plus" aria-label="Attach files">${I('plus')}</button>${ST.enter?`<input id="mi" placeholder="Message ${g?esc(title):'@'+esc(p.username)}" maxlength="2000" autocomplete="off" aria-label="Message">`:`<textarea id="mi" rows="2" placeholder="Message ${g?esc(title):'@'+esc(p.username)}" maxlength="2000" aria-label="Message"></textarea>`}<button type="button" class="ib" data-a="emo" aria-label="Emoji">${I('smile')}</button><button type="button" class="ib" id="mic" data-a="mic" aria-label="Record voice message">${I('mic')}</button><button class="ib snd" id="snd" aria-label="Send" hidden>${I('send',20)}</button></div></form><input type="file" id="fi" multiple hidden>`;S.eo=false;paintMsgs(true);paintRp();toggleSend();paintRec()}
+ $('#rows').innerHTML=`<div class="ci" data-a="svl"><span class="av" style="background:var(--card)">🔖</span><b>Saved messages</b></div><div class="ci" data-a="ng"><span class="av" style="background:var(--card)">👥</span><b>New group</b></div>`+(cs.length?cs.map(c=>{const p=P(c.peer);return `<div class="ci ${S.cv&&S.cv.id===c.id?'on':''}" data-a="open" data-id="${c.id}">${c.kind==='group'?'<div class="av" style="background:var(--ac)">👥</div>':av(p)}<div class="g1" style="flex:1;min-width:0"><b>${esc(c.kind==='group'?(c.name||'Group chat'):p.display_name)}</b> ${c.un?'<i class="dot"></i>':''}<div class="m t" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><small>${c.last?(c.last.sender_id===S.me.id?'You: ':'')+(ST.lp?esc(c.last.body||'📎 Attachment'):'Message'):'No messages yet'}</small></div></div><small>${c.last?tm(c.last.created_at):''}</small></div>`}).join(''):`<div class="empty">${S.lu?'No unread conversations.':q?'No matches.':'No conversations yet.<br>Add a friend, then tap Message.'}</div>`)}
+function paintThread(){const t=$('#th');if(!t)return;if(!S.cv){t.innerHTML='<div class="empty" style="margin:auto">Select a conversation</div>';return}const p=P(S.cv.peer),g=S.cv.kind==='group',ch=S.cv.kind==='channel',title=ch?S.cv.name:g?(S.cv.name||'Group chat'):p.display_name,sub=ch?(S.cv.sname||''):g?(S.cv.n||S.mem.length||'')+' members':(p.custom_status||'@'+p.username);
+ t.innerHTML=`<div class="hd"><button class="g bk" data-a="back" aria-label="Back">←</button><span role="button" tabindex="0" data-a="${ch?'':'ci'}" aria-label="Conversation info" style="display:flex;gap:10px;align-items:center;cursor:pointer">${ch?'<div class="av">#</div>':g?'<div class="av" style="background:var(--ac)">👥</div>':av(p)}<div><b>${esc(title)}</b><br><small>${esc(sub)}</small></div></span></div><div id="pnb"></div><div id="ml" role="log" ${ST.sr?'aria-live="polite"':''}></div><div id="upb"></div><div id="rpb"></div><div id="emp" hidden></div><form class="cmp" id="mf"><div class="pill"><button type="button" class="ib" data-a="plus" aria-label="Attach files">＋</button>${ST.enter?`<input id="mi" placeholder="Message ${g||ch?esc(title):'@'+esc(p.username)}" maxlength="2000" autocomplete="off" aria-label="Message">`:`<textarea id="mi" rows="2" placeholder="Message ${g||ch?esc(title):'@'+esc(p.username)}" maxlength="2000" aria-label="Message"></textarea>`}<button type="button" class="ib" data-a="emo" aria-label="Emoji">😊</button><button type="button" class="ib" id="mic" data-a="mic" aria-label="Record voice message">🎤</button><button class="ib snd" id="snd" aria-label="Send" hidden>➤</button></div></form><input type="file" id="fi" multiple hidden>`;S.eo=false;paintMsgs(true);paintRp();toggleSend();paintRec()}
 function paintMsgs(force){const l=$('#ml');if(!l)return;const end=force||l.scrollHeight-l.scrollTop-l.clientHeight<90;
  const si=seenInfo();l.innerHTML=S.msgs.length?S.msgs.map((m,i)=>{const pv=S.msgs[i-1],f=!pv||pv.sender_id!==m.sender_id||new Date(m.created_at)-new Date(pv.created_at)>3e5||!!m.reply_to,u=P(m.sender_id),fl=[m.pinned_at?'📌':'',S.sv.has(m.id)?'🔖':'',m.edited_at&&ST.edited?'edited':''].filter(Boolean).join(' · ');
-  return `<div class="msg ${f?'f':''} ${m.sender_id===S.me.id?'me':''}" id="m-${m.id}"><div class="mav">${f?`<span class="pvl" data-pv="${m.sender_id}" role="button" tabindex="0">${av(u)}</span>`:''}</div><div class="mc">${f?`<div class="mn"><b>${esc(u.display_name)}</b> <small>${ST.ts?tm(m.created_at):''}</small></div>`:''}${m.body||m.reply_to?`<div class="bub" data-a="mn" data-id="${m.id}">${rq(m)}${esc(m.body)}</div>`:`<span class="act" data-a="mn" data-id="${m.id}">⋯</span>`}${atc(m)}${rxs(m)}${fl?`<small>${fl}</small>`:''}${sr(m,si)}</div></div>`}).join(''):'<div class="empty">No messages yet. Say hi!</div>';const pb=$('#pnb'),pn=S.msgs.filter(m=>m.pinned_at).sort((a,b)=>new Date(b.pinned_at)-new Date(a.pinned_at));if(pb)pb.innerHTML=pn.length?`<div class="pnb" style="width:100%" data-a="jmp" data-id="${pn[0].id}">📌 ${pn.length>1?pn.length+' pinned · ':''}${esc((pn[0].body||'📎 Attachment').slice(0,70))} <small>· pinned by ${esc(P(pn[0].pinned_by).display_name)}, ${new Date(pn[0].pinned_at).toLocaleDateString()}</small></div>`:'';if(end)l.scrollTop=l.scrollHeight}
+  return `<div class="msg ${f?'f':''}" id="m-${m.id}"><div class="mav">${f?`<span class="pvl" data-pv="${m.sender_id}" role="button" tabindex="0">${av(u)}</span>`:''}</div><div class="mc">${f?`<div class="mn"><b>${esc(u.display_name)}</b> <small>${ST.ts?tm(m.created_at):''}</small></div>`:''}${m.body||m.reply_to?`<div class="bub" data-a="mn" data-id="${m.id}">${rq(m)}${esc(m.body)}</div>`:`<span class="act" data-a="mn" data-id="${m.id}">⋯</span>`}${atc(m)}${rxs(m)}${fl?`<small>${fl}</small>`:''}${sr(m,si)}</div></div>`}).join(''):'<div class="empty">No messages yet. Say hi!</div>';const pb=$('#pnb'),pn=S.msgs.filter(m=>m.pinned_at).sort((a,b)=>new Date(b.pinned_at)-new Date(a.pinned_at));if(pb)pb.innerHTML=pn.length?`<div class="pnb" style="width:100%" data-a="jmp" data-id="${pn[0].id}">📌 ${pn.length>1?pn.length+' pinned · ':''}${esc((pn[0].body||'📎 Attachment').slice(0,70))} <small>· pinned by ${esc(P(pn[0].pinned_by).display_name)}, ${new Date(pn[0].pinned_at).toLocaleDateString()}</small></div>`:'';if(end)l.scrollTop=l.scrollHeight}
 function paintFr(){const f=$('#fr');if(!f)return;const me=S.me.id,oth=r=>r.requester===me?r.addressee:r.requester,row=(id,acts)=>{const p=P(id);return `<div class="row"><span class="pvl" data-pv="${id}" role="button" tabindex="0" aria-label="View profile">${av(p)}</span><div class="g1 pvl" data-pv="${id}" role="button" tabindex="0"><div class="t"><b>${esc(p.display_name)}</b> <small>@${esc(p.username)}</small></div>${p.custom_status?`<small>${esc(p.custom_status)}</small>`:''}</div>${acts}</div>`};
  const inc=S.fr.filter(r=>r.status==='pending'&&r.addressee===me),out=S.fr.filter(r=>r.status==='pending'&&r.requester===me),fs=S.fr.filter(r=>r.status==='accepted');
  f.innerHTML=`<h2>Friends</h2><div class="card"><form id="sf"><label for="sq">Find people by username or ID</label><input id="sq" value="${esc(S.q)}" placeholder="username or CB12345678" autocapitalize="none"><button style="width:100%">Search</button></form>${S.res.map(p=>row(p.id,S.fr.some(r=>oth(r)===p.id)?'<small>Already connected</small>':S.bl.some(b=>b.blocked===p.id)?'':`<button data-a="add" data-id="${p.id}">Add</button>`)).join('')}</div>
@@ -618,307 +610,4 @@ function paintFr(){const f=$('#fr');if(!f)return;const me=S.me.id,oth=r=>r.reque
  ${out.length?`<div class="card"><h3>Sent</h3>${out.map(r=>row(r.addressee,`<button class="g" data-a="del" data-id="${r.id}">Cancel</button>`)).join('')}</div>`:''}
  <div class="card"><h3>All friends (${fs.length})</h3>${fs.length?fs.map(r=>row(oth(r),`<button data-a="dm" data-id="${oth(r)}">Message</button><button class="g" data-a="blk" data-id="${oth(r)}">Block</button><button class="d" data-a="del" data-id="${r.id}" data-c="Remove this friend?">Remove</button>`)).join(''):'<div class="empty">No friends yet. Search above to add someone.</div>'}</div>
  ${S.bl.length?`<div class="card"><h3>Blocked</h3>${S.bl.map(b=>row(b.blocked,`<button class="g" data-a="unb" data-id="${b.blocked}">Unblock</button>`)).join('')}</div>`:''}`}
-</script>
-<style>
-.svid{width:auto;height:auto;max-width:100%;max-height:50vh;border-radius:14px;margin-top:8px}
-.vw{position:relative;width:fit-content;max-width:100%;margin:0 auto}.vw video{display:block;width:auto;height:auto;max-width:100%;max-height:50vh;margin:0 auto;border-radius:14px;object-fit:contain}.vw small{display:block;margin-top:4px}
-.fsb{position:absolute;top:14px;right:6px;min-height:0;height:34px;padding:0 12px;border-radius:99px;display:flex;align-items:center;gap:6px;background:#000a;color:#fff;font-size:13px;backdrop-filter:blur(6px)}
-.vw.fs{position:fixed;inset:0;z-index:100;max-width:none;width:auto;margin:0;background:#000;display:flex;align-items:center;justify-content:center}
-.vw.fs video,.gv .vw.fs video{width:100%;height:100%;max-height:none;max-width:none;margin:0;border-radius:0;object-fit:contain;background:#000}
-#call.hv .av{width:72px;height:72px;font-size:30px}#call.hv h2{font-size:22px;margin-top:6px}
-.vw.fs small{position:absolute;left:14px;top:calc(18px + env(safe-area-inset-top));margin:0;background:#000a;padding:4px 10px;border-radius:99px;color:#fff}
-.vw.fs .fsb{top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right))}
-#call.grp{justify-content:flex-start;padding-top:72px;overflow:auto}
-.gp{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;max-width:440px;margin-top:10px}.gt{display:flex;flex-direction:column;align-items:center;gap:6px;width:88px;position:relative;font-size:13px}.gt .av{width:68px;height:68px;font-size:26px;box-shadow:none;transition:box-shadow .12s}.gt.spk .av{box-shadow:0 0 0 4px #22c55e}.gt svg{position:absolute;right:6px;top:44px;background:#ef4444;border-radius:50%;padding:3px;width:22px;height:22px}
-.gv{display:flex;flex-direction:column;gap:10px;width:100%;max-width:520px;align-items:center;margin-top:8px}.gv video{max-height:40vh}
-#call.min .gp,#call.min .gv,#call.min .vw{display:none}#call.grp.min{overflow:visible;padding-top:8px}
-.gbn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;background:color-mix(in srgb,var(--ac) 18%,var(--bg));font-size:14px}.gbn span{display:flex;gap:8px;align-items:center}.gbn button{min-height:34px;padding:4px 16px;border-radius:99px;background:#22c55e}
-.clog{display:flex;align-items:center;gap:16px;background:var(--card);border-radius:18px;padding:14px 16px;margin:10px 0}.clog .g1{flex:1;min-width:0}.clog b{font-size:17px;display:block}.clog .g1>div{color:var(--mute);font-size:14px}.clog .av{width:42px;height:42px;font-size:17px}
-.clog .cli{color:var(--mute);display:grid;place-items:center;width:30px}.clog.miss .cli{color:#f08080}.clog.miss .cli svg{transform:rotate(135deg)}
-#cpop{position:fixed;z-index:95;left:50%;top:calc(10px + env(safe-area-inset-top));transform:translateX(-50%);width:min(92vw,420px);box-shadow:0 14px 40px #000a;animation:cpin .25s ease-out}#cpop .clog{margin:0;border:1px solid var(--line)}
-@keyframes cpin{from{transform:translate(-50%,-30px);opacity:0}}
-.bdgw{display:inline-flex;gap:3px;margin-left:6px;vertical-align:middle}
-.bdgc{min-height:0;width:22px;height:22px;padding:0;border-radius:7px;font-size:13px;line-height:1;display:inline-grid;place-items:center;background:color-mix(in srgb,var(--bc) 22%,var(--card));border:1px solid color-mix(in srgb,var(--bc) 55%,transparent)}
-.bdgc.off{background:linear-gradient(145deg,#1d4ed8,#0b1a3d);border-color:#60a5fa;box-shadow:0 0 8px #3b82f655}
-.bdgl .bdgc{width:30px;height:30px;font-size:17px;border-radius:9px}.bdgl{margin:8px 0 0;display:flex;gap:6px;flex-wrap:wrap}
-.cbtn{margin-left:auto;width:42px;min-height:42px;padding:0;display:grid;place-items:center;border-radius:50%}
-.cbtn svg{stroke:currentColor}
-#call{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px calc(24px) calc(24px + env(safe-area-inset-bottom));background:radial-gradient(700px 500px at 50% 0,#1d4ed855,transparent),#050a18;color:#fff}
-#call .av{width:132px;height:132px;font-size:52px;box-shadow:0 0 0 6px #3b82f633,0 0 60px #3b82f655}
-#call h2{font-size:28px;margin:14px 0 0}#cst{color:#9db4e6}#ct{font-variant-numeric:tabular-nums;font-size:20px;min-height:28px}
-.cacts{display:flex;gap:22px;margin-top:34px;align-items:center}
-.cb{width:68px;height:68px;min-height:0;padding:0;border-radius:50%;display:grid;place-items:center;background:#16233f;color:#fff}.cb.on{background:#fff;color:#0b1a3d}.cb.red{background:#ef4444}.cb.grn{background:#22c55e}.cb.red svg{transform:rotate(135deg)}
-#call.min{inset:auto 10px auto 10px;top:calc(8px + env(safe-area-inset-top));bottom:auto;flex-direction:row;padding:8px 12px;border-radius:18px;background:#0b1a3d;border:1px solid #1d4ed8;gap:12px;justify-content:space-between}
-#call.min .av,#call.min h2{display:none}#call.min #cmn{display:none}#call.min #cmx{display:inline-grid}#call.min .cacts{margin:0;gap:8px}#call.min .cb{width:40px;height:40px}#call.min #cst{font-size:14px}#call.min #ct{font-size:15px;min-height:0}
-.cm{position:absolute;top:calc(14px + env(safe-area-inset-top));left:14px;width:42px;height:42px;min-height:0;padding:0;border-radius:50%;background:#16233f;display:grid;place-items:center}
-#call.min .cm{display:none}#cmx{display:none;cursor:pointer;flex:1;text-align:left;background:none;padding:0;min-height:0}
-.cdlg{position:fixed;inset:0;z-index:99;background:#000a;display:grid;place-items:center;padding:20px}.cbx{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;max-width:360px;width:100%}.cb2{display:flex;gap:8px;justify-content:flex-end}
-</style>
-<script>
-(()=>{
-IC.phonew='<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2zM15 3a6 6 0 0 1 6 6M15 7a2 2 0 0 1 2 2"/>';
-IC.full='<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>';IC.exit='<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>';
-IC.screen='<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 21h8M12 16v5"/>';
-IC.phone='<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>';
-IC.micoff='<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 11 5.7M19 11M12 18v3M3 3l18 18"/>';
-IC.down='<path d="m6 9 6 6 6-6"/>';IC.shield='<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/>';
-const R=async(n,a)=>{const{data,error}=await sb.rpc(n,a);if(error)throw error;return data};
-const dt=d=>d?new Date(d).toLocaleString([],{dateStyle:'medium',timeStyle:'short'}):'';
-let ROLE='user',BC={},C=null,subUid=null,CH=null,au=null;
-/* ---------- badges ---------- */
-const chip=(b,u)=>`<button type="button" class="bdgc${b.badges.official&&b.badge_key==='beta_tester'?' off':''}" data-c="bd" data-k="${esc(b.badge_key)}" data-u="${u}" aria-label="${esc(b.badges.name)}" style="--bc:${esc(b.badges.color)}">${esc(b.badges.icon)}</button>`;
-const wrap=(u,cls='bdgw')=>(BC[u]||[]).length?`<span class="${cls}">${BC[u].map(b=>chip(b,u)).join('')}</span>`:'';
-async function loadB(ids){const m=[...new Set(ids)].filter(i=>i&&!BC[i]);if(!m.length)return false;m.forEach(i=>BC[i]=[]);const{data}=await sb.from('user_badges').select('user_id,badge_key,badges(name,description,icon,color,official)').in('user_id',m).eq('hidden',false);(data||[]).forEach(r=>r.badges&&BC[r.user_id].push(r));return !!(data&&data.length)}
-function injMsgs(){document.querySelectorAll('#ml .msg.f').forEach(el=>{if(el.querySelector('.bdgw'))return;const m=S.msgs.find(x=>'m-'+x.id===el.id),b=el.querySelector('.mn b');if(m&&b)b.insertAdjacentHTML('afterend',wrap(m.sender_id))})}
-function injProf(){if(S.tab==='profile'&&S.me){const h=document.querySelector('.pg .pn');if(h&&!h.nextElementSibling?.classList.contains('bdgl'))h.insertAdjacentHTML('afterend',wrap(S.me.id,'bdgl'))}
- if(S.pv){const h=document.querySelector('#pov .pn');if(h&&!h.nextElementSibling?.classList.contains('bdgl'))h.insertAdjacentHTML('afterend',wrap(S.pv,'bdgl'))}}
-const hook=(n,f)=>{const o=window[n];window[n]=function(...a){const r=o.apply(this,a);try{f(...a)}catch(e){console.error(e)}return r}};
-hook('paintMsgs',()=>{injMsgs();injCalls();S.cv&&loadCalls(S.cv.id).then(c=>c&&injCalls());loadB(S.msgs.map(m=>m.sender_id)).then(c=>c&&injMsgs())});
-hook('paintPv',()=>{if(S.pv){injProf();loadB([S.pv]).then(c=>c&&injProf())}});
-hook('paintThread',()=>{const h=document.querySelector('#th .hd'),g=S.cv&&S.cv.kind==='group';if(h&&S.cv&&(g||S.cv.peer)&&!h.querySelector('.cbtn'))h.insertAdjacentHTML('beforeend',`<button type="button" class="g cbtn" data-c="${g?'gjoin':'call'}" aria-label="${g?'Start or join group voice call':'Start voice call'}">${I('phone',20)}</button>`);if(g)gBanner()});
-hook('render',()=>{if(S.tab==='profile')decor()});
-async function decor(){const pg=document.querySelector('.pg');if(!pg||!S.me)return;await loadB([S.me.id]);injProf();if(pg.querySelector('#ext'))return;
- const[{data:mb},{data:nt}]=await Promise.all([sb.from('user_badges').select('badge_key,hidden,awarded_at,badges(name,icon,description)').eq('user_id',S.me.id),sb.from('notifications').select('id,body,read,created_at').order('created_at',{ascending:false}).limit(6)]);
- if(!document.querySelector('.pg')||pg.querySelector('#ext'))return;
- const x=document.createElement('div');x.id='ext';x.innerHTML=`
- <div class="card" style="margin-top:12px"><h3>Voice calls</h3><label for="cp" class="m">Who can call you</label><select id="cp" data-c="cp"><option value="everyone">Everyone</option><option value="friends">Friends only</option><option value="none">No one</option></select><small class="m">Microphone access is requested by your browser when you start or answer a call.</small></div>
- ${(mb||[]).length?`<div class="card"><h3>Your badges</h3>${mb.map(r=>`<label class="srow"><span style="font-size:20px">${esc(r.badges.icon)}</span><span class="g1"><b>${esc(r.badges.name)}</b><br><small class="m">${esc(r.badges.description)}</small></span><span class="sw"><input type="checkbox" data-c="bh" data-k="${esc(r.badge_key)}" ${r.hidden?'':'checked'} aria-label="Show ${esc(r.badges.name)} on profile"><i></i></span></label>`).join('')}</div>`:''}
- <div class="card"><h3>Notifications</h3>${(nt||[]).length?nt.map(n=>`<div class="srow"><span class="g1">${n.read?'':'<i class="dot"></i> '}${esc(n.body)}<br><small class="m">${dt(n.created_at)}</small></span></div>`).join(''):'<p class="m">Nothing new.</p>'}</div>`;
- pg.insertBefore(x,pg.querySelector('button.d'));x.querySelector('#cp').value=S.me.call_pref||'everyone';
- if((nt||[]).some(n=>!n.read))sb.from('notifications').update({read:true}).eq('read',false).then(()=>{})}
-const ask=m=>new Promise(r=>{const d=document.createElement('div');d.className='cdlg';d.setAttribute('role','alertdialog');d.setAttribute('aria-modal','true');d.innerHTML=`<div class="cbx"><p>${esc(m)}</p><div class="cb2"><button class="g" data-r="0">Cancel</button><button data-r="1">Confirm</button></div></div>`;d.onclick=e=>{const b=e.target.closest('[data-r]');if(!b&&e.target!==d)return;d.remove();r(!!b&&b.dataset.r==='1')};document.body.appendChild(d);d.querySelector('[data-r="1"]').focus()});
-/* ---------- call log cards ---------- */
-const CL={};
-const dur=ms=>{const t=Math.max(0,Math.round(ms/1e3));if(t<60)return'a few seconds';const m=Math.round(t/60);if(m<60)return m===1?'a minute':m+' minutes';const h=Math.round(m/60);return h===1?'an hour':h+' hours'};
-const stamp=d=>new Date(d).toLocaleString([],{year:'2-digit',month:'numeric',day:'numeric',hour:'numeric',minute:'2-digit'});
-function kind(r){const out=r.caller===S.me.id,end=new Date(r.ended_at||r.created_at);
- if(r.status==='ended')return['Call Ended',dur(end-new Date(r.answered_at||r.created_at)),0];
- const d=dur(end-new Date(r.created_at));
- if(r.status==='missed'||r.status==='cancelled')return[out?(r.status==='missed'?'No Answer':'Call Cancelled'):'Missed Call',d,1];
- return[out?'Call Declined':'Declined Call',d,1]}
-const cardHTML=(t,sub,when,peer,miss)=>`<div class="clog${miss?' miss':''}"><span class="cli">${I(miss?'phone':'phonew',30)}</span><div class="g1"><b>${esc(t)}</b><div>${esc(sub)} — ${esc(when)}</div></div>${av(P(peer))}</div>`;
-async function loadCalls(cv){if(CL[cv])return false;CL[cv]=[];const{data}=await sb.from('calls').select('id,caller,callee,status,created_at,answered_at,ended_at').eq('conversation_id',cv).in('status',['ended','missed','cancelled','declined']).order('created_at').limit(50);CL[cv]=data||[];return CL[cv].length>0}
-function injCalls(){const l=$('#ml');if(!l||!S.cv)return;const near=l.scrollHeight-l.scrollTop-l.clientHeight<200;l.querySelectorAll('.clog').forEach(x=>x.remove());const cs=CL[S.cv.id]||[];if(!cs.length)return;const e=l.querySelector('.empty');if(e)e.remove();
- const els=[...l.querySelectorAll('.msg')].map(el=>({el,t:new Date((S.msgs.find(m=>'m-'+m.id===el.id)||{}).created_at||0)}));
- cs.forEach(r=>{const[t,sub,miss]=kind(r),peer=r.caller===S.me.id?r.callee:r.caller,when=new Date(r.ended_at||r.created_at),h=document.createElement('div');h.innerHTML=cardHTML(t,sub,stamp(when),peer,miss);const n=els.find(x=>x.t>when);n?l.insertBefore(h.firstChild,n.el):l.appendChild(h.firstChild)});if(near)l.scrollTop=l.scrollHeight}
-function popCard(r,peer){const o=$('#cpop');if(o)o.remove();const[t,sub,miss]=kind(r),d=document.createElement('div');d.id='cpop';d.setAttribute('role','status');d.innerHTML=cardHTML(t,sub,stamp(r.ended_at||r.created_at),peer,miss);d.onclick=()=>d.remove();document.body.appendChild(d);setTimeout(()=>d.remove(),6500)}
-function endCard(c,msg){const n=new Date(),now=n.toISOString(),ago=x=>new Date(n-x).toISOString(),me=S.me.id;let r;
- if(c.up&&c.t0)r={status:'ended',caller:c.dir==='out'?me:c.peer,callee:c.dir==='out'?c.peer:me,answered_at:new Date(c.t0).toISOString(),ended_at:now,created_at:now};
- else if(/Missed/.test(msg))r={status:'missed',caller:c.peer,created_at:ago(5e3),ended_at:now};
- else if(/No answer/.test(msg))r={status:'missed',caller:me,created_at:ago(45e3),ended_at:now};
- else if(/declined/.test(msg))r={status:'declined',caller:me,created_at:ago(5e3),ended_at:now};
- else if(/Call ended/.test(msg))r={status:'cancelled',caller:me,created_at:ago(5e3),ended_at:now};
- else return toast(msg);popCard(r,c.peer)}
-/* ---------- calls ---------- */
-const nm=id=>P(id).display_name||P(id).username;
-async function mic(){if(!navigator.mediaDevices||!window.RTCPeerConnection){toast('This browser does not support voice calls.');return null}
- try{return await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}})}catch(e){toast(e.name==='NotAllowedError'?'Microphone access is blocked. Allow it for this site in your browser or iPhone Settings, then try again.':'No microphone was found.');return null}}
-const sig=(kind,payload)=>sb.from('call_signals').insert({call_id:C.id,sender:S.me.id,kind,payload}).then(({error})=>error&&console.error(error));
-const SHARE=!!(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia),ICE={iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']}]};
-function peer(send,polite,stream,onTrack,onState){const pc=new RTCPeerConnection(ICE),p={pc,making:false,ign:false,q:Promise.resolve()};stream.getTracks().forEach(t=>pc.addTrack(t,stream));
- pc.onicecandidate=e=>e.candidate&&send('ice',e.candidate.toJSON());
- pc.onnegotiationneeded=async()=>{try{p.making=true;await pc.setLocalDescription();send('offer',pc.localDescription.toJSON())}catch(e){console.error(e)}finally{p.making=false}};
- pc.ontrack=onTrack;pc.onconnectionstatechange=()=>onState(pc.connectionState);
- const run=async(k,d)=>{try{if(k==='ice'){try{await pc.addIceCandidate(d)}catch(e){if(!p.ign)console.error(e)}return}
-  const col=d.type==='offer'&&(p.making||pc.signalingState!=='stable');p.ign=!polite&&col;if(p.ign)return;await pc.setRemoteDescription(d);
-  if(d.type==='offer'){await pc.setLocalDescription();send('answer',pc.localDescription.toJSON())}}catch(e){console.error(e)}};
- p.handle=(k,d)=>{p.q=p.q.then(()=>run(k,d))};return p}
-const addShare=(pc,d)=>d.getTracks().map(t=>pc.addTrack(t,d));
-const dropShare=(pc,a)=>(a||[]).forEach(x=>{try{pc.removeTrack(x)}catch(e){}});
-async function getShare(){const o={video:true};
- try{return await navigator.mediaDevices.getDisplayMedia({...o,audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}})}
- catch(e){if(e.name==='NotAllowedError'||e.name==='AbortError')throw e;return await navigator.mediaDevices.getDisplayMedia(o)}}
-/* audio from each remote stream: first stream = mic, the rest = screen-share audio */
-function rAudio(m,first,stream,mic){const id=stream.id;let a=m[id];
- if(!a){if(!Object.keys(m).length&&first)a=first;else{a=document.createElement('audio');a.autoplay=true;a.setAttribute('playsinline','');document.body.appendChild(a);a.dataset.x=1}m[id]=a}
- a.srcObject=stream;a.play().catch(()=>{});return a}
-function xClean(m,keep){for(const k in m){const a=m[k];if(a!==keep&&a.dataset&&a.dataset.x){a.srcObject=null;a.remove()}delete m[k]}}
-function mkpc(){const p=peer(sig,C.dir==='in',C.stream,e=>{if(e.track.kind==='audio'){C.am=C.am||{};const st=e.streams[0]||new MediaStream([e.track]);rAudio(C.am,au,st);e.track.onmute=()=>{const a=C&&C.am&&C.am[st.id];if(a&&a.dataset.x)a.pause()};e.track.onunmute=()=>{const a=C&&C.am&&C.am[st.id];if(a)a.play().catch(()=>{})}}else{e.track.onunmute=()=>{C.vs=new MediaStream([e.track]);ui()};e.track.onmute=()=>{C.vs=null;ui()}}},s=>{if(!C)return;if(s==='connected'){C.up=1;C.t0=C.t0||Date.now();C.st='Connected'}else if(s==='connecting')C.st='Connecting…';else if(s==='disconnected')C.st='Reconnecting…';else if(s==='failed')return fin('Connection lost.',true);upd()});C.p=p;C.pc=p.pc;return p}
-async function dShare(){if(!C||!C.pc)return;if(C.share){C.share.getTracks().forEach(t=>t.stop());C.share=null;dropShare(C.pc,C.sn);C.sn=null;ui();return}
- try{const d=await getShare(),t=d.getVideoTracks()[0];C.share=d;C.sn=addShare(C.pc,d);t.onended=()=>C.share===d&&dShare();ui()}catch(e){if(e.name!=='NotAllowedError')toast('Couldn’t start screen sharing.')}}
-async function startCall(){if(C||G)return toast('You are already in a call.');if(0)return toast('You are already in a call.');if(!S.cv||!S.cv.peer)return;const s=await mic();if(!s)return;
- try{const id=await R('start_call',{conv:S.cv.id});C={id,conv:S.cv.id,peer:S.cv.peer,dir:'out',stream:s,st:'Ringing…'};ui();C.to=setTimeout(()=>{if(C&&C.id===id&&!C.up)fin('No answer.',false,'missed')},45000)}catch(e){s.getTracks().forEach(t=>t.stop());toast(e.message||'Couldn’t start the call.')}}
-async function incoming(r){if(C||G){R('call_respond',{cid:r.id,act:'decline'}).catch(()=>{});return}await prof([r.caller]);C={id:r.id,conv:r.conversation_id,peer:r.caller,dir:'in',st:'Incoming voice call'};ui();if(document.hidden&&window.Notification&&Notification.permission==='granted')try{new Notification(nm(r.caller)+' is calling you')}catch(e){}}
-async function accept(){const s=await mic();if(!s)return fin('',false,'decline');C.stream=s;try{await R('call_respond',{cid:C.id,act:'accept'});C.st='Connecting…';mkpc();upd()}catch(e){fin(e.message,false)}}
-async function onCall(r){if(!C||r.id!==C.id)return;
- if(r.status==='active'&&C.dir==='out'&&!C.pc){C.st='Connecting…';upd();mkpc()}
- else if(['declined','cancelled','missed','ended'].includes(r.status)){const w={declined:'Call declined.',cancelled:'Missed call.',missed:'Missed call.',ended:'Call ended.'}[r.status];fin(w,false)}}
-async function onSig(r){if(!C||r.call_id!==C.id||r.sender===S.me.id)return;const p=C.p||(C.stream?mkpc():null);if(p)p.handle(r.kind,r.payload)}
-function fin(msg,tell,act){const c=C;if(!c)return;C=null;fsLeave();clearTimeout(c.to);clearInterval(c.tm);
- if(tell||act){const a=act||(c.up||c.pc?'end':c.dir==='out'?'cancel':'decline');R('call_respond',{cid:c.id,act:a}).catch(()=>{})}
- c.share&&c.share.getTracks().forEach(t=>t.stop());try{c.pc&&c.pc.close()}catch(e){}c.stream&&c.stream.getTracks().forEach(t=>t.stop());au.srcObject=null;c.am&&xClean(c.am,au);const o=$('#call');if(o)o.remove();if(msg)endCard(c,msg);if(c.conv){delete CL[c.conv];setTimeout(()=>{S.cv&&S.cv.id===c.conv&&window.paintMsgs()},900)}}
-const fsb=(on,u)=>`<button class="fsb" data-c="fs" data-u="${u}" aria-label="${on?'Exit full screen':'Full screen'}">${I(on?'exit':'full',20)}<span>${on?'Exit':'Full screen'}</span></button>`;
-const isFS=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
-function fsLeave(){try{if(isFS()){const r=(document.exitFullscreen||document.webkitExitFullscreen).call(document);r&&r.catch&&r.catch(()=>{})}}catch(e){}}
-function fsDrop(s){s.fs=null;fsLeave()}
-function fsToggle(u){const s=G||C;if(!s)return;const o=$('#call');if(!o)return;
- if(s.fs){fsDrop(s)}else{s.fs=G?u:true;o.classList.remove('min');try{const r=o.requestFullscreen||o.webkitRequestFullscreen;const p=r&&r.call(o);p&&p.catch&&p.catch(()=>{})}catch(e){}}
- G?gui():ui()}
-document.addEventListener('fullscreenchange',()=>{const s=G||C;if(s&&s.fs&&!isFS()){s.fs=null;G?gui():ui()}});
-document.addEventListener('webkitfullscreenchange',()=>{const s=G||C;if(s&&s.fs&&!isFS()){s.fs=null;G?gui():ui()}});
-document.addEventListener('keydown',e=>{const s=G||C;if(e.key==='Escape'&&s&&s.fs&&!isFS()){s.fs=null;G?gui():ui()}});
-document.addEventListener('dblclick',e=>{const v=e.target.closest&&e.target.closest('.vw video');if(v&&(G||C))fsToggle(v.dataset.vu||'')});
-function ui(){if(C&&C.fs&&!C.vs)fsDrop(C);let o=$('#call');if(!o){o=document.createElement('div');o.id='call';o.setAttribute('role','dialog');o.setAttribute('aria-label','Voice call');document.body.appendChild(o)}
- const inc=C.dir==='in'&&!C.pc;o.innerHTML=`<button class="cm" data-c="min" aria-label="Minimize call">${I('down',22)}</button><button id="cmx" data-c="max" aria-label="Expand call"><b>${esc(nm(C.peer))}</b><br><span id="cst2"></span></button>${av(P(C.peer))}<h2>${esc(nm(C.peer))}</h2><div id="cst" role="status" aria-live="polite"></div><div id="ct"></div><div class="vw${C.fs?' fs':''}" id="cvw" hidden><video id="cvid" class="svid" playsinline autoplay muted></video>${fsb(C.fs,'')}</div>
- <div class="cacts">${inc?`<button class="cb red" data-c="dec" aria-label="Decline">${I('phone',28)}</button><button class="cb grn" data-c="acc" aria-label="Accept">${I('phone',28)}</button>`:`<button class="cb ${C.muted?'on':''}" data-c="mute" aria-pressed="${!!C.muted}" aria-label="${C.muted?'Unmute microphone':'Mute microphone'}">${I(C.muted?'micoff':'mic',28)}</button>${SHARE?`<button class="cb ${C.share?'on':''}" data-c="share" aria-pressed="${!!C.share}" aria-label="${C.share?'Stop sharing screen':'Share screen'}">${I('screen',28)}</button>`:''}<button class="cb red" data-c="end" aria-label="${C.up?'End call':'Cancel call'}">${I('phone',28)}</button>`}</div>`;o.classList.remove('grp');o.classList.toggle('hv',!!C.vs);const v=$('#cvid');if(v&&C.vs){v.srcObject=C.vs;$('#cvw').hidden=false;v.play().catch(()=>{})}upd();clearInterval(C.tm);C.tm=setInterval(upd,1000)}
-function upd(){if(!C)return;const s=$('#cst'),t=$('#ct'),s2=$('#cst2');let tx=C.st;if(C.up&&C.t0){const d=Math.floor((Date.now()-C.t0)/1e3),f=`${String(Math.floor(d/60)).padStart(2,'0')}:${String(d%60).padStart(2,'0')}`;if(t)t.textContent=f;tx=C.st+(C.muted?' · Muted':'')+' · '+f}if(s)s.textContent=C.st+(C.muted?' · Muted':'');if(s2)s2.textContent=tx;
- if(C.dir==='in'&&C.pc&&$('#call [data-c=acc]'))ui()}
-/* ---------- group calls ---------- */
-let G=null;
-async function gBanner(){const cv=S.cv;if(!cv||cv.kind!=='group')return;const{data}=await sb.from('group_calls').select('id,group_call_members(user_id,left_at)').eq('conversation_id',cv.id).is('ended_at',null).maybeSingle();const o=$('#gbn');if(o)o.remove();if(!data||!S.cv||S.cv.id!==cv.id||(G&&G.id===data.id))return;const n=data.group_call_members.filter(x=>!x.left_at).length,ml=$('#ml');if(n&&ml)ml.insertAdjacentHTML('beforebegin',`<div class="gbn" id="gbn" role="status"><span>${I('phone',18)} Voice call in progress · ${n} in call</span><button data-c="gjoin">Join</button></div>`)}
-async function joinGroup(){if(C||G)return toast('You are already in a call.');if(!S.cv||S.cv.kind!=='group')return;const s=await mic();if(!s)return;
- try{const d=await R('join_group_call',{conv:S.cv.id});G={id:d.id,conv:S.cv.id,title:S.cv.name||'Group chat',stream:s,peers:{},m:{},sn:{},lv:{},ac:new(window.AudioContext||window.webkitAudioContext)()};G.ac.resume().catch(()=>{});
-  await prof(d.participants);d.participants.forEach(gPeer);watch(S.me.id,s);await gRefresh();G.tm=setInterval(gSpeak,200);gBanner()}catch(e){s.getTracks().forEach(t=>t.stop());G=null;toast(e.message||'Couldn’t join the call.')}}
-function watch(u,st){if(!G)return;try{const an=G.ac.createAnalyser();an.fftSize=256;G.ac.createMediaStreamSource(st).connect(an);G.lv[u]=an}catch(e){}}
-function gSpeak(){if(!G)return;for(const u in G.lv){const b=new Uint8Array(256);G.lv[u].getByteTimeDomainData(b);let m=0;for(const x of b)m=Math.max(m,Math.abs(x-128));const el=document.querySelector(`.gt[data-u="${u}"]`);if(el)el.classList.toggle('spk',m>12&&!(u===S.me.id&&G.muted)&&!(G.m[u]&&G.m[u].muted))}}
-function gPeer(u){if(!G)return;if(G.peers[u])return G.peers[u];const id=G.id,send=(k,pl)=>sb.from('group_signals').insert({call_id:id,sender:S.me.id,receiver:u,kind:k,payload:pl}).then(({error})=>error&&console.error(error));
- const p=peer(send,S.me.id>u,G.stream,e=>{if(!G||!G.peers[u])return;if(e.track.kind==='audio'){const pp=G.peers[u],st=e.streams[0]||new MediaStream([e.track]);pp.am=pp.am||{};if(!pp.au){pp.au=document.createElement('audio');pp.au.autoplay=true;pp.au.setAttribute('playsinline','');document.body.appendChild(pp.au)}const isMic=!Object.keys(pp.am).length;rAudio(pp.am,pp.au,st);if(isMic)watch(u,st);e.track.onmute=()=>{const a=pp.am[st.id];if(a&&a.dataset.x)a.pause()};e.track.onunmute=()=>{const a=pp.am[st.id];if(a)a.play().catch(()=>{})}}else{e.track.onunmute=()=>{if(G&&G.peers[u]){G.peers[u].vs=new MediaStream([e.track]);gui()}};e.track.onmute=()=>{if(G&&G.peers[u]){G.peers[u].vs=null;gui()}}}},st=>{if(st==='failed')gDrop(u)});
- G.peers[u]=p;if(G.share)G.sn[u]=addShare(p.pc,G.share);return p}
-function gDrop(u){if(!G||!G.peers[u])return;const p=G.peers[u];try{p.pc.close()}catch(e){}if(p.am)xClean(p.am);if(p.au){p.au.srcObject=null;p.au.remove()}delete G.peers[u];delete G.lv[u];delete G.sn[u];gui()}
-async function gRefresh(){if(!G)return;const id=G.id,{data}=await sb.from('group_call_members').select('user_id,muted').eq('call_id',id).is('left_at',null);if(!G||G.id!==id)return;G.m={};(data||[]).forEach(r=>G.m[r.user_id]=r);await prof(Object.keys(G.m));for(const u in G.peers)if(!G.m[u])gDrop(u);gui()}
-function gui(){if(!G)return;let o=$('#call');const min=o&&o.classList.contains('min');if(!o){o=document.createElement('div');o.id='call';o.setAttribute('role','dialog');o.setAttribute('aria-label','Group voice call');document.body.appendChild(o)}
- const ids=[S.me.id,...Object.keys(G.m).filter(u=>u!==S.me.id)],vids=Object.keys(G.peers).filter(u=>G.peers[u].vs);if(G.fs&&!vids.includes(G.fs))fsDrop(G);
- o.className='grp'+(min&&!G.fs?' min':'');o.innerHTML=`<button class="cm" data-c="min" aria-label="Minimize call">${I('down',22)}</button><button id="cmx" data-c="max" aria-label="Expand call"><b>${esc(G.title)}</b><br><span>${ids.length} in call${G.muted?' · Muted':''}</span></button><h2>${esc(G.title)}</h2><div id="cst" role="status" aria-live="polite">${ids.length} in call${G.share?' · You’re sharing your screen':''}</div>
- <div class="gp">${ids.map(u=>`<div class="gt" data-u="${u}">${av(P(u))}<span>${esc(u===S.me.id?'You':nm(u))}</span>${(u===S.me.id?G.muted:(G.m[u]||{}).muted)?I('micoff',16):''}</div>`).join('')}</div>
- <div class="gv">${vids.map(u=>`<div class="vw${G.fs===u?' fs':''}"><video data-vu="${u}" playsinline autoplay muted></video><small>${esc(nm(u))} is sharing their screen</small>${fsb(G.fs===u,u)}</div>`).join('')}</div>
- <div class="cacts"><button class="cb ${G.muted?'on':''}" data-c="gmute" aria-pressed="${!!G.muted}" aria-label="${G.muted?'Unmute microphone':'Mute microphone'}">${I(G.muted?'micoff':'mic',28)}</button>${SHARE?`<button class="cb ${G.share?'on':''}" data-c="share" aria-pressed="${!!G.share}" aria-label="${G.share?'Stop sharing screen':'Share screen'}">${I('screen',28)}</button>`:''}<button class="cb red" data-c="gleave" aria-label="Leave call">${I('phone',28)}</button></div>`;
- vids.forEach(u=>{const v=o.querySelector(`video[data-vu="${u}"]`);if(v){v.srcObject=G.peers[u].vs;v.play().catch(()=>{})}})}
-function gMute(){if(!G)return;G.muted=!G.muted;G.stream.getAudioTracks().forEach(t=>t.enabled=!G.muted);R('group_call_mute',{cid:G.id,m:G.muted}).catch(()=>{});gui()}
-async function gShare(){if(!G)return;if(G.share){G.share.getTracks().forEach(t=>t.stop());for(const u in G.sn){if(G.peers[u])dropShare(G.peers[u].pc,G.sn[u])}G.share=null;G.sn={};gui();return}
- try{const d=await getShare(),t=d.getVideoTracks()[0];G.share=d;G.sn={};for(const u in G.peers)G.sn[u]=addShare(G.peers[u].pc,d);t.onended=()=>G&&G.share===d&&gShare();gui()}catch(e){if(e.name!=='NotAllowedError')toast('Couldn’t start screen sharing.')}}
-function gLeave(msg){const g=G;if(!g)return;G=null;fsLeave();clearInterval(g.tm);for(const u in g.peers){try{g.peers[u].pc.close()}catch(e){}const a=g.peers[u].au;if(g.peers[u].am)xClean(g.peers[u].am);if(a){a.srcObject=null;a.remove()}}g.stream.getTracks().forEach(t=>t.stop());g.share&&g.share.getTracks().forEach(t=>t.stop());try{g.ac.close()}catch(e){}R('leave_group_call',{cid:g.id}).catch(()=>{});const o=$('#call');if(o)o.remove();if(msg)toast(msg);gBanner()}
-/* ---------- events ---------- */
-document.addEventListener('click',async e=>{const t=e.target.closest('[data-c]');if(!t)return;const c=t.dataset.c,k=t.dataset.k;
- if(c==='call')startCall();else if(c==='acc')accept();else if(c==='dec')fin('',false,'decline');else if(c==='end')fin('Call ended.',true);else if(c==='gjoin')joinGroup();else if(c==='gleave')gLeave('You left the call.');else if(c==='gmute')gMute();else if(c==='share')(G?gShare:dShare)();else if(c==='fs')fsToggle(t.dataset.u);
- else if(c==='mute'&&C){C.muted=!C.muted;C.stream.getAudioTracks().forEach(x=>x.enabled=!C.muted);ui()}
- else if(c==='min'){$('#call').classList.add('min')}else if(c==='max'){$('#call').classList.remove('min')}
- else if(c==='bd'){const b=(BC[t.dataset.u]||[]).find(x=>x.badge_key===k);if(b)toast(b.badges.icon+' '+b.badges.name+' — '+b.badges.description)}
-});
-document.addEventListener('change',async e=>{const t=e.target,c=t.dataset&&t.dataset.c;
- if(c==='cp'){const{error}=await sb.from('profiles').update({call_pref:t.value}).eq('id',S.me.id);if(error)return toast('Couldn’t save that setting.');S.me.call_pref=t.value;toast('Call setting saved.')}
- else if(c==='bh'){try{await R('set_badge_hidden',{bkey:t.dataset.k,hide:!t.checked});delete BC[S.me.id]}catch(x){toast(x.message)}}});
-/* ---------- realtime ---------- */
-function sub(uid){if(subUid===uid)return;subUid=uid;if(CH)sb.removeChannel(CH);
- if(!au){au=document.createElement('audio');au.setAttribute('playsinline','');au.autoplay=true;document.body.appendChild(au)}
- CH=sb.channel('cb-ext').on('postgres_changes',{event:'INSERT',schema:'public',table:'calls',filter:'callee=eq.'+uid},p=>incoming(p.new))
- .on('postgres_changes',{event:'UPDATE',schema:'public',table:'calls'},p=>onCall(p.new))
- .on('postgres_changes',{event:'INSERT',schema:'public',table:'call_signals'},p=>onSig(p.new))
- .on('postgres_changes',{event:'INSERT',schema:'public',table:'group_signals',filter:'receiver=eq.'+uid},p=>{const r=p.new;if(G&&r.call_id===G.id)gPeer(r.sender).handle(r.kind,r.payload)})
- .on('postgres_changes',{event:'*',schema:'public',table:'group_call_members'},p=>{const r=p.new||{};if(G&&r.call_id===G.id)gRefresh();gBanner()})
- .on('postgres_changes',{event:'*',schema:'public',table:'group_calls'},()=>gBanner())
- .on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+uid},p=>{toast(p.new.body);delete BC[uid];if(document.hidden&&window.Notification&&Notification.permission==='granted')try{new Notification('Chatter Box',{body:p.new.body})}catch(x){}}).subscribe()}
-sb.auth.onAuthStateChange((ev,s)=>{if(s&&s.user)sub(s.user.id);else{if(G)gLeave('');subUid=null;ROLE='user';BC={};if(C)fin('',false);if(CH){sb.removeChannel(CH);CH=null}}});
-sb.auth.getSession().then(({data})=>data.session&&sub(data.session.user.id));
-addEventListener('beforeunload',()=>{if(G)R('leave_group_call',{cid:G.id}).catch(()=>{});if(C&&C.up)R('call_respond',{cid:C.id,act:'end'}).catch(()=>{})});
-})();
-</script>
-<style>
-#adm{position:fixed;inset:0;z-index:9000;background:var(--bg);overflow:auto;padding:max(12px,env(safe-area-inset-top)) 14px max(16px,env(safe-area-inset-bottom))}
-#adm .w{max-width:760px;margin:0 auto}#adm .bar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
-#adm .st{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}@media(min-width:600px){#adm .st{grid-template-columns:repeat(4,1fr)}}
-#adm .st .card{margin:0;text-align:center}#adm .st b{font-size:22px;display:block}
-#adm .tg{font-size:11px;padding:2px 7px;border-radius:99px;border:1px solid var(--line);color:var(--mute);margin-left:4px;white-space:nowrap}
-#adm .tg.b{color:var(--bad);border-color:var(--bad)}#adm .tg.o{color:var(--ok);border-color:var(--ok)}#adm .tg.t{color:#fbbf24;border-color:#fbbf24}
-#adm .ur{cursor:pointer;border-bottom:1px solid var(--line)}#adm .tabs{display:flex;gap:6px;margin-bottom:10px}#adm .tabs button{flex:1}
-#adm .err{color:var(--bad)}#adm textarea{min-height:70px}#bangate{position:fixed;inset:0;z-index:99999;background:var(--bg);display:grid;place-items:center;padding:20px;text-align:center}
-#bangate .card{max-width:420px}
-</style>
-<script>
-(()=>{
-const rpc=async(n,a)=>{const{data,error}=await sb.rpc(n,a||{});if(error)throw error;return data};
-const fd=d=>d?new Date(d).toLocaleString([],{dateStyle:'medium',timeStyle:'short'}):'—';
-const K={ban:'🔨 Ban',unban:'✅ Unban',timeout:'⏳ Timeout',untimeout:'▶️ Timeout lifted',warn:'⚠️ Warning'};
-const DUR={'1h':36e5,'1d':864e5,'3d':2592e5,'7d':6048e5};
-let role=null,uid=null,pres={},A=null,pch=null,mch=null,tmr=null,seenTO=null,lt=null;
-const can=k=>role==='admin'||(role==='moderator'&&['warn','timeout','untimeout'].includes(k));
-const msg=e=>({NOT_AUTHORIZED:'You are not allowed to do that.',TARGET_IS_STAFF:'Staff accounts cannot be moderated here.',INVALID_TARGET:'Invalid user.',EXPIRY_IN_PAST:'The expiry must be in the future.',EXPIRY_REQUIRED:'Choose how long the timeout lasts.'}[(e&&e.message)||'']||(e&&e.message)||'Something went wrong.');
-
-/* ---------- ban gate (UX only; the database enforces the ban) ---------- */
-async function check(){
- if(!S.me)return;
- try{const m=await rpc('my_moderation');let g=document.getElementById('bangate');
-  if(m.banned){if(!g){g=document.createElement('div');g.id='bangate';g.setAttribute('role','alertdialog');document.body.appendChild(g);document.body.style.overflow='hidden'}
-   g.innerHTML=`<div class="card"><h2>🚫 Your account has been banned</h2><p>${m.ban_reason?'Reason: '+esc(m.ban_reason):'No reason was given.'}</p><p class="m">${m.ban_expires_at?'Temporary ban. Access returns '+esc(fd(m.ban_expires_at))+'.':'This ban is permanent.'}</p><button id="bgo" style="width:100%">Log out</button></div>`;
-   g.querySelector('#bgo').onclick=()=>sb.auth.signOut()}
-  else if(g){g.remove();document.body.style.overflow=''}
-  const k=m.timed_out?m.timeout_expires_at:null;if(k&&k!==seenTO)toast('You are timed out until '+fd(k)+'. You can’t send messages or start calls (a timeout is not a ban).');seenTO=k;
-  clearTimeout(lt);const nx=[m.banned&&m.ban_expires_at,m.timed_out&&m.timeout_expires_at].filter(Boolean).map(x=>new Date(x)-Date.now());
-  if(nx.length)lt=setTimeout(check,Math.min(Math.max(Math.min(...nx)+1500,2000),2147e6))
- }catch(e){console.error(e)}}
-
-/* ---------- boot / realtime ---------- */
-async function boot(){
- if(!S.me||uid===S.me.id)return;uid=S.me.id;check();
- try{role=await rpc('my_staff_role')}catch(e){role=null}
- if(mch)sb.removeChannel(mch);
- mch=sb.channel('cb-mod').on('postgres_changes',{event:'*',schema:'public',table:'moderation_state'},p=>{const r=p.new||{};if(r.user_id===uid)check();else if(role&&A)reload()});
- if(role)mch.on('postgres_changes',{event:'INSERT',schema:'public',table:'mod_actions'},()=>A&&reload());
- mch.subscribe();
- if(pch)sb.removeChannel(pch);
- pch=sb.channel('cb-presence',{config:{presence:{key:uid}}}).on('presence',{event:'sync'},()=>{pres=pch.presenceState();A&&A.view==='list'&&paintList()});
- pch.subscribe(s=>{if(s==='SUBSCRIBED'&&S.me.status!=='invisible')pch.track({at:Date.now()})});
- clearInterval(tmr);tmr=setInterval(check,60000);render()}
-function teardown(){uid=null;role=null;pres={};seenTO=null;closeAdm();clearInterval(tmr);[mch,pch].forEach(c=>c&&sb.removeChannel(c));mch=pch=null;const g=document.getElementById('bangate');if(g)g.remove();document.body.style.overflow=''}
-sb.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT')teardown()});
-const oe=window.enter;window.enter=async function(...a){const r=await oe.apply(this,a);boot();return r};
-const orr=window.render;window.render=function(...a){const r=orr.apply(this,a);try{if(role&&S.me){const n=document.querySelector('.nav');if(n&&!n.querySelector('[data-adm]')){const b=document.createElement('button');b.dataset.adm='1';b.title=b.ariaLabel='Admin Panel';b.innerHTML=I('shield',26);n.appendChild(b)}}}catch(e){}return r};
-
-/* ---------- admin panel (every action is re-authorized by the database) ---------- */
-function openAdm(){if(!role||A)return;A={view:'list',tab:'users',q:'',f:'all',users:null,stats:null,logs:[],sel:null,form:null,err:'',busy:false};
- const o=document.createElement('div');o.id='adm';o.setAttribute('role','dialog');o.setAttribute('aria-label','Admin Panel');document.body.appendChild(o);document.body.style.overflow='hidden';paint();reload()}
-function closeAdm(){const o=document.getElementById('adm');if(o)o.remove();A=null;if(!document.getElementById('bangate'))document.body.style.overflow=''}
-async function reload(){if(!A)return;A.err='';
- try{const[u,s,l]=await Promise.all([rpc('mod_list_users',{p_q:A.q,p_filter:A.f,p_limit:100}),rpc('mod_stats'),sb.from('mod_actions').select('*').order('created_at',{ascending:false}).limit(100)]);
-  if(l.error)throw l.error;if(!A)return;A.users=u;A.stats=s;A.logs=l.data;await prof(l.data.flatMap(x=>[x.actor_id,x.target_id]));
-  if(A.sel){const f=u.find(x=>x.id===A.sel.id);if(f)A.sel=f}}
- catch(e){A&&(A.err=msg(e))}
- if(A)paint()}
-const nm=id=>{const p=P(id);return esc(p.display_name||p.username)};
-const tags=u=>{const m=u.mod||{};return(m.staff?`<span class="tg">${esc(m.staff)}</span>`:'')+(m.banned?'<span class="tg b">Banned</span>':'')+(m.timed_out?'<span class="tg t">Timed out</span>':'')+(pres[u.id]?'<span class="tg o">Connected</span>':'')};
-const logRow=x=>`<div class="row" style="align-items:flex-start"><div class="g1"><b>${K[x.kind]}</b> · ${nm(x.target_id)} <small class="m">by ${nm(x.actor_id)}</small>${x.reason?`<br><small>Reason: ${esc(x.reason)}</small>`:''}${x.notes?`<br><small class="m">Internal: ${esc(x.notes)}</small>`:''}<br><small class="m">${esc(fd(x.created_at))}${x.expires_at?' · expires '+esc(fd(x.expires_at)):(x.kind==='ban'?' · permanent':'')}${x.lifted_at?' · lifted '+esc(fd(x.lifted_at)):''}</small></div></div>`;
-function paintList(){const l=document.getElementById('am-list');if(!l||!A)return;
- l.innerHTML=!A.users?'<p class="m">Loading…</p>':A.users.length?A.users.map(u=>`<div class="row ur" data-u="${esc(u.id)}">${av(u)}<div class="g1"><div class="t"><b>${esc(u.display_name||u.username)}</b>${tags(u)}</div><small class="m">@${esc(u.username)}${u.created_at?' · joined '+esc(new Date(u.created_at).toLocaleDateString()):''}</small></div></div>`).join(''):'<p class="m">No users match.</p>'}
-function paint(){const o=document.getElementById('adm');if(!o||!A)return;const e=A.err?`<p class="err" role="alert">${esc(A.err)}</p>`:'';let h='';
- if(A.view==='list'){const s=A.stats||{};
-  h=`<div class="bar"><h2>🛡️ Admin Panel <small class="m">${esc(role)}</small></h2><button class="g" data-x="close">Close</button></div>${e}
-  <div class="tabs"><button class="${A.tab==='users'?'':'g'}" data-x="tab" data-t="users">Users</button><button class="${A.tab==='logs'?'':'g'}" data-x="tab" data-t="logs">Moderation log</button></div>`;
-  if(A.tab==='users')h+=`<div class="st">${[['Users',s.users],['Banned now',s.active_bans],['Timed out',s.active_timeouts],['Total bans',s.total_bans]].map(([a,b])=>`<div class="card"><b>${b??'…'}</b><small class="m">${a}</small></div>`).join('')}</div>
-   <div class="card"><h3>Recent actions</h3>${A.logs.slice(0,5).map(logRow).join('')||'<p class="m">No moderation actions yet.</p>'}</div>
-   <input id="am-q" placeholder="Search username or display name" value="${esc(A.q)}" autocomplete="off"><select id="am-f">${[['all','All users'],['active','Not banned'],['banned','Banned'],['timeout','Timed out']].map(([k,t])=>`<option value="${k}" ${A.f===k?'selected':''}>${t}</option>`).join('')}</select><div id="am-list"></div>`;
-  else h+=`<div class="card">${A.logs.map(logRow).join('')||'<p class="m">No moderation actions yet.</p>'}</div>`}
- else if(A.view==='detail'){const u=A.sel,m=u.mod||{},hist=A.logs.filter(x=>x.target_id===u.id);
-  h=`<div class="bar"><button class="g" data-x="back">‹ Back</button></div>${e}<div class="card"><div class="row">${av(u)}<div class="g1"><h3>${esc(u.display_name||u.username)}${tags(u)}</h3><small class="m">@${esc(u.username)} · joined ${u.created_at?esc(new Date(u.created_at).toLocaleDateString()):'unknown'}</small></div></div>
-  ${m.banned?`<p class="err">Banned ${m.ban_expires_at?'until '+esc(fd(m.ban_expires_at)):'permanently'}${m.ban_reason?' — '+esc(m.ban_reason):''}</p>`:''}${m.timed_out?`<p>Timed out until ${esc(fd(m.timeout_expires_at))} (can read, can’t send messages or call).</p>`:''}
-  ${m.staff?'<p class="m">Staff accounts can’t be moderated here.</p>':['warn','timeout',m.timed_out&&'untimeout','ban',m.banned&&'unban'].filter(k=>k&&can(k)).map(k=>`<button class="${k==='ban'?'d':'g'}" style="margin:0 6px 6px 0" data-x="act" data-k="${k}">${K[k]}</button>`).join('')}</div>
-  <div class="card"><h3>History</h3>${hist.map(logRow).join('')||'<p class="m">No previous actions.</p>'}</div>`}
- else if(A.view==='form'||A.view==='confirm'){const f=A.form,u=A.sel,k=f.k,conf=A.view==='confirm',ex=expiry();
-  h=`<div class="bar"><button class="g" data-x="${conf?'edit':'back'}">‹ Back</button></div>${e}<div class="card"><h3>${K[k]} — ${esc(u.display_name||u.username)}</h3>`;
-  if(conf)h+=`<p>${{ban:'Ban this user? They lose access to messaging, DMs, groups and calls immediately.',unban:'Remove this user’s ban and restore access?',timeout:'Time this user out? They can read but cannot send messages or start calls. This is not a ban.',untimeout:'End this user’s timeout now?',warn:'Send this user a warning?'}[k]}</p><p><b>Duration:</b> ${k==='ban'||k==='timeout'?(ex?esc(fd(ex)):'Permanent'):'—'}<br><b>Reason:</b> ${esc(f.reason||'(none)')}<br><small class="m">Internal notes: ${esc(f.notes||'(none)')}</small></p><button class="${k==='unban'||k==='untimeout'||k==='warn'?'':'d'}" style="width:100%" data-x="go" ${A.busy?'disabled':''}>${A.busy?'Working…':'Confirm '+K[k].split(' ').slice(1).join(' ')}</button>`;
-  else{if(k==='ban'||k==='timeout')h+=`<label>Duration</label><select id="f-d">${[...(k==='ban'?[['perm','Permanent']]:[]),['1h','1 hour'],['1d','1 day'],['3d','3 days'],['7d','7 days'],['custom','Custom date/time']].map(([v,t])=>`<option value="${v}" ${f.d===v?'selected':''}>${t}</option>`).join('')}</select>${f.d==='custom'?`<input id="f-c" type="datetime-local" value="${esc(f.c||'')}">`:''}`;
-   h+=`<label>Reason${k==='warn'||k==='ban'?' (shown to the user)':''}</label><textarea id="f-r" maxlength="500">${esc(f.reason||'')}</textarea><label>Internal moderator notes (staff only)</label><textarea id="f-n" maxlength="2000">${esc(f.notes||'')}</textarea><button style="width:100%" data-x="review">Review</button>`}
-  h+='</div>'}
- o.innerHTML=`<div class="w">${h}</div>`;if(A.view==='list'&&A.tab==='users')paintList()}
-function expiry(){const f=A.form;if(!f||!['ban','timeout'].includes(f.k))return null;if(f.d==='custom')return f.c?new Date(f.c).toISOString():null;return DUR[f.d]?new Date(Date.now()+DUR[f.d]).toISOString():null}
-document.addEventListener('click',async e=>{
- const adm=e.target.closest('[data-adm]');if(adm){openAdm();return}
- if(!A)return;const t=e.target.closest('[data-x],[data-u]');if(!t)return;
- if(t.dataset.u){A.sel=A.users.find(x=>x.id===t.dataset.u);A.view='detail';A.err='';return paint()}
- const x=t.dataset.x;
- if(x==='close')closeAdm();
- else if(x==='tab'){A.tab=t.dataset.t;paint()}
- else if(x==='back'){A.view=A.view==='form'?'detail':'list';A.err='';paint()}
- else if(x==='edit'){A.view='form';paint()}
- else if(x==='act'){const k=t.dataset.k;A.form={k,d:k==='ban'?'perm':'1h',c:'',reason:'',notes:''};A.view='form';A.err='';paint()}
- else if(x==='review'){const f=A.form;f.reason=document.getElementById('f-r').value.trim();f.notes=document.getElementById('f-n').value.trim();
-  if(['ban','timeout'].includes(f.k)&&f.d==='custom'){f.c=(document.getElementById('f-c')||{}).value;if(!f.c||new Date(f.c)<=new Date()){A.err='Pick a custom time in the future.';return paint()}}
-  A.err='';A.view='confirm';paint()}
- else if(x==='go'){if(A.busy)return;A.busy=true;paint();const f=A.form;
-  try{await rpc('mod_'+f.k,{p_target:A.sel.id,p_reason:f.reason||null,p_expires:expiry(),p_notes:f.notes||null});toast(K[f.k]+' applied.');A.view='detail';A.busy=false;await reload()}
-  catch(er){A.busy=false;A.err=msg(er);A.view='form';paint()}}});
-document.addEventListener('input',e=>{if(!A)return;if(e.target.id==='am-q'){clearTimeout(A.qt);A.q=e.target.value;A.qt=setTimeout(reload,300)}});
-document.addEventListener('change',e=>{if(!A)return;if(e.target.id==='am-f'){A.f=e.target.value;reload()}
- else if(e.target.id==='f-d'){A.form.reason=document.getElementById('f-r').value;A.form.notes=document.getElementById('f-n').value;A.form.d=e.target.value;paint()}});
-if(S.me)boot();
-})();
-</script>
-</body></html>
+</script></body></html>
