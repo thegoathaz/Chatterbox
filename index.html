@@ -408,7 +408,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
  else if(a==='mic')micStart()
  else if(a==='mics'){if(rec)rec.mr.stop()}
  else if(a==='micx'){if(rec){rec.cancel=true;rec.mr.stop()}}
- else if(a==='srvn')srvCreate();
+ else if(a==='srvn')window.srvCreate();
  else if(a==='lsr'){S.ls=!S.ls;S.lq='';const w=$('#lqw');if(w)w.innerHTML=S.ls?'<input id="lq" placeholder="Search conversations" autocomplete="off" aria-label="Search conversations">':'';const i=$('#lq');if(i)i.focus();paintList()}
  else if(a==='lun'){S.lu=!S.lu;const b=$('#lun');if(b)b.classList.toggle('on',S.lu);paintList()}
  else if(a==='mx'){}
@@ -610,7 +610,7 @@ function render(){const app=$('#app');if(!S.me){app.innerHTML=authView();return}
  if(S.mode==='newpw'){app.innerHTML=authView();return}
  app.innerHTML=`<div class="shell"><main id="main"></main><nav class="nav">${[['chats','chat','Chats'],['friends','users','Friends'],['profile','user','Profile'],['settings','sliders','Settings']].map(([k,i,l])=>`<button data-a="tab" data-id="${k}" class="${S.tab===k?'on':''}" aria-label="${l}" title="${l}">${k==='profile'?`<span class="nav-av">${av(S.me)}<i class="sd s-${S.me.status||'online'}"></i></span>`:I(i,26)}<span id="b-${k}" class="nb"></span></button>`).join('')}</nav></div>`;
  const m=$('#main');
- if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" aria-label="Servers"><button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i><button class="rb" data-a="srvn" aria-label="Add a server" title="Add a server">${I('plus')}</button></aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread();srvRail()}
+ if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" aria-label="Servers"><button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i><button class="rb" data-a="srvn" aria-label="Add a server" title="Add a server">${I('plus')}</button></aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread();if(window.srvRail)window.srvRail()}
  else if(S.tab==='friends'){m.innerHTML='<div class="pg" id="fr"></div>';paintFr()}
  else if(S.tab==='settings'){paintSettings()}
  else m.innerHTML=`<div class="pg">${pcard(S.me,pmedia(S.me))}<p></p><button style="width:100%" data-ped>✏️ Edit Profile</button><div class="card" style="margin-top:12px"><form id="pf"><label for="pst">Status</label><select id="pst">${['online','idle','dnd','invisible'].map(x=>`<option ${S.me.status===x?'selected':''} value="${x}">${{online:'Online',idle:'Idle',dnd:'Do Not Disturb',invisible:'Invisible'}[x]}</option>`).join('')}</select><button style="width:100%">Save status</button></form></div><p class="m" style="font-size:13px">ID ${esc(S.me.user_code)}</p><button class="d" data-a="out" style="width:100%">Log out</button></div>`;
@@ -987,6 +987,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-sv]'
  catch(er){toast(serr(er));t.disabled=false}});
 document.addEventListener('input',e=>{if(e.target.id==='sd-n'&&SV){const b=$('#sd-go');if(b)b.disabled=e.target.value!==SV.s.name}
  if(e.target.id==='sx-q'){clearTimeout(sxt);const v=e.target.value;sxt=setTimeout(()=>srvDisc(v),250)}});
+window.srvCreate=srvCreate;window.srvRail=srvRail;window.loadSrv=loadSrv;
 if(S.me)boot();
 })();
 </script>
