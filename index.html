@@ -151,6 +151,22 @@ input:focus,textarea:focus,select:focus{outline:0;border-color:var(--ac);box-sha
 .nav-av .av{width:34px;height:34px;font-size:15px}
 .sd{position:absolute;right:-5px;top:-5px;width:15px;height:15px;border-radius:50%;border:3px solid var(--bg);background:#34d399}
 .sd.s-idle{background:#f5b84b}.sd.s-dnd{background:var(--bad)}.sd.s-invisible{background:#8b90b4}
+
+/* servers (stage 1) */
+.rb.sv{overflow:hidden;font-weight:700;color:var(--tx);background:var(--card)}.rb.sv img{width:100%;height:100%;object-fit:cover}
+#toast{z-index:300}
+#smod{position:fixed;inset:0;z-index:200;background:#000a;display:grid;place-items:center;padding:16px;overflow:auto}
+.sm-w{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;width:100%;max-width:440px;max-height:92%;overflow:auto}
+.sm-w .err,.err{color:var(--bad)}.sm-w .pact{margin-top:12px}
+#sv{position:fixed;inset:0;z-index:100;background:var(--bg);padding-top:env(safe-area-inset-top)}
+.svl{display:grid;height:100%;grid-template-columns:260px 1fr 230px;padding-bottom:env(safe-area-inset-bottom)}
+.svs,.svr{background:var(--card);overflow:auto;min-height:0;border-right:1px solid var(--line)}.svr{border:0;border-left:1px solid var(--line);padding:10px}
+.svm{display:flex;flex-direction:column;min-width:0;min-height:0}.svb{flex:1;overflow:auto;display:grid;place-items:center;padding:20px}
+.svh{display:flex;align-items:center;gap:8px;padding:14px;border-bottom:1px solid var(--line);cursor:pointer;position:sticky;top:0;background:var(--card)}.svh .t{flex:1}
+.svbn{height:90px;background:linear-gradient(135deg,var(--ac),#000);overflow:hidden}.svbn img{width:100%;height:100%;object-fit:cover}
+.svch{padding:8px}.svc{display:block;margin:12px 6px 4px;letter-spacing:.05em;font-size:12px}
+.bk2{display:none}
+@media(max-width:767px){.svl{grid-template-columns:1fr}.svl.ch .svm,.svl.ch .svr,.svl.main .svs,.svl.main .svr,.svl.mem .svs,.svl.mem .svm{display:none}.bk2{display:inline-block}}
 </style></head><body>
 <div id="app"><p class="empty">Loading…</p></div><div id="toast" hidden></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
@@ -392,7 +408,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
  else if(a==='mic')micStart()
  else if(a==='mics'){if(rec)rec.mr.stop()}
  else if(a==='micx'){if(rec){rec.cancel=true;rec.mr.stop()}}
- else if(a==='srvn')toast('Servers aren’t built into this version yet.');
+ else if(a==='srvn')srvCreate();
  else if(a==='lsr'){S.ls=!S.ls;S.lq='';const w=$('#lqw');if(w)w.innerHTML=S.ls?'<input id="lq" placeholder="Search conversations" autocomplete="off" aria-label="Search conversations">':'';const i=$('#lq');if(i)i.focus();paintList()}
  else if(a==='lun'){S.lu=!S.lu;const b=$('#lun');if(b)b.classList.toggle('on',S.lu);paintList()}
  else if(a==='mx'){}
@@ -594,7 +610,7 @@ function render(){const app=$('#app');if(!S.me){app.innerHTML=authView();return}
  if(S.mode==='newpw'){app.innerHTML=authView();return}
  app.innerHTML=`<div class="shell"><main id="main"></main><nav class="nav">${[['chats','chat','Chats'],['friends','users','Friends'],['profile','user','Profile'],['settings','sliders','Settings']].map(([k,i,l])=>`<button data-a="tab" data-id="${k}" class="${S.tab===k?'on':''}" aria-label="${l}" title="${l}">${k==='profile'?`<span class="nav-av">${av(S.me)}<i class="sd s-${S.me.status||'online'}"></i></span>`:I(i,26)}<span id="b-${k}" class="nb"></span></button>`).join('')}</nav></div>`;
  const m=$('#main');
- if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" aria-label="Servers"><button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i><button class="rb" data-a="srvn" aria-label="Add a server" title="Add a server">${I('plus')}</button></aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread()}
+ if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" aria-label="Servers"><button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i><button class="rb" data-a="srvn" aria-label="Add a server" title="Add a server">${I('plus')}</button></aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread();srvRail()}
  else if(S.tab==='friends'){m.innerHTML='<div class="pg" id="fr"></div>';paintFr()}
  else if(S.tab==='settings'){paintSettings()}
  else m.innerHTML=`<div class="pg">${pcard(S.me,pmedia(S.me))}<p></p><button style="width:100%" data-ped>✏️ Edit Profile</button><div class="card" style="margin-top:12px"><form id="pf"><label for="pst">Status</label><select id="pst">${['online','idle','dnd','invisible'].map(x=>`<option ${S.me.status===x?'selected':''} value="${x}">${{online:'Online',idle:'Idle',dnd:'Do Not Disturb',invisible:'Invisible'}[x]}</option>`).join('')}</select><button style="width:100%">Save status</button></form></div><p class="m" style="font-size:13px">ID ${esc(S.me.user_code)}</p><button class="d" data-a="out" style="width:100%">Log out</button></div>`;
@@ -848,7 +864,7 @@ async function check(){
 
 /* ---------- boot / realtime ---------- */
 async function boot(){
- if(!S.me||uid===S.me.id)return;uid=S.me.id;check();
+ if(!S.me||uid===S.me.id)return;uid=S.me.id;check();loadSrv();
  try{role=await rpc('my_staff_role')}catch(e){role=null}
  if(mch)sb.removeChannel(mch);
  mch=sb.channel('cb-mod').on('postgres_changes',{event:'*',schema:'public',table:'moderation_state'},p=>{const r=p.new||{};if(r.user_id===uid)check();else if(role&&A)reload()});
@@ -918,6 +934,59 @@ document.addEventListener('click',async e=>{
 document.addEventListener('input',e=>{if(!A)return;if(e.target.id==='am-q'){clearTimeout(A.qt);A.q=e.target.value;A.qt=setTimeout(reload,300)}});
 document.addEventListener('change',e=>{if(!A)return;if(e.target.id==='am-f'){A.f=e.target.value;reload()}
  else if(e.target.id==='f-d'){A.form.reason=document.getElementById('f-r').value;A.form.notes=document.getElementById('f-n').value;A.form.d=e.target.value;paint()}});
+
+/* ---------- servers, stage 1 (tables/RPCs from stage1_servers.sql; all permission checks run in the database) ---------- */
+S.srv=[];let SV=null,sxt;const SBK='server-media';
+const serr=e=>{const m=(e&&e.message)||'Something went wrong.';return /srv_|schema cache|does not exist|PGRST20[25]|42P01/i.test(m+((e&&e.code)||''))?'Servers aren’t set up in the database yet. Run stage1_servers.sql in the Supabase SQL editor.':m};
+const sIc=s=>asrc(s.icon_url)?`<img src="${esc(s.icon_url)}" alt="" draggable="false">`:esc([...(s.name||'?')][0].toUpperCase());
+async function loadSrv(){if(!S.me)return;
+ try{const{data,error}=await sb.from('srv_members').select('joined_at,srv_servers(id,name,description,icon_url,banner_url,owner_id,is_public,category)').eq('user_id',S.me.id).order('joined_at');if(error)throw error;S.srv=data.map(x=>x.srv_servers).filter(Boolean)}
+ catch(e){S.srv=[];if(!S.srvWarned){S.srvWarned=1;toast(serr(e))}}srvRail()}
+function srvRail(){const r=$('.rail');if(!r)return;
+ r.innerHTML=`<button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i>`+S.srv.map(s=>`<button class="rb sv" data-sv="open" data-id="${esc(s.id)}" aria-label="${esc(s.name)}" title="${esc(s.name)}">${sIc(s)}</button>`).join('')+`<button class="rb" data-a="srvn" aria-label="Create a server" title="Create a server">${I('plus')}</button><button class="rb" data-sv="disc" aria-label="Discover public servers" title="Discover servers">🧭</button>`}
+function smod(h){const o0=$('#smod');if(o0)o0.remove();const o=document.createElement('div');o.id='smod';o.setAttribute('role','dialog');o.innerHTML=`<div class="sm-w">${h}</div>`;document.body.appendChild(o)}
+const smx=()=>{const o=$('#smod');if(o)o.remove()};
+function srvCreate(){smod(`<h2>Create a server</h2><p class="m">You’ll be the owner. You can change everything later.</p><div class="sf"><label>Server name</label><input id="sc-n" maxlength="60" placeholder="My server" autocomplete="off"><label>Description (optional)</label><textarea id="sc-d" maxlength="500" rows="3"></textarea><label>Community type</label><select id="sc-c">${['general','friends','gaming','study','art','music','tech'].map(c=>`<option>${c}</option>`).join('')}</select><label>Visibility</label><select id="sc-p"><option value="0">Private: invite only</option><option value="1">Public: anyone can find and join</option></select><label>Icon (PNG, JPG or GIF)</label><input id="sc-i" type="file" accept="image/*"><label>Banner (optional, GIFs OK)</label><input id="sc-b" type="file" accept="image/*"></div><p class="err" id="sc-e" role="alert"></p><div class="pact"><button class="g" data-sv="x">Cancel</button><button id="sc-go" data-sv="mk">Create server</button></div>`)}
+async function srvMake(){const e=$('#sc-e'),b=$('#sc-go'),n=$('#sc-n').value.trim();e.textContent='';if(n.length<2){e.textContent='The name needs at least 2 characters.';return}
+ b.disabled=true;b.textContent='Creating…';
+ try{const up=async(el,k)=>{const f=el.files[0];if(!f)return null;const r=await procImg(f,k);return upload(`${S.me.id}/${Date.now()}-${k}`,r.blob,r.mime,()=>{},SBK)};
+  const icon=await up($('#sc-i'),'av'),ban=await up($('#sc-b'),'bn');
+  const id=await rpc('srv_create',{p_name:n,p_description:$('#sc-d').value.trim()||null,p_category:$('#sc-c').value,p_public:$('#sc-p').value==='1',p_icon_url:icon,p_banner_url:ban});
+  smx();await loadSrv();toast('Server created.');srvOpen(id)}
+ catch(er){e.textContent=serr(er);b.disabled=false;b.textContent='Create server'}}
+async function srvDisc(q=''){if(!$('#sx-l'))smod(`<h2>Discover servers</h2><input id="sx-q" placeholder="Search public servers" autocomplete="off"><div id="sx-l" class="m">Loading…</div><div class="pact"><button class="g" data-sv="x">Close</button></div>`);
+ try{const r=await rpc('srv_discover',{p_q:q,p_limit:30}),l=$('#sx-l');if(!l)return;
+  l.innerHTML=r.length?r.map(s=>`<div class="row"><div class="av" style="background:var(--ac);border-radius:14px;color:#fff">${sIc(s)}</div><div class="g1"><div class="t"><b>${esc(s.name)}</b></div><small class="m">${s.member_count} member${s.member_count==1?'':'s'} · ${esc(s.category)}${s.description?' · '+esc(s.description):''}</small></div><button data-sv="${s.joined?'open':'join'}" data-id="${esc(s.id)}">${s.joined?'Open':'Join'}</button></div>`).join(''):'<p class="empty">No public servers found.</p>'}
+ catch(er){const l=$('#sx-l');if(l)l.innerHTML=`<p class="err">${esc(serr(er))}</p>`}}
+async function srvOpen(id){const s=S.srv.find(x=>x.id===id);if(!s)return;SV={s,ch:[],mem:[],sel:null,mob:'ch'};
+ if(!$('#sv')){const o=document.createElement('div');o.id='sv';document.body.appendChild(o);document.body.style.overflow='hidden'}srvPaint();
+ try{const[c,m]=await Promise.all([sb.from('srv_channels').select('*').eq('server_id',id).order('position'),sb.from('srv_members').select('user_id,joined_at').eq('server_id',id)]);if(c.error)throw c.error;if(m.error)throw m.error;if(!SV||SV.s.id!==id)return;
+  SV.ch=c.data;SV.mem=m.data;await prof(m.data.map(x=>x.user_id));if(!SV||SV.s.id!==id)return;SV.sel=(c.data.find(x=>x.kind==='text')||{}).id||null}
+ catch(er){if(SV)SV.err=serr(er)}srvPaint()}
+function srvPaint(){const o=$('#sv');if(!o||!SV)return;const s=SV.s,own=s.owner_id===S.me.id;
+ const row=c=>`<div class="ci${SV.sel===c.id?' on':''}" data-sv="ch" data-id="${esc(c.id)}"><span class="m">${c.kind==='voice'?'🔊':'#'}</span><div class="g1 t">${esc(c.name)}</div></div>`;
+ const chl=SV.ch.filter(c=>c.kind==='category').map(g=>`<small class="m svc">${esc(g.name).toUpperCase()}</small>`+SV.ch.filter(c=>c.parent_id===g.id).map(row).join('')).join('')+SV.ch.filter(c=>c.kind!=='category'&&!c.parent_id).map(row).join('');
+ const cur=SV.ch.find(c=>c.id===SV.sel);
+ const mem=SV.mem.map(m=>{const p=P(m.user_id);return `<div class="row">${av(p)}<div class="g1"><div class="t">${esc(p.display_name||p.username)}${m.user_id===s.owner_id?' 👑':''}</div></div></div>`}).join('');
+ o.innerHTML=`<div class="svl ${SV.mob}"><aside class="svs"><div class="svh" data-sv="menu" role="button" tabindex="0"><b class="t">${esc(s.name)} ▾</b><button class="g" data-sv="close" aria-label="Close server" style="min-height:36px;padding:4px 10px">✕</button></div>${asrc(s.banner_url)?`<div class="svbn"><img src="${esc(s.banner_url)}" alt=""></div>`:''}<div class="svch">${SV.err?`<p class="err">${esc(SV.err)}</p>`:chl||'<p class="empty">Loading…</p>'}</div></aside>
+ <main class="svm"><div class="hd"><button class="g bk2" data-sv="back" aria-label="Channels">‹</button><b class="t">${cur?(cur.kind==='voice'?'🔊 ':'# ')+esc(cur.name):esc(s.name)}</b><button class="g" data-sv="mem" style="margin-left:auto">Members</button></div>
+ <div class="svb"><div class="empty"><h3>${cur?esc(cur.name):'Welcome'}</h3><p>${cur&&cur.description?esc(cur.description):'Channel messages aren’t built yet. They arrive in the next update (Stage 2).'}</p></div></div></main>
+ <aside class="svr"><h3 style="padding:4px 6px">Members · ${SV.mem.length}</h3>${mem}</aside></div>`}
+function srvMenu(){const s=SV.s,own=s.owner_id===S.me.id;smod(`<h2>${esc(s.name)}</h2><p class="m">${esc(s.description||'No description')}</p><p class="m">${s.is_public?'Public':'Private'} · ${SV.mem.length} member${SV.mem.length==1?'':'s'}${own?' · You own this server':''}</p><div class="pact">${own?'<button class="d" data-sv="del">Delete server</button>':'<button class="d" data-sv="leave">Leave server</button>'}<button class="g" data-sv="x">Close</button></div><small class="m">Roles, invites and full server settings arrive in later stages.</small>`)}
+function srvDel(){const s=SV.s;smod(`<h2>Delete ${esc(s.name)}?</h2><p>This permanently removes the server and may delete all of its channels and messages. It can’t be undone.</p><label>Type <b>${esc(s.name)}</b> to confirm</label><input id="sd-n" autocomplete="off"><div class="pact"><button class="g" data-sv="x">Cancel</button><button class="d" id="sd-go" data-sv="dgo" disabled>Delete forever</button></div>`)}
+function srvClose(){const o=$('#sv');if(o)o.remove();SV=null;if(!document.getElementById('bangate')&&!A)document.body.style.overflow=''}
+document.addEventListener('click',async e=>{const t=e.target.closest('[data-sv]');if(!t)return;if(t.dataset.sv==='close')e.stopPropagation();const x=t.dataset.sv,id=t.dataset.id;
+ try{if(x==='x')smx();else if(x==='mk')await srvMake();else if(x==='disc')srvDisc();
+  else if(x==='open'){smx();srvOpen(id)}
+  else if(x==='join'){t.disabled=true;await rpc('srv_join',{p_server:id});await loadSrv();smx();srvOpen(id)}
+  else if(x==='close')srvClose();else if(!SV)return;
+  else if(x==='ch'){SV.sel=id;SV.mob='main';srvPaint()}else if(x==='back'){SV.mob='ch';srvPaint()}
+  else if(x==='mem'){SV.mob=SV.mob==='mem'?'main':'mem';srvPaint()}else if(x==='menu')srvMenu();else if(x==='del')srvDel();
+  else if(x==='dgo'){const v=$('#sd-n').value;t.disabled=true;await rpc('srv_delete',{p_server:SV.s.id,p_confirm_name:v});smx();srvClose();await loadSrv();toast('Server deleted.')}
+  else if(x==='leave'){if(!confirm('Leave this server?'))return;await rpc('srv_leave',{p_server:SV.s.id});smx();srvClose();await loadSrv();toast('You left the server.')}}
+ catch(er){toast(serr(er));t.disabled=false}});
+document.addEventListener('input',e=>{if(e.target.id==='sd-n'&&SV){const b=$('#sd-go');if(b)b.disabled=e.target.value!==SV.s.name}
+ if(e.target.id==='sx-q'){clearTimeout(sxt);const v=e.target.value;sxt=setTimeout(()=>srvDisc(v),250)}});
 if(S.me)boot();
 })();
 </script>
