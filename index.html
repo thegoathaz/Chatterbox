@@ -169,7 +169,7 @@ const authMsg=e=>{const m=(e&&e.message)||'',st=e&&e.status;
  if(/Failed to fetch|NetworkError|Load failed/i.test(m))return 'Can’t reach the server. Check your connection. If this page is hosted somewhere that blocks outside requests, sign-up can’t work there.';
  if(/signups? (are )?(not allowed|disabled)/i.test(m))return 'Sign-ups are turned off for this app.';
  return m||'Something went wrong. Try again.'};
-const S={me:null,mode:'login',tab:'chats',cv:null,msgs:[],convs:[],pf:{},fr:[],bl:[],res:[],q:'',live:false};
+const S={me:null,mode:'login',tab:'chats',cv:null,msgs:[],convs:[],pf:{},fr:[],bl:[],res:[],q:'',live:false,srv:[]};
 const DEF={theme:'system',accent:'#7c5cff',fs:100,lt:false,spacing:'cozy',bg:'default',rm:false,hc:false,sr:false,enter:true,ts:true,edited:true,lp:true,rr:true,clock:'auto',date:'auto',n:{on:false,dm:true,sound:true,preview:true,badge:true}};
 const mg=(d,o)=>{const r={...d};for(const k in d)if(o&&k in o)r[k]=d[k]&&typeof d[k]==='object'?mg(d[k],o[k]||{}):(typeof o[k]===typeof d[k]?o[k]:d[k]);return r};
 let ST;try{ST=mg(DEF,JSON.parse(localStorage.getItem('cb-settings')||'{}'))}catch(e){ST=mg(DEF,{})}
@@ -218,7 +218,7 @@ document.addEventListener('submit',async e=>{e.preventDefault();const id=e.targe
 /* ---------- data ---------- */
 async function enter(user){S.user=user;{const us=user.user_metadata&&user.user_metadata.settings;if(us&&typeof us==='object'){ST=mg(DEF,us);try{localStorage.setItem('cb-settings',JSON.stringify(ST))}catch(e){}apply()}}
  const{data,error}=await sb.from('profiles').select('*').eq('id',user.id).single();if(error||!data)return fail(error,'Couldn’t load your profile. Did you run the SQL schema?');
- S.px=['avatar_url','banner_url','avatar_crop','banner_crop','pronouns','links','accent','created_at'].filter(c=>c in data);S.pm=S.px.includes('avatar_url');S.me=data;S.pf[data.id]=data;render();await Promise.all([loadFr(),loadConvs()]);
+ S.px=['avatar_url','banner_url','avatar_crop','banner_crop','pronouns','links','accent','created_at'].filter(c=>c in data);S.pm=S.px.includes('avatar_url');S.me=data;S.pf[data.id]=data;render();await Promise.all([loadFr(),loadConvs(),loadSrv()]);
  if(!S.live){S.live=true;sb.channel('cb').on('postgres_changes',{event:'*',schema:'public',table:'friendships'},()=>loadFr()).on('postgres_changes',{event:'*',schema:'public',table:'dm_messages'},onMsg).on('postgres_changes',{event:'UPDATE',schema:'public',table:'conversation_members'},()=>{if(S.cv)loadSeen().then(c=>c&&paintMsgs())}).subscribe()}}
 async function loadFr(){const[a,b]=await Promise.all([sb.from('friendships').select('*'),sb.from('blocks').select('*')]);if(a.error)return fail(a.error);
  S.fr=a.data||[];S.bl=b.data||[];await prof([...S.fr.flatMap(r=>[r.requester,r.addressee]),...S.bl.map(x=>x.blocked)]);paintFr();paintNav();paintSet();paintPv()}
@@ -240,6 +240,8 @@ const rxs=m=>{const g={};(S.rx[m.id]||[]).forEach(x=>(g[x.emoji]=g[x.emoji]||[])
 async function loadRx(){if(!S.cv||!S.me)return false;const ids=S.msgs.map(m=>m.id),[r,v]=await Promise.all([ids.length?sb.from('message_reactions').select('message_id,user_id,emoji').in('message_id',ids):{data:[]},sb.from('saved_messages').select('message_id').eq('user_id',S.me.id)]);if(r.error||v.error)return false;
  const m={};(r.data||[]).sort((a,b)=>(a.message_id+a.emoji+a.user_id).localeCompare(b.message_id+b.emoji+b.user_id)).forEach(x=>(m[x.message_id]=m[x.message_id]||[]).push(x));const sv=new Set((v.data||[]).map(x=>x.message_id)),J=JSON.stringify,ch=J(m)!==J(S.rx)||J([...sv].sort())!==J([...S.sv].sort());S.rx=m;S.sv=sv;return ch}
 async function refreshRx(){await loadRx();paintMsgs()}
+const railH=()=>`<button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i>${S.srv.map(x=>`<button class="rb" data-a="srvo" data-id="${esc(x.id)}" aria-label="${esc(x.name)}" title="${esc(x.name)}">${esc(([...x.name.trim()][0]||'?').toUpperCase())}</button>`).join('')}<button class="rb" data-a="srvn" aria-label="Add a server" title="Add a server">${I('plus')}</button>`;
+async function loadSrv(){const{data,error}=await sb.from('servers').select('id,name,icon_url').order('created_at');S.srv=error?[]:(data||[]);const r=$('#rail');if(r)r.innerHTML=railH()}
 function closeMenu(){const x=$('#mnu');if(x)x.remove()}
 function overlay(h){closeMenu();const d=document.createElement('div');d.id='mnu';d.innerHTML='<div class="mbk" data-a="mx"></div><div class="mbx">'+h+'<button class="g" data-a="mx">Close</button></div>';document.body.appendChild(d)}
 function menu(id){const m=S.msgs.find(x=>x.id===id);if(!m)return;const me=m.sender_id===S.me.id,b=(a,l)=>`<button class="g" data-a="${a}" data-id="${id}">${l}</button>`;
@@ -392,7 +394,9 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
  else if(a==='mic')micStart()
  else if(a==='mics'){if(rec)rec.mr.stop()}
  else if(a==='micx'){if(rec){rec.cancel=true;rec.mr.stop()}}
- else if(a==='srvn')toast('Servers aren’t built into this version yet.');
+ else if(a==='srvn')overlay('<h3>Create a server</h3><input id="sn" placeholder="Server name" maxlength="50" autocomplete="off" aria-label="Server name"><label class="row" style="cursor:pointer"><div class="g1"><b>Private server</b><br><small class="m">People need an invite link to join</small></div><input type="checkbox" id="sp" checked style="width:auto;margin:0"></label><button data-a="srvmk" data-keep="1">Create server</button>');
+ else if(a==='srvmk'){const nm=($('#sn').value||'').trim();if(nm.length<2)return toast('Give your server a name (at least 2 characters).');const{error}=await sb.rpc('create_server',{server_name:nm,make_private:$('#sp').checked});if(error)return toast(/create_server|PGRST202|schema cache/.test(error.message+(error.code||''))?'Servers aren’t set up yet. The app owner needs to run the servers SQL in Supabase.':error.message);closeMenu();await loadSrv();toast('Server created.')}
+ else if(a==='srvo'){const x=S.srv.find(v=>v.id===id);if(x)toast(x.name+' is ready. Channels and chat are the next step.')}
  else if(a==='lsr'){S.ls=!S.ls;S.lq='';const w=$('#lqw');if(w)w.innerHTML=S.ls?'<input id="lq" placeholder="Search conversations" autocomplete="off" aria-label="Search conversations">':'';const i=$('#lq');if(i)i.focus();paintList()}
  else if(a==='lun'){S.lu=!S.lu;const b=$('#lun');if(b)b.classList.toggle('on',S.lu);paintList()}
  else if(a==='mx'){}
@@ -594,7 +598,7 @@ function render(){const app=$('#app');if(!S.me){app.innerHTML=authView();return}
  if(S.mode==='newpw'){app.innerHTML=authView();return}
  app.innerHTML=`<div class="shell"><main id="main"></main><nav class="nav">${[['chats','chat','Chats'],['friends','users','Friends'],['profile','user','Profile'],['settings','sliders','Settings']].map(([k,i,l])=>`<button data-a="tab" data-id="${k}" class="${S.tab===k?'on':''}" aria-label="${l}" title="${l}">${k==='profile'?`<span class="nav-av">${av(S.me)}<i class="sd s-${S.me.status||'online'}"></i></span>`:I(i,26)}<span id="b-${k}" class="nb"></span></button>`).join('')}</nav></div>`;
  const m=$('#main');
- if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" aria-label="Servers"><button class="rb on" data-a="tab" data-id="chats" aria-label="Home" title="Messages">${I('chat')}</button><i class="rsep"></i><button class="rb" data-a="srvn" aria-label="Add a server" title="Add a server">${I('plus')}</button></aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread()}
+ if(S.tab==='chats'){m.innerHTML=`<div class="split ${S.cv?'open':''}"><aside class="rail" id="rail" aria-label="Servers">${railH()}</aside><section class="cl" id="cl"></section><section class="th" id="th"></section></div>`;paintList();paintThread()}
  else if(S.tab==='friends'){m.innerHTML='<div class="pg" id="fr"></div>';paintFr()}
  else if(S.tab==='settings'){paintSettings()}
  else m.innerHTML=`<div class="pg">${pcard(S.me,pmedia(S.me))}<p></p><button style="width:100%" data-ped>✏️ Edit Profile</button><div class="card" style="margin-top:12px"><form id="pf"><label for="pst">Status</label><select id="pst">${['online','idle','dnd','invisible'].map(x=>`<option ${S.me.status===x?'selected':''} value="${x}">${{online:'Online',idle:'Idle',dnd:'Do Not Disturb',invisible:'Invisible'}[x]}</option>`).join('')}</select><button style="width:100%">Save status</button></form></div><p class="m" style="font-size:13px">ID ${esc(S.me.user_code)}</p><button class="d" data-a="out" style="width:100%">Log out</button></div>`;
