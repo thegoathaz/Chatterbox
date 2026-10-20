@@ -812,4 +812,113 @@ sb.auth.getSession().then(({data})=>data.session&&sub(data.session.user.id));
 addEventListener('beforeunload',()=>{if(G)R('leave_group_call',{cid:G.id}).catch(()=>{});if(C&&C.up)R('call_respond',{cid:C.id,act:'end'}).catch(()=>{})});
 })();
 </script>
+<style>
+#adm{position:fixed;inset:0;z-index:9000;background:var(--bg);overflow:auto;padding:max(12px,env(safe-area-inset-top)) 14px max(16px,env(safe-area-inset-bottom))}
+#adm .w{max-width:760px;margin:0 auto}#adm .bar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+#adm .st{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}@media(min-width:600px){#adm .st{grid-template-columns:repeat(4,1fr)}}
+#adm .st .card{margin:0;text-align:center}#adm .st b{font-size:22px;display:block}
+#adm .tg{font-size:11px;padding:2px 7px;border-radius:99px;border:1px solid var(--line);color:var(--mute);margin-left:4px;white-space:nowrap}
+#adm .tg.b{color:var(--bad);border-color:var(--bad)}#adm .tg.o{color:var(--ok);border-color:var(--ok)}#adm .tg.t{color:#fbbf24;border-color:#fbbf24}
+#adm .ur{cursor:pointer;border-bottom:1px solid var(--line)}#adm .tabs{display:flex;gap:6px;margin-bottom:10px}#adm .tabs button{flex:1}
+#adm .err{color:var(--bad)}#adm textarea{min-height:70px}#bangate{position:fixed;inset:0;z-index:99999;background:var(--bg);display:grid;place-items:center;padding:20px;text-align:center}
+#bangate .card{max-width:420px}
+</style>
+<script>
+(()=>{
+const rpc=async(n,a)=>{const{data,error}=await sb.rpc(n,a||{});if(error)throw error;return data};
+const fd=d=>d?new Date(d).toLocaleString([],{dateStyle:'medium',timeStyle:'short'}):'—';
+const K={ban:'🔨 Ban',unban:'✅ Unban',timeout:'⏳ Timeout',untimeout:'▶️ Timeout lifted',warn:'⚠️ Warning'};
+const DUR={'1h':36e5,'1d':864e5,'3d':2592e5,'7d':6048e5};
+let role=null,uid=null,pres={},A=null,pch=null,mch=null,tmr=null,seenTO=null,lt=null;
+const can=k=>role==='admin'||(role==='moderator'&&['warn','timeout','untimeout'].includes(k));
+const msg=e=>({NOT_AUTHORIZED:'You are not allowed to do that.',TARGET_IS_STAFF:'Staff accounts cannot be moderated here.',INVALID_TARGET:'Invalid user.',EXPIRY_IN_PAST:'The expiry must be in the future.',EXPIRY_REQUIRED:'Choose how long the timeout lasts.'}[(e&&e.message)||'']||(e&&e.message)||'Something went wrong.');
+
+/* ---------- ban gate (UX only; the database enforces the ban) ---------- */
+async function check(){
+ if(!S.me)return;
+ try{const m=await rpc('my_moderation');let g=document.getElementById('bangate');
+  if(m.banned){if(!g){g=document.createElement('div');g.id='bangate';g.setAttribute('role','alertdialog');document.body.appendChild(g);document.body.style.overflow='hidden'}
+   g.innerHTML=`<div class="card"><h2>🚫 Your account has been banned</h2><p>${m.ban_reason?'Reason: '+esc(m.ban_reason):'No reason was given.'}</p><p class="m">${m.ban_expires_at?'Temporary ban. Access returns '+esc(fd(m.ban_expires_at))+'.':'This ban is permanent.'}</p><button id="bgo" style="width:100%">Log out</button></div>`;
+   g.querySelector('#bgo').onclick=()=>sb.auth.signOut()}
+  else if(g){g.remove();document.body.style.overflow=''}
+  const k=m.timed_out?m.timeout_expires_at:null;if(k&&k!==seenTO)toast('You are timed out until '+fd(k)+'. You can’t send messages or start calls (a timeout is not a ban).');seenTO=k;
+  clearTimeout(lt);const nx=[m.banned&&m.ban_expires_at,m.timed_out&&m.timeout_expires_at].filter(Boolean).map(x=>new Date(x)-Date.now());
+  if(nx.length)lt=setTimeout(check,Math.min(Math.max(Math.min(...nx)+1500,2000),2147e6))
+ }catch(e){console.error(e)}}
+
+/* ---------- boot / realtime ---------- */
+async function boot(){
+ if(!S.me||uid===S.me.id)return;uid=S.me.id;check();
+ try{role=await rpc('my_staff_role')}catch(e){role=null}
+ if(mch)sb.removeChannel(mch);
+ mch=sb.channel('cb-mod').on('postgres_changes',{event:'*',schema:'public',table:'moderation_state'},p=>{const r=p.new||{};if(r.user_id===uid)check();else if(role&&A)reload()});
+ if(role)mch.on('postgres_changes',{event:'INSERT',schema:'public',table:'mod_actions'},()=>A&&reload());
+ mch.subscribe();
+ if(pch)sb.removeChannel(pch);
+ pch=sb.channel('cb-presence',{config:{presence:{key:uid}}}).on('presence',{event:'sync'},()=>{pres=pch.presenceState();A&&A.view==='list'&&paintList()});
+ pch.subscribe(s=>{if(s==='SUBSCRIBED'&&S.me.status!=='invisible')pch.track({at:Date.now()})});
+ clearInterval(tmr);tmr=setInterval(check,60000);render()}
+function teardown(){uid=null;role=null;pres={};seenTO=null;closeAdm();clearInterval(tmr);[mch,pch].forEach(c=>c&&sb.removeChannel(c));mch=pch=null;const g=document.getElementById('bangate');if(g)g.remove();document.body.style.overflow=''}
+sb.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT')teardown()});
+const oe=window.enter;window.enter=async function(...a){const r=await oe.apply(this,a);boot();return r};
+const orr=window.render;window.render=function(...a){const r=orr.apply(this,a);try{if(role&&S.me){const n=document.querySelector('.nav');if(n&&!n.querySelector('[data-adm]')){const b=document.createElement('button');b.dataset.adm='1';b.title=b.ariaLabel='Admin Panel';b.innerHTML=I('shield',26);n.appendChild(b)}}}catch(e){}return r};
+
+/* ---------- admin panel (every action is re-authorized by the database) ---------- */
+function openAdm(){if(!role||A)return;A={view:'list',tab:'users',q:'',f:'all',users:null,stats:null,logs:[],sel:null,form:null,err:'',busy:false};
+ const o=document.createElement('div');o.id='adm';o.setAttribute('role','dialog');o.setAttribute('aria-label','Admin Panel');document.body.appendChild(o);document.body.style.overflow='hidden';paint();reload()}
+function closeAdm(){const o=document.getElementById('adm');if(o)o.remove();A=null;if(!document.getElementById('bangate'))document.body.style.overflow=''}
+async function reload(){if(!A)return;A.err='';
+ try{const[u,s,l]=await Promise.all([rpc('mod_list_users',{p_q:A.q,p_filter:A.f,p_limit:100}),rpc('mod_stats'),sb.from('mod_actions').select('*').order('created_at',{ascending:false}).limit(100)]);
+  if(l.error)throw l.error;if(!A)return;A.users=u;A.stats=s;A.logs=l.data;await prof(l.data.flatMap(x=>[x.actor_id,x.target_id]));
+  if(A.sel){const f=u.find(x=>x.id===A.sel.id);if(f)A.sel=f}}
+ catch(e){A&&(A.err=msg(e))}
+ if(A)paint()}
+const nm=id=>{const p=P(id);return esc(p.display_name||p.username)};
+const tags=u=>{const m=u.mod||{};return(m.staff?`<span class="tg">${esc(m.staff)}</span>`:'')+(m.banned?'<span class="tg b">Banned</span>':'')+(m.timed_out?'<span class="tg t">Timed out</span>':'')+(pres[u.id]?'<span class="tg o">Connected</span>':'')};
+const logRow=x=>`<div class="row" style="align-items:flex-start"><div class="g1"><b>${K[x.kind]}</b> · ${nm(x.target_id)} <small class="m">by ${nm(x.actor_id)}</small>${x.reason?`<br><small>Reason: ${esc(x.reason)}</small>`:''}${x.notes?`<br><small class="m">Internal: ${esc(x.notes)}</small>`:''}<br><small class="m">${esc(fd(x.created_at))}${x.expires_at?' · expires '+esc(fd(x.expires_at)):(x.kind==='ban'?' · permanent':'')}${x.lifted_at?' · lifted '+esc(fd(x.lifted_at)):''}</small></div></div>`;
+function paintList(){const l=document.getElementById('am-list');if(!l||!A)return;
+ l.innerHTML=!A.users?'<p class="m">Loading…</p>':A.users.length?A.users.map(u=>`<div class="row ur" data-u="${esc(u.id)}">${av(u)}<div class="g1"><div class="t"><b>${esc(u.display_name||u.username)}</b>${tags(u)}</div><small class="m">@${esc(u.username)}${u.created_at?' · joined '+esc(new Date(u.created_at).toLocaleDateString()):''}</small></div></div>`).join(''):'<p class="m">No users match.</p>'}
+function paint(){const o=document.getElementById('adm');if(!o||!A)return;const e=A.err?`<p class="err" role="alert">${esc(A.err)}</p>`:'';let h='';
+ if(A.view==='list'){const s=A.stats||{};
+  h=`<div class="bar"><h2>🛡️ Admin Panel <small class="m">${esc(role)}</small></h2><button class="g" data-x="close">Close</button></div>${e}
+  <div class="tabs"><button class="${A.tab==='users'?'':'g'}" data-x="tab" data-t="users">Users</button><button class="${A.tab==='logs'?'':'g'}" data-x="tab" data-t="logs">Moderation log</button></div>`;
+  if(A.tab==='users')h+=`<div class="st">${[['Users',s.users],['Banned now',s.active_bans],['Timed out',s.active_timeouts],['Total bans',s.total_bans]].map(([a,b])=>`<div class="card"><b>${b??'…'}</b><small class="m">${a}</small></div>`).join('')}</div>
+   <div class="card"><h3>Recent actions</h3>${A.logs.slice(0,5).map(logRow).join('')||'<p class="m">No moderation actions yet.</p>'}</div>
+   <input id="am-q" placeholder="Search username or display name" value="${esc(A.q)}" autocomplete="off"><select id="am-f">${[['all','All users'],['active','Not banned'],['banned','Banned'],['timeout','Timed out']].map(([k,t])=>`<option value="${k}" ${A.f===k?'selected':''}>${t}</option>`).join('')}</select><div id="am-list"></div>`;
+  else h+=`<div class="card">${A.logs.map(logRow).join('')||'<p class="m">No moderation actions yet.</p>'}</div>`}
+ else if(A.view==='detail'){const u=A.sel,m=u.mod||{},hist=A.logs.filter(x=>x.target_id===u.id);
+  h=`<div class="bar"><button class="g" data-x="back">‹ Back</button></div>${e}<div class="card"><div class="row">${av(u)}<div class="g1"><h3>${esc(u.display_name||u.username)}${tags(u)}</h3><small class="m">@${esc(u.username)} · joined ${u.created_at?esc(new Date(u.created_at).toLocaleDateString()):'unknown'}</small></div></div>
+  ${m.banned?`<p class="err">Banned ${m.ban_expires_at?'until '+esc(fd(m.ban_expires_at)):'permanently'}${m.ban_reason?' — '+esc(m.ban_reason):''}</p>`:''}${m.timed_out?`<p>Timed out until ${esc(fd(m.timeout_expires_at))} (can read, can’t send messages or call).</p>`:''}
+  ${m.staff?'<p class="m">Staff accounts can’t be moderated here.</p>':['warn','timeout',m.timed_out&&'untimeout','ban',m.banned&&'unban'].filter(k=>k&&can(k)).map(k=>`<button class="${k==='ban'?'d':'g'}" style="margin:0 6px 6px 0" data-x="act" data-k="${k}">${K[k]}</button>`).join('')}</div>
+  <div class="card"><h3>History</h3>${hist.map(logRow).join('')||'<p class="m">No previous actions.</p>'}</div>`}
+ else if(A.view==='form'||A.view==='confirm'){const f=A.form,u=A.sel,k=f.k,conf=A.view==='confirm',ex=expiry();
+  h=`<div class="bar"><button class="g" data-x="${conf?'edit':'back'}">‹ Back</button></div>${e}<div class="card"><h3>${K[k]} — ${esc(u.display_name||u.username)}</h3>`;
+  if(conf)h+=`<p>${{ban:'Ban this user? They lose access to messaging, DMs, groups and calls immediately.',unban:'Remove this user’s ban and restore access?',timeout:'Time this user out? They can read but cannot send messages or start calls. This is not a ban.',untimeout:'End this user’s timeout now?',warn:'Send this user a warning?'}[k]}</p><p><b>Duration:</b> ${k==='ban'||k==='timeout'?(ex?esc(fd(ex)):'Permanent'):'—'}<br><b>Reason:</b> ${esc(f.reason||'(none)')}<br><small class="m">Internal notes: ${esc(f.notes||'(none)')}</small></p><button class="${k==='unban'||k==='untimeout'||k==='warn'?'':'d'}" style="width:100%" data-x="go" ${A.busy?'disabled':''}>${A.busy?'Working…':'Confirm '+K[k].split(' ').slice(1).join(' ')}</button>`;
+  else{if(k==='ban'||k==='timeout')h+=`<label>Duration</label><select id="f-d">${[...(k==='ban'?[['perm','Permanent']]:[]),['1h','1 hour'],['1d','1 day'],['3d','3 days'],['7d','7 days'],['custom','Custom date/time']].map(([v,t])=>`<option value="${v}" ${f.d===v?'selected':''}>${t}</option>`).join('')}</select>${f.d==='custom'?`<input id="f-c" type="datetime-local" value="${esc(f.c||'')}">`:''}`;
+   h+=`<label>Reason${k==='warn'||k==='ban'?' (shown to the user)':''}</label><textarea id="f-r" maxlength="500">${esc(f.reason||'')}</textarea><label>Internal moderator notes (staff only)</label><textarea id="f-n" maxlength="2000">${esc(f.notes||'')}</textarea><button style="width:100%" data-x="review">Review</button>`}
+  h+='</div>'}
+ o.innerHTML=`<div class="w">${h}</div>`;if(A.view==='list'&&A.tab==='users')paintList()}
+function expiry(){const f=A.form;if(!f||!['ban','timeout'].includes(f.k))return null;if(f.d==='custom')return f.c?new Date(f.c).toISOString():null;return DUR[f.d]?new Date(Date.now()+DUR[f.d]).toISOString():null}
+document.addEventListener('click',async e=>{
+ const adm=e.target.closest('[data-adm]');if(adm){openAdm();return}
+ if(!A)return;const t=e.target.closest('[data-x],[data-u]');if(!t)return;
+ if(t.dataset.u){A.sel=A.users.find(x=>x.id===t.dataset.u);A.view='detail';A.err='';return paint()}
+ const x=t.dataset.x;
+ if(x==='close')closeAdm();
+ else if(x==='tab'){A.tab=t.dataset.t;paint()}
+ else if(x==='back'){A.view=A.view==='form'?'detail':'list';A.err='';paint()}
+ else if(x==='edit'){A.view='form';paint()}
+ else if(x==='act'){const k=t.dataset.k;A.form={k,d:k==='ban'?'perm':'1h',c:'',reason:'',notes:''};A.view='form';A.err='';paint()}
+ else if(x==='review'){const f=A.form;f.reason=document.getElementById('f-r').value.trim();f.notes=document.getElementById('f-n').value.trim();
+  if(['ban','timeout'].includes(f.k)&&f.d==='custom'){f.c=(document.getElementById('f-c')||{}).value;if(!f.c||new Date(f.c)<=new Date()){A.err='Pick a custom time in the future.';return paint()}}
+  A.err='';A.view='confirm';paint()}
+ else if(x==='go'){if(A.busy)return;A.busy=true;paint();const f=A.form;
+  try{await rpc('mod_'+f.k,{p_target:A.sel.id,p_reason:f.reason||null,p_expires:expiry(),p_notes:f.notes||null});toast(K[f.k]+' applied.');A.view='detail';A.busy=false;await reload()}
+  catch(er){A.busy=false;A.err=msg(er);A.view='form';paint()}}});
+document.addEventListener('input',e=>{if(!A)return;if(e.target.id==='am-q'){clearTimeout(A.qt);A.q=e.target.value;A.qt=setTimeout(reload,300)}});
+document.addEventListener('change',e=>{if(!A)return;if(e.target.id==='am-f'){A.f=e.target.value;reload()}
+ else if(e.target.id==='f-d'){A.form.reason=document.getElementById('f-r').value;A.form.notes=document.getElementById('f-n').value;A.form.d=e.target.value;paint()}});
+if(S.me)boot();
+})();
+</script>
 </body></html>
