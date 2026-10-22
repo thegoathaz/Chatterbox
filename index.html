@@ -225,6 +225,8 @@ async function loadFr(){const[a,b]=await Promise.all([sb.from('friendships').sel
 async function loadConvs(){const{data:mm,error}=await sb.from('conversation_members').select('conversation_id,user_id,last_read_at,notify,muted_until');if(error)return fail(error);
  const ids=[...new Set((mm||[]).map(x=>x.conversation_id))];if(!ids.length){S.convs=[];return paintList()}
  const[c,m]=await Promise.all([sb.from('conversations').select('id,kind,name,description,avatar_url,banner_url,join_mode,last_message_at,server_id').in('id',ids),sb.from('dm_messages').select('conversation_id,sender_id,body,created_at').in('conversation_id',ids).order('created_at',{ascending:false}).limit(300)]);
+ if(c.error){const r=await sb.from('conversations').select('id,kind,name,description,avatar_url,banner_url,join_mode,last_message_at').in('id',ids);c.data=r.data;c.error=r.error}
+ if(c.error)return fail(c.error);
  await prof(mm.filter(x=>x.user_id!==S.me.id).map(x=>x.user_id));
  S.convs=(c.data||[]).map(v=>{const mine=mm.find(x=>x.conversation_id===v.id&&x.user_id===S.me.id),p=mm.find(x=>x.conversation_id===v.id&&x.user_id!==S.me.id),l=(m.data||[]).find(x=>x.conversation_id===v.id);
   return{...v,notify:mine.notify,muted_until:mine.muted_until,n:mm.filter(x=>x.conversation_id===v.id).length,peer:p&&p.user_id,last:l,un:!!(l&&l.sender_id!==S.me.id&&new Date(l.created_at)>new Date(mine.last_read_at)&&!(S.cv&&S.cv.id===v.id))}}).sort((a,b)=>new Date(b.last_message_at)-new Date(a.last_message_at));paintList();paintNav()}
